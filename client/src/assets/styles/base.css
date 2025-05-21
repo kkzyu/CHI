@@ -1,0 +1,51 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* src/assets/styles/base.css */
+html {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base); /* This might become less relevant if scaling everything */
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Ensure html and body take full viewport height for centering */
+  height: 100%;
+  background-color: var(--color-background-page); /* Background for letterboxing */
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  display: flex; /* For centering the app container */
+  align-items: center; /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  overflow: hidden; /* Prevent scrollbars on body itself */
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+}
+
+/* Basic scrollbar styling (optional, for WebKit browsers) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-border-light);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}

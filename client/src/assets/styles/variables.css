@@ -1,0 +1,58 @@
+:root {
+  /* Dimensions */
+  --header-height: 55px;
+  --main-content-height: calc(1080px - var(--header-height)); /* 1025px */
+  --panel-height: 1003px; /* Given, slightly less than main-content-height */
+
+  --overview-panel-width: 394px;
+  --relations-panel-width: 1039px;
+  --details-panel-width: 439px;
+
+  --paper-card-width: 421px;
+  --paper-card-height: 578px;
+
+  /* Total width of panels: 394 + 1039 + 439 = 1872px */
+  /* Screen width: 1920px. Remaining: 1920 - 1872 = 48px */
+  /* We can use this for gaps. Let's aim for two gaps of 24px each. */
+  --column-gap: 24px;
+
+
+  /* Colors ( reusing from previous, adjust as needed ) */
+  --color-primary: #4f46e5;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-text-on-primary: #ffffff;
+  --color-background-page: #f3f4f6; /* Light gray for page background */
+  --color-background-header: #ffffff;
+  --color-background-panel: #ffffff;
+  --color-background-card: #ffffff;
+  --color-border: #d1d5db;
+  --color-border-light: #e5e7eb;
+  --color-placeholder-bg: #e5e7eb; /* Gray-200 for placeholder */
+  --color-placeholder-text: #9ca3af; /* Gray-400 */
+
+
+  /* Spacing (can be reused or panel-specific) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Borders */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+
+  /* Typography */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-size-base: 16px; /* Base font size for 1920x1080 */
+  --font-size-sm: 14px;
+  --font-size-xs: 12px;
+  --font-size-header-title: 20px;
+  --font-size-panel-title: 18px;
+  --font-size-card-title: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
