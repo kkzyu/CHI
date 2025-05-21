@@ -10,9 +10,9 @@
 
 2. **三栏布局**:
 
-   *   **概览视图 (Overview Panel)**: (由 [马好君] 负责) 展示论文数据的整体统计信息，包括堆叠柱状图、饼图。
-   *   **关系视图 (Relations Panel)**: (由 [陈景颖] 负责) 核心交互区域，使用桑基图展示论文不同标签之间的关联关系。
-   *   **细节视图 (Details Panel)**: (由 [裴咨亦] 负责) 展示当前筛选条件下的论文列表，每篇论文以卡片形式呈现。
+   *   **概览视图 (Overview Panel)**: (由 [马] 负责) 展示论文数据的整体统计信息，包括堆叠柱状图、饼图。
+   *   **关系视图 (Relations Panel)**: (由 [陈] 负责) 核心交互区域，使用桑基图展示论文不同标签之间的关联关系。
+   *   **细节视图 (Details Panel)**: (由 [裴] 负责) 展示当前筛选条件下的论文列表，每篇论文以卡片形式呈现。
 
 3. **目录结构**：
 
@@ -165,14 +165,14 @@ https://blog.csdn.net/whc18858/article/details/133209975
 
 **各视图负责人任务要点:**
 
-1.  **[马好君] - 概览视图 (OverviewPanel.vue)**:
+1.  **[马] - 概览视图 (OverviewPanel.vue)**:
     *   在 `src/components/panels/OverviewPanel.vue` 中实现。
     *   **布局与样式**: 根据设计稿，使用 CSS 变量实现内部图表占位符和标题的布局与样式。
     *   **可滚动性**: 确保当内容超出面板高度时，此面板可以垂直滚动。
     *   **图表组件 **:在 `src/components/charts/PlaceholderChart.vue` 进行编辑，可创建ECharts 图表或d3的组件。
     *   **数据**: 编写脚本（目前暂时先放到public/codes下)使用public/data/papers.csv计算出获奖论文数量和每个子标签下论文数量，绘制堆叠柱状图和饼图。
 
-2.  **[陈景颖] - 关系视图 (RelationsPanel.vue)**:
+2.  **[陈] - 关系视图 (RelationsPanel.vue)**:
     *   在 `src/components/panels/RelationsPanel.vue` 中实现。
     *   **布局与样式**: 根据设计稿，使用 CSS 变量实现桑基图容器和标题的布局与样式。
     *   **不可滚动性**: 确保此面板内容**不可**滚动，桑基图应完全填充其分配的容器区域。
@@ -182,7 +182,7 @@ https://blog.csdn.net/whc18858/article/details/133209975
         *   注意桑基图的 `resize` 以适应其动态缩放的容器。
     *   **数据**: 编写脚本（目前暂时先放到public/codes下)使用public/data/papers.csv计算出总览视图下每个一级标签下论文的数量，以此制作总览桑基图的 `nodes` 和 `links`。
 
-3.  **[裴咨亦] - 细节视图 (DetailsPanel.vue)**:
+3.  **[裴] - 细节视图 (DetailsPanel.vue)**:
     *   在 `src/components/panels/DetailsPanel.vue` 中实现。
     *   **布局与样式**: 根据设计稿，使用 CSS 变量实现论文卡片列表区域和标题的布局与样式。
     *   **可滚动性**: 确保当论文卡片数量超出面板高度时，此面板可以垂直滚动。
