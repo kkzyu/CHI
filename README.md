@@ -19,79 +19,51 @@
    [client]/
    ├── public/
    │   └── data/
-   │       └── papers.json       # <--- 论文数据JSON文件建议放在这里
+   │       └── papers.json       # 论文数据JSON文件建议放在这里
    │   └── favicon.ico           # (Vite 默认)
-   │   └── images/                  # (其他静态资源，如图片logo等)
-
-   │   └── codes/   				# 用于存放编写的脚本
-
-   │
+   │   └── images/               # 其他静态资源，如图片logo等
+   │   └── codes/                # 用于存放编写的脚本
    ├── src/
    │   ├── assets/
    │   │   ├── fonts/            # (可选)
    │   │   ├── images/           # (可选)
-
-   │   │   ├── data/           # (可选)
-
+   │   │   ├── data/             # (可选)
    │   │   └── styles/
    │   │       ├── base.css      # 全局基础和重置样式
-   │   │       └── variables.css # CSS自定义属性 (颜色, 设计尺寸, 动态尺寸等)
-   │   │
+   │   │       └── variables.css # CSS自定义属性
    │   ├── components/
    │   │   ├── charts/
    │   │   │   ├── PlaceholderChart.vue # 占位图表组件
    │   │   │   ├── SankeyDiagram.vue    # (待实现)
    │   │   │   └── PieChart.vue         # (待实现)
-   │   │   │
-   │   │   ├── common/                # (可选，通用小组件)
-
+   │   │   ├── common/           # (可选，通用小组件)
    │   │   │   ├── LoadingSpinne.vue    # (待实现)
-
-   │   │   │
    │   │   ├── layout/
    │   │   │   └── AppHeader.vue      # 全局页头组件
-   │   │   │
-   │   │   ├── panels/                # 三个主要视图面板组件
+   │   │   ├── panels/           # 三个主要视图面板组件
    │   │   │   ├── OverviewPanel.vue  # 概览视图面板
    │   │   │   ├── RelationsPanel.vue # 关系视图面板
    │   │   │   └── DetailsPanel.vue   # 细节视图面板
-   │   │   │
    │   │   └── paper/
    │   │       └── PaperCard.vue      # 论文卡片组件
-   │   │  
    │   ├── layouts/
    │   │   └── DashboardLayout.vue    # 三栏布局的容器组件
-   │   │
    │   ├── router/
    │   │   └── index.js             # Vue Router 路由配置
-   │   │
-   │   ├── stores/   **# 后续这部分将是核心，需要自学pinia**
-   │   │
+   │   ├── stores/                  # 后续这部分将是核心，需要自学pinia
    │   ├── views/
-   │   │   └── DashboardView.vue    **# 主仪表盘页面，由路由渲染，使用DashboardLayout**
-   │   │
-   │   ├── App.vue                  **# Vue 应用根组件 (包含Header和路由视图)**
-   │   └── main.js                  **# 应用入口文件 (初始化Vue, Pinia, Router)**
-
-   │
-   [server] /    # 用于存放后端代码
-
-   │
-   [prototype]/   #用于存放PPT和共享文档
-
-   │
-
-   ├── .eslintrc.cjs              # ESLint 配置文件，可用于代码检查（编辑器会在你编写代码时实时高亮显示
-
-    │											ESLint 发现的问题）
-   ├── .gitignore                 # Git忽略文件配置（即push到云端时会自动忽略里面的文件不进行上传）
-   ├── .prettierrc.json           # Prettier 配置文件 (或 .js, .yaml)，代码格式化工具
-   ├── index.html                 # 单页应用的 HTML 入口
-   ├── package.json               # 项目依赖和脚本
-   ├── package-lock.json          # (或 yarn.lock, pnpm-lock.yaml)
-   ├── README.md                  **# 当前文件**
-   
-   
+   │   │   └── DashboardView.vue    # 主仪表盘页面
+   │   ├── App.vue                  # Vue 应用根组件
+   │   └── main.js                  # 应用入口文件
+   [server]/                        # 用于存放后端代码
+   [prototype]/                     # 用于存放PPT和共享文档
+   ├── .eslintrc.cjs                # ESLint 配置文件
+   ├── .gitignore                   # Git忽略文件配置
+   ├── .prettierrc.json             # Prettier 配置文件
+   ├── index.html                   # 单页应用的 HTML 入口
+   ├── package.json                 # 项目依赖和脚本
+   ├── package-lock.json            # 锁定文件
+   ├── README.md                    # 当前文件
 
    
 
