@@ -15,7 +15,7 @@
    *   **细节视图 (Details Panel)**: (由 [裴] 负责) 展示当前筛选条件下的论文列表，每篇论文以卡片形式呈现。
 
 3. **目录结构**：
-
+```
    [client]/
    ├── public/
    │   └── data/
@@ -64,7 +64,7 @@
    ├── package.json                 # 项目依赖和脚本
    ├── package-lock.json            # 锁定文件
    ├── README.md                    # 当前文件
-
+```
    
 
 项目采用 Vue 3 + Vite + Vue Router + Pinia 技术栈。
