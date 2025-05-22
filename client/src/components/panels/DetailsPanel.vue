@@ -16,22 +16,29 @@
             <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <input type="search" placeholder="输入标签关键词..." class="search-input"/>
+          <input type="search" placeholder="输入标签关键词..." class="search-input"
+          v-model="searchTerm"/>
         </div>
       </div>
     </div>
     <div class="paper-cards-container">
-      <PaperCard v-for="n in 5" :key="n" :paper-data="dummyPaper(n)" />
-      {/* Real data will come from Pinia store */}
+       <PaperCard v-for="paper in filteredPapers" :key="paper.id" :paper-data="paper" :search-term="searchTerm" />
+      <div v-if="allPapers.length > 0 && filteredPapers.length === 0 && searchTerm" class="no-results-message">
+        未找到包含“{{ searchTerm }}”标签的论文。
+      </div>
+      <div v-if="allPapers.length === 0" class="no-data-message">
+        当前无论文数据。
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue';
 import PaperCard from '@/components/paper/PaperCard.vue';
 
-// Dummy data for demonstration
-// 父组件中修改后的 dummyPaper 函数
+const searchTerm = ref('');
+const allPapers = ref([]); // 存储所有论文数据
 const dummyPaper = (id) => {
   let currentAwardType = null;
   if (id % 3 === 1) { // 例如：id 为 1, 4, ... 的论文显示 honoraryMentionSVG
@@ -40,18 +47,17 @@ const dummyPaper = (id) => {
     currentAwardType = 'best';
   }
   // id % 3 === 0 的论文则 currentAwardType 为 null，不显示徽章
+    // 为了方便测试搜索，让标签内容更多样化
+  const researchContentBase = ['广告投放', '用户消费', '社交媒体', '推荐系统'];
+  const researchMethodBase = ['倾向得分匹配', '对照实验', '线性回归', '机器学习'];
+  const platformBase = ['Snapchat', 'TikTok', 'Web平台', '移动应用'];
 
   return {
     id: `paper-${id}`,
     award_type: currentAwardType, // **确保这里是 award_type**
-    // award: id % 2 === 0 ? '荣誉提名' : null, // 如果不再需要旧的 award 字段，可以移除或注释掉
-
-    // --- 其他字段保持不变，但确保它们是 PaperCard 所需的 ---
-    // venue 字段在 PaperCard 中用于显示，也应该添加
-    // doi 字段在 PaperCard 中用于显示，也应该添加
-    doi: `10.1145/EXAMPLE-DOI-${id}`,
-    doi_url: `https://doi.org/10.1145/EXAMPLE-DOI-${id}`,
-    title: `AdverTiming Matters: Examining User Ad Consumption (Paper ${id})`,
+    doi: `10.1145/3411764.3445394`,
+    doi_url: `https://doi.org/10.1145/3411764.3445394`,
+    title: `AdverTiming Matters: Examining User Ad Consumption for Effective Ad Allocations on Social Media`,
     authors: [
       'Saha, Koustuv',
       'Liu, Yozen',
@@ -59,17 +65,61 @@ const dummyPaper = (id) => {
       'Chowdhury, Farhan Asif',
       'Neves, Leonardo',
       'Shah, Neil',
-      `Bos ${id}, Maarten W.` // 略作区分
+      `Bos, Maarten W.` // 略作区分
     ],
-    year: 2023,
-    abstract: `这是论文 ${id} 的摘要内容。Showing ads delivers revenue for online content distributors, but ad exposure can compromise user experience and cause user fatigue and frustration. Correctly balancing ads with other content is imperative. Currently, ad allocation relies primarily on demographics and inferred user interests, which are treated as static features and can be privacy-intrusive. This paper uses person-centric and momentary context features to understand optimal ad-timing. In a quasi-experimental study on a three-month longitudinal dataset of 100K Snapchat users, we find ad timing influences ad effectiveness. We draw insights on the relationship between ad effectiveness and momentary behaviors such as duration, interactivity, and interaction diversity. We simulate ad reallocation, finding that our study-driven insights lead to greater value for the platform. This work advances our understanding of ad consumption and bears implications for designing responsible ad allocation systems, improving both user and platform outcomes. We discuss privacy-preserving components and ethical implications of our work.它描述了论文的主要内容和贡献。为了测试卡片的高度和滚动，这里可以放更多文本。`,
+    year: 2021,
+    abstract: `Showing ads delivers revenue for online content distributors, but ad exposure can compromise user experience and cause user fatigue and frustration. Correctly balancing ads with other content is imperative. Currently, ad allocation relies primarily on demographics and inferred user interests, which are treated as static features and can be privacy-intrusive. This paper uses person-centric and momentary context features to understand optimal ad-timing. In a quasi-experimental study on a three-month longitudinal dataset of 100K Snapchat users, we find ad timing influences ad effectiveness. We draw insights on the relationship between ad effectiveness and momentary behaviors such as duration, interactivity, and interaction diversity. We simulate ad reallocation, finding that our study-driven insights lead to greater value for the platform. This work advances our understanding of ad consumption and bears implications for designing responsible ad allocation systems, improving both user and platform outcomes. We discuss privacy-preserving components and ethical implications of our work.`,
     tags: {
-      research_content: ['广告投放和消费', `内容 #${id}`],
-      research_method: ['倾向得分匹配法', '对照实验', '线性回归'],
-      platform: ['Snapchat']
+      research_content: [researchContentBase[id % researchContentBase.length], `内容 #${id}`, platformBase[id % platformBase.length].toLowerCase()],
+      research_method: [researchMethodBase[id % researchMethodBase.length], `方法 ${id}`],
+      platform: [platformBase[id % platformBase.length], `平台特性 ${id}`]
     }
   };
 };
+
+onMounted(() => {
+  // 生成一些虚拟数据用于展示
+  const initialPapers = [];
+  for (let i = 1; i <= 10; i++) { // 生成10条虚拟数据
+    initialPapers.push(dummyPaper(i));
+  }
+  allPapers.value = initialPapers;
+});
+
+// 计算属性，用于根据 searchTerm 筛选论文, 如果用户输入的搜索词匹配论文的任何一个标签，或者匹配论文的奖项类型对应的文本（“荣誉提名”或“最佳论文”），则该论文卡片会被显示。
+const filteredPapers = computed(() => {
+  const term = searchTerm.value.toLowerCase().trim();
+  if (!term) {
+    return allPapers.value; // 如果搜索词为空，返回所有论文
+  }
+
+  const awardDisplayTexts = {
+    honorary: "荣誉提名", // 将 award_type 映射到显示文本
+    best: "最佳论文"
+  };
+
+  return allPapers.value.filter(paper => {
+    // 1. 检查标签是否匹配
+    let tagMatch = false;
+    if (paper.tags) {
+      const allCardTags = [
+        ...(paper.tags.research_content || []),
+        ...(paper.tags.research_method || []),
+        ...(paper.tags.platform || [])
+      ];
+      tagMatch = allCardTags.some(tag => typeof tag === 'string' && tag.toLowerCase().includes(term));
+    }
+
+    // 2. 检查奖项类型对应的文本是否匹配
+    let awardMatch = false;
+    if (paper.award_type && awardDisplayTexts[paper.award_type]) {
+      awardMatch = awardDisplayTexts[paper.award_type].toLowerCase().includes(term);
+    }
+
+    // 如果标签匹配 OR 奖项文本匹配，则返回 true
+    return tagMatch || awardMatch;
+  });
+});
 </script>
 
 <style scoped>
@@ -135,13 +185,13 @@ const dummyPaper = (id) => {
   border: 1px solid var(--color-border, #ccc);
   border-radius: var(--border-radius-md, 6px); /* 调整圆角以匹配图片 */
   background-color: var(--color-background-input, #fff);
-  color: var(--color-text-primary, #333);
+  color: var(--color-text-primary, #ffffff);
   outline: none;
 }
 
 .search-input:focus {
-  border-color: var(--color-primary, #007bff);
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* 示例 focus 效果 */
+  border-color: var(--color-primary, #bcc1c3);
+  box-shadow: 0 0 0 0.2rem rgba(237, 237, 239, 0.205); /* 示例 focus 效果 */
 }
 
 .search-input::placeholder {
