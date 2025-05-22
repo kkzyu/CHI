@@ -355,125 +355,125 @@
         - 工具包评估
 
 # **研究平台**
-## **内容形式**
+- **内容形式**
 
-- 图文为主
-    - Facebook
-    - Twitter
-    - Weibo
-    - Linkedin
-    - Bluesky
-    - Xiaohongshu
-    - Threads
-    - Mastodon.Naver
-    - Nextdoor
-    - Toutiao
-- 图片为主
-    - Instagram
-    - Snapchat
-    - BeReal
-    - Pinterest
-    - Flickr
-    - Tumblr
-- 视频为主
-    - TikTok
-    - YouTube
-    - Bilibili
-    - Kuaishou
-    - Twitch
-    - Douyin
-    - Instagram Reels
-    - Youku
-    - Vine
-    - House Party
-- 音频为主
-    - Spotify
-- 论坛
-    - Reddit
-    - Tieba
-    - Babycenter
-    - What to expect
-- 通信
-    - WhatsApp
-    - Telegram
-    - WeChat
-    - Slack
-    - Signal
-    - Zoe
-    - Romeo
-    - Truman
-    - SS
-    - Gaydar
-    - Grindr
-    - Skype
-    - Zoom
-    - Discord
-- 工具/搜索/电商
-    - Google
-    - Google Maps
-    - Google Search
-    - Flo
-    - Amazon Mechanical Turk
-- 区块链
-    - Spatial.io
-    - ReadyPlayerMe
+    - 图文为主
+        - Facebook
+        - Twitter
+        - Weibo
+        - Linkedin
+        - Bluesky
+        - Xiaohongshu
+        - Threads
+        - Mastodon.Naver
+        - Nextdoor
+        - Toutiao
+    - 图片为主
+        - Instagram
+        - Snapchat
+        - BeReal
+        - Pinterest
+        - Flickr
+        - Tumblr
+    - 视频为主
+        - TikTok
+        - YouTube
+        - Bilibili
+        - Kuaishou
+        - Twitch
+        - Douyin
+        - Instagram Reels
+        - Youku
+        - Vine
+        - House Party
+    - 音频为主
+        - Spotify
+    - 论坛
+        - Reddit
+        - Tieba
+        - Babycenter
+        - What to expect
+    - 通信
+        - WhatsApp
+        - Telegram
+        - WeChat
+        - Slack
+        - Signal
+        - Zoe
+        - Romeo
+        - Truman
+        - SS
+        - Gaydar
+        - Grindr
+        - Skype
+        - Zoom
+        - Discord
+    - 工具/搜索/电商
+        - Google
+        - Google Maps
+        - Google Search
+        - Flo
+        - Amazon Mechanical Turk
+    - 区块链
+        - Spatial.io
+        - ReadyPlayerMe
 
-## **平台属性**
+- **平台属性**
 
-- 主流国际平台
-    - Facebook
-    - Twitter
-    - Instagram
-    - TikTok
-    - YouTube
-    - Reddit
-    - Snapchat
-    - WhatsApp
-    - Telegram
-    - Google
-    - LinkedIn
-    - Spotify
-    - Google Maps
-    - Threads
-    - Pinterest
-    - Twitch
-    - Instagram Reels
-    - Google Search
-    - Amazon
-    - Nextdoor
-    - Vine
-    - Flickr
-    - Skype
-    - Discord
-    - Tumblr
-- 中国本土平台
-    - WeChat
-    - Weibo
-    - Bilibili
-    - Xiaohongshu
-    - Kuaishou
-    - Douyin
-    - Youku
-    - Tieba
-    - Toutiao
-- 匿名/去中心平台
-    - Bluesky
-    - Signal
-    - Mastodon
-- 垂直/边缘平台
-    - BeReal
-    - Zoe
-    - Naver
-    - Romeo
-    - Flo
-    - Truman
-    - Gaydar
-    - Grindr
-    - Spatial.io
-    - ReadyPlayerMe
-    - House Party
-- 专业工具/办公平台
-    - Slack
-    - SMs. Mechanical
-    - Turk
-    - Zoom
+    - 主流国际平台
+        - Facebook
+        - Twitter
+        - Instagram
+        - TikTok
+        - YouTube
+        - Reddit
+        - Snapchat
+        - WhatsApp
+        - Telegram
+        - Google
+        - LinkedIn
+        - Spotify
+        - Google Maps
+        - Threads
+        - Pinterest
+        - Twitch
+        - Instagram Reels
+        - Google Search
+        - Amazon
+        - Nextdoor
+        - Vine
+        - Flickr
+        - Skype
+        - Discord
+        - Tumblr
+    - 中国本土平台
+        - WeChat
+        - Weibo
+        - Bilibili
+        - Xiaohongshu
+        - Kuaishou
+        - Douyin
+        - Youku
+        - Tieba
+        - Toutiao
+    - 匿名/去中心平台
+        - Bluesky
+        - Signal
+        - Mastodon
+    - 垂直/边缘平台
+        - BeReal
+        - Zoe
+        - Naver
+        - Romeo
+        - Flo
+        - Truman
+        - Gaydar
+        - Grindr
+        - Spatial.io
+        - ReadyPlayerMe
+        - House Party
+    - 专业工具/办公平台
+        - Slack
+        - SMs. Mechanical
+        - Turk
+        - Zoom

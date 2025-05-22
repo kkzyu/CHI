@@ -2,13 +2,14 @@
   <div class="panel-content">
     <h2 class="panel-title">关系视图</h2>
     <div class="chart-container-full">
-      <PlaceholderChart title="桑基图 Placeholder (Content should not scroll)" chart-height="100%" />
+      <SankeyDiagram />
     </div>
   </div>
 </template>
 
 <script setup>
-import PlaceholderChart from '@/components/charts/PlaceholderChart.vue';
+// import PlaceholderChart from '@/components/charts/PlaceholderChart.vue';
+import SankeyDiagram from '@/components/charts/SankeyDiagram.vue';
 </script>
 
 <style scoped>
