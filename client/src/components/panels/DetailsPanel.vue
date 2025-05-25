@@ -99,7 +99,7 @@ const transformPaperData = (rawDataArray) => {
 onMounted(async () => {
   isLoading.value = true;
   try {
-    const response = await fetch('/CHI/data/papers.json'); // 注意路径，相对于public目录, 但是public是CHI
+    const response = await fetch('data/papers.json'); // 注意路径相对于public目录
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
