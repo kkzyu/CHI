@@ -1,409 +1,281 @@
 <template>
-  <div>
-    <button @click="resetView">Reset View</button>
-    <div ref="sankeyChart" style="width: 100%; height: 800px;"></div>
+  <div class="sankey-diagram-container">
+    <div ref="sankeyChartRef" class="sankey-chart"></div>
+    <div v-if="isLoading" class="loading-overlay">Loading Sankey Data...</div>
+    <div v-if="errorMsg" class="error-message">{{ errorMsg }}</div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
 import * as echarts from 'echarts/core';
 import { SankeyChart } from 'echarts/charts';
-import { TooltipComponent, TitleComponent } from 'echarts/components';
+import { TooltipComponent, TitleComponent, LegendComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useDataStore } from '@/stores/dataStore'; 
 
-echarts.use([SankeyChart, TooltipComponent, TitleComponent, CanvasRenderer]);
+// 注册ECharts模块
+echarts.use([
+  SankeyChart,
+  TooltipComponent,
+  TitleComponent,
+  LegendComponent,
+  CanvasRenderer
+]);
 
-// Root IDs for our three main categories
-const ROOT_PLATFORM_ID = '研究平台'; // This is the L0 root for platforms
-const ROOT_CONTENT_ID = '研究内容';
-const ROOT_METHOD_ID = '研究方法';
+const dataStore = useDataStore();
+const sankeyChartRef = ref(null); // DOM引用
+let chartInstance = null;
+const isLoading = ref(false);
+const errorMsg = ref(null);
 
+// 我们将在这里准备ECharts的option
+const chartOption = ref({});
 
-
-export default {
-  name: 'SankeyDiagram',
-  data() {
-    return {
-      allTags: {},
-      papersData: [],
-      // l3Map: {}, // L3TagToIdMap.json - might not be directly needed if allTagsById is comprehensive
-      
-      platformNameToIdMap: {}, // For mapping paper platform names to IDs
-
-      // activeHierarchy stores arrays of node IDs for each level of expansion
-      // The last array in each list is what's currently displayed
-      activePlatformHierarchy: [],
-      activeContentHierarchy: [],
-      activeMethodHierarchy: [],
-
-      chartInstance: null,
-      isLoading: true,
-    };
-  },
-  async mounted() {
-    await this.loadData();
-    this.initializeHierarchies();
-    this.initChart();
-    this.updateChart();
-    window.addEventListener('resize', this.handleResize);
-  },
-  beforeUnmount() {
-    if (this.chartInstance) {
-      this.chartInstance.dispose();
-    }
-    window.removeEventListener('resize', this.handleResize);
-  },
-  methods: {
-    async loadData() {
-      const baseUrl = import.meta.env.BASE_URL; 
-      try {
-            const fetchData = async (path) => { // path should be relative to the base
-            const url = `${baseUrl}${path}`;
-            const response = await fetch(url);
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error(`HTTP error for ${url}! Status: ${response.status}. Response:`, errorText.substring(0, 500) + "...");
-                throw new Error(`HTTP error! status: ${response.status} for ${url}`);
-            }
-            return response.json();
-            };
-
-            // Assuming your JSON files are in public/data/
-            const [allTagsData, papersData /*, l3MapData*/] = await Promise.all([
-            fetchData('data/allTagsById.json'),
-            fetchData('data/papers.json'),
-            // fetchData('data/L3TagToIdMap.json') // If you use it
-            ]);
-
-            this.allTags = allTagsData.allTagsById;
-            this.papersData = papersData;
-            // this.l3Map = l3MapData.l3TagToIdMap;
-
-            this.buildPlatformNameToIdMap();
-            this.preprocessPapersData();
-            this.isLoading = false;
-
-        } catch (error) {
-            console.error("Error loading data:", error);
-            this.isLoading = false;
-        }
-    },
-
-    buildPlatformNameToIdMap() {
-        // Platforms are L3 under "内容形式" or "平台属性" which are L2 under "研究平台"
-        // Or, more simply, any tag with level 3 and category "内容形式" or "平台属性"
-        for (const tagId in this.allTags) {
-            const tag = this.allTags[tagId];
-            if (tag.level === 3 && (tag.category === '内容形式' || tag.category === '平台属性')) {
-                this.platformNameToIdMap[tag.name] = tag.id;
-            }
-            // Handle cases like "Instagram Reels" which might be an L3 name but ID is "视频为主-Instagram_Reels"
-            // The current structure seems to have L3 names as platform names.
-        }
-        // Special cases if names don't directly match
-        this.platformNameToIdMap['Instagram Reels'] = '视频为主-Instagram_Reels';
-        this.platformNameToIdMap['Google Maps'] = '工具/搜索/电商-Google_Maps';
-        this.platformNameToIdMap['Google Search'] = '工具/搜索/电商-Google_Search';
-        this.platformNameToIdMap['Amazon Mechanical Turk'] = '工具/搜索/电商-Amazon_Mechanical_Turk';
-        this.platformNameToIdMap['House Party'] = '视频为主-House_Party';
-        this.platformNameToIdMap['SMs. Mechanical'] = '专业工具/办公平台-SMs._Mechanical'; // This seems like a typo in data, might be AMT
-        this.platformNameToIdMap['Turk'] = '专业工具/办公平台-Turk'; // Also likely AMT
-        this.platformNameToIdMap['Mastodon.Naver'] = '图文为主-Mastodon.Naver'; // If this is two platforms, data needs splitting
-    },
-
-    preprocessPapersData() {
-        this.papersData = this.papersData.map(paper => {
-            const platformIds = (paper.研究涉及平台 || [])
-                .map(name => this.platformNameToIdMap[name] || name) // Fallback to name if no ID found
-                .filter(id => id); // Ensure no undefined/null
-            
-            // Assuming 研究内容 and 研究方法 in papers.json are already L3/L4 IDs
-            // If they are names, they'd need mapping too. The provided L3TagToIdMap.json suggests they are names.
-            // For simplicity, I'll assume they are IDs as per allTagsById.json structure for L3/L4.
-            // If they are names, you'd use L3TagToIdMap.json to convert them.
-            // Example: paper.研究内容 = paper.研究内容.map(name => this.l3Map['研究内容'][name] || name);
-
-            return {
-                ...paper,
-                platformTagIds: platformIds,
-                contentTagIds: paper.研究内容 || [],
-                methodTagIds: paper.研究方法 || [],
-            };
-        });
-    },
-
-    initializeHierarchies() {
-      // Initial view: L1 children of the root categories
-      this.activePlatformHierarchy = [this.allTags[ROOT_PLATFORM_ID]?.childrenIds || []];
-      this.activeContentHierarchy = [this.allTags[ROOT_CONTENT_ID]?.childrenIds || []];
-      this.activeMethodHierarchy = [this.allTags[ROOT_METHOD_ID]?.childrenIds || []];
-    },
-
-    resetView() {
-      this.initializeHierarchies();
-      this.updateChart();
-    },
-
-    initChart() {
-      this.chartInstance = echarts.init(this.$refs.sankeyChart);
-      this.chartInstance.on('click', this.handleNodeClick);
-    },
-
-    handleResize() {
-        if (this.chartInstance) {
-            this.chartInstance.resize();
-        }
-    },
-    
-    // Recursive helper to get all leaf descendant IDs (L3/L4)
-    getAllLeafDescendantIds(tagId) {
-      if (!this.allTags[tagId]) return [];
-      const tag = this.allTags[tagId];
-      if (!tag.childrenIds || tag.childrenIds.length === 0) {
-        // It's a leaf if it has no children OR if it's an L3/L4 tag (as per problem, L3/L4 are actual paper tags)
-        // The problem states "最后一级标签为实际上给这些论文打的标签"
-        // Let's assume L3 and L4 are the "leaf" levels for paper tagging.
-        // A more robust way: check if it's a level that papers are tagged with.
-        // For now, simple recursion: if no children, it's a leaf in its branch.
-        return [tagId];
-      }
-      let leaves = [];
-      for (const childId of tag.childrenIds) {
-        leaves = leaves.concat(this.getAllLeafDescendantIds(childId));
-      }
-      return [...new Set(leaves)]; // Unique leaves
-    },
-
-    generateSankeyData() {
-      if (this.isLoading || !Object.keys(this.allTags).length) {
-        return { nodes: [], links: [] };
-      }
-
-      const currentPlatformIds = this.activePlatformHierarchy[this.activePlatformHierarchy.length - 1];
-      const currentContentIds = this.activeContentHierarchy[this.activeContentHierarchy.length - 1];
-      const currentMethodIds = this.activeMethodHierarchy[this.activeMethodHierarchy.length - 1];
-
-      const echartsNodes = [];
-      const nodeSet = new Set(); // To avoid duplicate nodes
-
-      const addNodesToEcharts = (ids, depth) => {
-        ids.forEach(id => {
-          if (!nodeSet.has(id) && this.allTags[id]) {
-            echartsNodes.push({
-              id: id,
-              name: this.allTags[id].name,
-              depth: depth, // ECharts uses depth for column
-              itemStyle: { color: this.getColorForNode(this.allTags[id]) }
-            });
-            nodeSet.add(id);
-          }
-        });
-      };
-
-      addNodesToEcharts(currentPlatformIds, 0);
-      addNodesToEcharts(currentContentIds, 1);
-      addNodesToEcharts(currentMethodIds, 2);
-      
-      const echartsLinks = [];
-
-      // Platform -> Content links
-      currentPlatformIds.forEach(pId => {
-        const platformLeafIds = this.getAllLeafDescendantIds(pId);
-        currentContentIds.forEach(cId => {
-          const contentLeafIds = this.getAllLeafDescendantIds(cId);
-          let count = 0;
-          this.papersData.forEach(paper => {
-            const hasPlatform = paper.platformTagIds.some(paperPId => platformLeafIds.includes(paperPId));
-            const hasContent = paper.contentTagIds.some(paperCId => contentLeafIds.includes(paperCId));
-            if (hasPlatform && hasContent) {
-              count++;
-            }
-          });
-          if (count > 0) {
-            echartsLinks.push({ source: pId, target: cId, value: count });
-          }
-        });
-      });
-
-      // Content -> Method links
-      currentContentIds.forEach(cId => {
-        const contentLeafIds = this.getAllLeafDescendantIds(cId);
-        currentMethodIds.forEach(mId => {
-          const methodLeafIds = this.getAllLeafDescendantIds(mId);
-          let count = 0;
-          this.papersData.forEach(paper => {
-            const hasContent = paper.contentTagIds.some(paperCId => contentLeafIds.includes(paperCId));
-            const hasMethod = paper.methodTagIds.some(paperMId => methodLeafIds.includes(paperMId));
-            if (hasContent && hasMethod) {
-              count++;
-            }
-          });
-          if (count > 0) {
-            echartsLinks.push({ source: cId, target: mId, value: count });
-          }
-        });
-      });
-      return { nodes: echartsNodes, links: echartsLinks };
-    },
-
-    getColorForNode(node) {
-        // Basic coloring logic, can be expanded
-        if (!node) return '#5470c6'; // Default ECharts blue
-        const level = node.level;
-        const category = node.category; // "研究内容", "研究方法", "内容形式", "平台属性"
-
-        if (category === '研究内容') {
-            if (level === 1) return '#91cc75'; // Greenish
-            if (level === 2) return '#fac858'; // Yellowish
-            if (level === 3) return '#ee6666'; // Reddish
-            return '#73c0de'; // Bluish
-        } else if (category === '研究方法') {
-            if (level === 1) return '#3ba272';
-            if (level === 2) return '#fc8452';
-            if (level === 3) return '#9a60b4';
-            return '#ea7ccc';
-        } else if (category === '内容形式' || category === '平台属性') { // Platform related
-            if (level === 1) return '#5470c6'; // Default ECharts blue
-            if (level === 2) return '#91cc75';
-            return '#fac858';
-        }
-        return '#cccccc'; // Default grey
-    },
-
-    updateChart() {
-      if (!this.chartInstance || this.isLoading) return;
-      const { nodes, links } = this.generateSankeyData();
-      
-      const option = {
-        title: {
-          text: 'Multi-level Sankey Diagram'
-        },
-        tooltip: {
-          trigger: 'item',
-          triggerOn: 'mousemove'
-        },
-        series: [
-          {
-            type: 'sankey',
-            data: nodes,
-            links: links,
-            emphasis: {
-              focus: 'adjacency'
-            },
-            nodeAlign: 'justify', // 'left', 'right', 'justify'
-            orient: 'horizontal',
-            label: {
-              show: true,
-              position: 'right', // 'top', 'left', 'right', 'bottom', 'inside', ...
-              formatter: '{b}' // {b} is node name
-            },
-            lineStyle: {
-              color: 'source', // 'source', 'target', or a specific color
-              curveness: 0.5
-            },
-            levels: [ // Optional: for specific styling per level/depth
-              { depth: 0, itemStyle: { color: '#5470c6' }, lineStyle: { color: 'source', opacity: 0.4 } },
-              { depth: 1, itemStyle: { color: '#91cc75' }, lineStyle: { color: 'source', opacity: 0.4 } },
-              { depth: 2, itemStyle: { color: '#fac858' }, lineStyle: { color: 'source', opacity: 0.4 } },
-              // Add more depths if you expand beyond L3 effectively
-            ]
-          }
-        ]
-      };
-      this.chartInstance.setOption(option, true); // true to not merge with previous options
-    },
-
-    handleNodeClick(params) {
-      if (params.dataType === 'node') {
-        const clickedNodeId = params.data.id;
-        const clickedNode = this.allTags[clickedNodeId];
-        if (!clickedNode) return;
-
-        let targetHierarchy;
-        // Determine which hierarchy to modify based on clickedNode's depth or category
-        // This assumes nodes are uniquely assigned to a conceptual column
-        // A more robust way would be to check which `active...Hierarchy` contains the node or its ancestor.
-        if (clickedNode.depth === 0) targetHierarchy = this.activePlatformHierarchy;
-        else if (clickedNode.depth === 1) targetHierarchy = this.activeContentHierarchy;
-        else if (clickedNode.depth === 2) targetHierarchy = this.activeMethodHierarchy;
-        else {
-            // Fallback: check category if depth is not set or ambiguous
-            const rootParentId = this.findRootParentId(clickedNodeId);
-            if (rootParentId === ROOT_PLATFORM_ID) targetHierarchy = this.activePlatformHierarchy;
-            else if (rootParentId === ROOT_CONTENT_ID) targetHierarchy = this.activeContentHierarchy;
-            else if (rootParentId === ROOT_METHOD_ID) targetHierarchy = this.activeMethodHierarchy;
-            else return; // Unknown category
-        }
-
-
-        const currentLevelIndex = targetHierarchy.length - 1;
-        const currentDisplayedNodes = targetHierarchy[currentLevelIndex];
-
-        // Check if the clicked node is one of the currently displayed nodes
-        if (currentDisplayedNodes.includes(clickedNodeId)) {
-          if (clickedNode.childrenIds && clickedNode.childrenIds.length > 0) {
-            // Expand: Add children as a new level
-            targetHierarchy.push(clickedNode.childrenIds);
-          } else if (targetHierarchy.length > 1) {
-            // Collapse: If it's a leaf or has no children to expand to, and not at base level, pop to go up
-            targetHierarchy.pop();
-          }
-        } else {
-          // Clicked on a node that is not in the current deepest display level.
-          // This means we need to find which level it belongs to and collapse back to it + 1 (its children)
-          // or if it's a parent of the current display, collapse to it.
-          let foundLevel = -1;
-          for(let i=0; i < targetHierarchy.length; i++) {
-            if(targetHierarchy[i].includes(clickedNodeId)) {
-              foundLevel = i;
-              break;
-            }
-          }
-
-          if (foundLevel !== -1 && clickedNode.childrenIds && clickedNode.childrenIds.length > 0) {
-            // Collapse back to the level of the clicked node, then show its children
-            targetHierarchy.splice(foundLevel + 1); // Remove deeper levels
-            targetHierarchy.push(clickedNode.childrenIds); // Add its children
-          } else if (foundLevel !== -1 && targetHierarchy.length > 1) {
-             // Clicked on a node that is an ancestor of the current view, and it's a leaf or we want to show it
-             targetHierarchy.splice(foundLevel + 1);
-          }
-        }
-        this.updateChart();
-      }
-    },
-    findRootParentId(tagId) {
-        let currentTag = this.allTags[tagId];
-        if (!currentTag) return null;
-
-        // The main categories "研究内容", "研究方法", "研究平台" are L1 themselves, but act as L0 for their children.
-        // Their children are the "true" L1s of the Sankey.
-        // The root categories themselves have parentId: null and a specific category name.
-        if (currentTag.parentId === null && 
-            (currentTag.id === ROOT_CONTENT_ID || currentTag.id === ROOT_METHOD_ID || currentTag.id === ROOT_PLATFORM_ID)) {
-            return currentTag.id;
-        }
-        
-        while (currentTag && currentTag.parentId !== null) {
-            const parent = this.allTags[currentTag.parentId];
-            if (!parent) break; 
-            // If the parent is one of the root categories, then this tag belongs to that root.
-            if (parent.id === ROOT_CONTENT_ID || parent.id === ROOT_METHOD_ID || parent.id === ROOT_PLATFORM_ID) {
-                return parent.id;
-            }
-            currentTag = parent;
-        }
-        // If the tag itself is a root category (e.g. "研究内容")
-        if (this.allTags[tagId] && this.allTags[tagId].parentId === null && 
-            (tagId === ROOT_CONTENT_ID || tagId === ROOT_METHOD_ID || tagId === ROOT_PLATFORM_ID)) {
-          return tagId;
-        }
-        return null; // Should not happen if data is consistent
-    }
+onMounted(() => {
+  if (sankeyChartRef.value) {
+    chartInstance = echarts.init(sankeyChartRef.value);
+    // 初始加载数据和渲染图表
+    loadAndRenderInitialSankey();
+    // 添加窗口大小调整监听器
+    window.addEventListener('resize', resizeChart);
   }
-};
+});
+
+onBeforeUnmount(() => {
+  if (chartInstance) {
+    chartInstance.dispose();
+  }
+  window.removeEventListener('resize', resizeChart);
+});
+
+function resizeChart() {
+  if (chartInstance) {
+    chartInstance.resize();
+  }
+}
+
+// 监听Pinia store中的相关数据变化，以便重新渲染 (后续步骤会用到)
+// watch(() => dataStore.someRelevantDataForSankey, () => {
+//   loadAndRenderInitialSankey();
+// });
+
+async function loadAndRenderInitialSankey() {
+  isLoading.value = true;
+  errorMsg.value = null;
+  try {
+    // 确保所有必要的数据都已加载到Pinia store
+    if (!dataStore.processedPapers || !dataStore.interactionStates || !dataStore.connectionCache || !dataStore.nodeMetadata || !dataStore.platformConfiguration || !dataStore.hierarchyMapping || !dataStore.sankeyLayoutConfig) {
+      // 如果数据还没加载（理论上App.vue中应已处理，但作为保险）
+      await dataStore.fetchAllData();
+      if (dataStore.error) throw new Error(`Failed to fetch initial data: ${dataStore.error}`);
+    }
+
+    // 1. 确定初始状态的查询键
+    const initialState = dataStore.interactionStates?.stateTemplates?.initial;
+    if (!initialState) {
+      throw new Error("Initial state template not found in interactionStates.json");
+    }
+
+    const platformType = initialState.platformType; // e.g., "内容形式"
+    const yearRange = initialState.selectedFilters.years.join('-'); // e.g., "2020-2024"
+    const awardStatus = initialState.selectedFilters.awardStatus; // e.g., "all"
+    // 构建查询键 (这需要与您 connectionCache.json 中的键匹配)
+    // 示例键："内容形式_L1_L1_L1_2020-2024_all"
+    const initialQueryKey = `${platformType}_L1_L1_L1_${yearRange}_${awardStatus}`;
+
+    // 2. 从 connectionCache.json 获取初始视图数据
+    const cachedViewData = dataStore.connectionCache?.queryCache?.[initialQueryKey];
+    if (!cachedViewData) {
+      throw new Error(`Initial view data not found in connectionCache for key: ${initialQueryKey}. You might need to pre-populate this cache entry or implement fallback logic.`);
+    }
+
+    const echartsNodes = [];
+    const echartsLinks = [];
+
+    // 3. 准备 ECharts Nodes
+    // ECharts Sankey的node需要有 name 属性，这个name要和links中的source/target对应
+    // 还需要 depth 来确定节点在哪一列 (0, 1, 2 for a 3-column Sankey)
+
+    const columnCategories = ['研究涉及平台', '研究内容', '研究方法'];
+    const nodePositions = dataStore.sankeyLayoutConfig?.layoutSettings?.columnPositions?.['3columns'];
+
+
+    cachedViewData.nodes && Object.entries(cachedViewData.nodes).forEach(([category, nodesInCategory]) => {
+      const columnIndex = columnCategories.indexOf(category); // 0, 1, or 2
+      if (columnIndex === -1) {
+        console.warn(`Unknown category "${category}" found in cachedViewData.nodes`);
+        return;
+      }
+
+      nodesInCategory.forEach(nodeData => {
+        let nodeMeta = {};
+        if (category === '研究涉及平台') {
+          const platformConfig = dataStore.platformConfiguration?.platformTypes?.[platformType]?.hierarchy?.l1?.find(p => p.id === nodeData.id);
+          nodeMeta = {
+            displayName: platformConfig?.name || nodeData.id,
+            color: platformConfig?.color,
+            description: platformConfig?.description,
+          };
+        } else {
+          const meta = dataStore.nodeMetadata?.[category]?.[nodeData.id];
+          nodeMeta = {
+            displayName: meta?.displayName || nodeData.id,
+            color: meta?.color,
+            description: meta?.description,
+          };
+        }
+
+        echartsNodes.push({
+          name: nodeData.id, // 重要：这个name用于links的source/target匹配
+          depth: columnIndex, // 指定节点在哪一列
+          value: nodeData.value, // 节点的值，通常是流经该节点的总量
+          itemStyle: {
+            color: nodeMeta.color || dataStore.sankeyLayoutConfig?.nodeSettings?.defaultColor || '#5470c6' // 从元数据获取颜色
+          },
+          // 可以添加其他自定义数据到节点上，供tooltip使用
+          tooltipData: {
+            displayName: nodeMeta.displayName,
+            paperCount: nodeData.papers, // 假设cachedViewData.nodes有papers字段
+            description: nodeMeta.description
+          }
+        });
+      });
+    });
+
+    // 4. 准备 ECharts Links
+    cachedViewData.links && cachedViewData.links.forEach(linkData => {
+      echartsLinks.push({
+        source: linkData.source, // 源节点 name
+        target: linkData.target, // 目标节点 name
+        value: linkData.value,   // 连接的权重/流量
+        lineStyle: { // 可以根据sankeyLayoutConfig配置
+          opacity: dataStore.sankeyLayoutConfig?.layoutSettings?.linkSettings?.opacity,
+          color: dataStore.sankeyLayoutConfig?.layoutSettings?.linkSettings?.defaultColor, // 使用默认颜色
+          curveness: dataStore.sankeyLayoutConfig?.layoutSettings?.linkSettings?.curvature
+        },
+        // 可以添加其他自定义数据到连接上，供tooltip使用
+        tooltipData: {
+          paperCount: linkData.papers?.length || linkData.value,
+          paperIds: linkData.papers
+        }
+      });
+    });
+
+    // 5. 配置 ECharts Option
+    const layoutSettings = dataStore.sankeyLayoutConfig?.layoutSettings;
+    const interactionConfig = dataStore.sankeyLayoutConfig?.interactionConfig;
+
+    chartOption.value = {
+      title: {
+        // text: 'CHI Papers Sankey Diagram - Initial View (L1)',
+        // left: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove',
+        formatter: (params) => {
+          if (params.dataType === 'node' && params.data.tooltipData) {
+            const nodeData = params.data.tooltipData;
+            return `${nodeData.displayName || params.name}<br/>论文数: ${nodeData.paperCount || params.value || 'N/A'}${nodeData.description ? '<br/>' + nodeData.description : ''}`;
+          } else if (params.dataType === 'edge' && params.data.tooltipData) {
+            const linkData = params.data.tooltipData;
+            return `从 ${params.data.source} 到 ${params.data.target}<br/>论文数: ${linkData.paperCount || params.value}`;
+          }
+          return `${params.name}: ${params.value}`;
+        },
+        backgroundColor: interactionConfig?.hover?.tooltip?.backgroundColor,
+        textStyle: {
+            color: interactionConfig?.hover?.tooltip?.textColor,
+            fontSize: interactionConfig?.hover?.tooltip?.fontSize
+        },
+        padding: interactionConfig?.hover?.tooltip?.padding,
+        borderColor: interactionConfig?.hover?.tooltip?.borderColor || '#ccc',
+        borderWidth: interactionConfig?.hover?.tooltip?.borderWidth || 1,
+      },
+      series: [
+        {
+          type: 'sankey',
+          data: echartsNodes,
+          links: echartsLinks,
+          emphasis: { // 高亮状态
+            focus: 'adjacency' // 高亮相邻的节点和边
+          },
+          nodeWidth: layoutSettings?.nodeSettings?.width,
+          nodeGap: layoutSettings?.nodeSettings?.spacing?.vertical, // ECharts中nodeGap是垂直间距
+          nodeAlign: 'justify', // 节点对齐方式
+          draggable: false, // 通常桑基图节点不拖拽
+          layoutIterations: layoutSettings?.layoutIterations || 32, // 布局迭代次数
+          label: { // 节点标签配置
+            show: layoutSettings?.nodeLabelSettings?.showLabels,
+            position: 'right', // or 'left', 'top', 'bottom', 'inside'
+            formatter: '{b}', // {b} 表示节点名称 (name)
+            fontSize: layoutSettings?.nodeLabelSettings?.fontSize,
+            color: layoutSettings?.nodeLabelSettings?.fillColor,
+            fontFamily: layoutSettings?.nodeLabelSettings?.fontFamily,
+            // ... 其他标签配置，如 offsetX (可能需要通过rich text实现复杂偏移)
+          },
+          lineStyle: { // 全局连接线样式 (会被单个link的lineStyle覆盖)
+            color: layoutSettings?.linkSettings?.defaultColor,
+            opacity: layoutSettings?.linkSettings?.opacity,
+            curveness: layoutSettings?.linkSettings?.curvature,
+          },
+          itemStyle: { // 全局节点样式 (会被单个node的itemStyle覆盖)
+             borderWidth: layoutSettings?.nodeSettings?.borderWidth || 1,
+             borderColor: layoutSettings?.nodeSettings?.borderColor || '#aaa',
+          },
+          // ECharts桑基图通过 levels 来精细控制每一层的样式
+          levels: [
+            { depth: 0, itemStyle: { color: nodePositions && nodePositions['研究涉及平台'] ? (dataStore.nodeMetadata?.['研究涉及平台']?.[Object.keys(dataStore.nodeMetadata?.['研究涉及平台'])[0]]?.color || '#c23531') : '#c23531' }, lineStyle: { opacity: 0.5 } }, // 第一列的样式
+            { depth: 1, itemStyle: { color: nodePositions && nodePositions['研究内容'] ? (dataStore.nodeMetadata?.['研究内容']?.[Object.keys(dataStore.nodeMetadata?.['研究内容'])[0]]?.color || '#2f4554') : '#2f4554' }, lineStyle: { opacity: 0.5 }  }, // 第二列的样式
+            { depth: 2, itemStyle: { color: nodePositions && nodePositions['研究方法'] ? (dataStore.nodeMetadata?.['研究方法']?.[Object.keys(dataStore.nodeMetadata?.['研究方法'])[0]]?.color || '#61a0a8') : '#61a0a8' }, lineStyle: { opacity: 0.5 }  }, // 第三列的样式
+          ],
+          // 控制桑基图在容器内的位置和大小
+          left: layoutSettings?.dimensions?.margins?.left || '5%',
+          right: layoutSettings?.dimensions?.margins?.right || '20%', // 右边留多点空间给标签
+          top: layoutSettings?.dimensions?.margins?.top || '5%',
+          bottom: layoutSettings?.dimensions?.margins?.bottom || '5%',
+        }
+      ]
+    };
+
+    if (chartInstance) {
+      chartInstance.setOption(chartOption.value, true); // true表示不合并，清除之前的配置
+    }
+
+  } catch (err) {
+    console.error("Error rendering Sankey:", err);
+    errorMsg.value = err.message || "An unknown error occurred while rendering the Sankey diagram.";
+  } finally {
+    isLoading.value = false;
+  }
+}
+
 </script>
 
 <style scoped>
-/* Add any styles if needed */
+.sankey-diagram-container {
+  width: 100%;
+  height: 600px; /* 初始高度，可以根据需要调整或从配置读取 */
+  position: relative;
+}
+.sankey-chart {
+  width: 100%;
+  height: 100%;
+}
+.loading-overlay, .error-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 1.2em;
+}
+.error-message {
+  color: red;
+}
 </style>
