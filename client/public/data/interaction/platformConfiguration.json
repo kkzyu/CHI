@@ -1,0 +1,291 @@
+{
+  "platformTypes": {
+    "内容形式": {
+      "id": "content-form",
+      "displayName": "按内容形式分类",
+      "active": true,
+      "hierarchy": {
+        "l1": [
+          {
+            "id": "区块链",
+            "name": "区块链",
+            "color": "#D4D2D5"
+          },
+          {
+            "id": "图文为主",
+            "name": "图文为主",
+            "color": "#84C1FF"
+          },
+          {
+            "id": "图片为主",
+            "name": "图片为主",
+            "color": "#7ED6C2"
+          },
+          {
+            "id": "工具/搜索/电商",
+            "name": "工具/搜索/电商",
+            "color": "#C3AED6"
+          },
+          {
+            "id": "视频为主",
+            "name": "视频为主",
+            "color": "#A1C298"
+          },
+          {
+            "id": "论坛",
+            "name": "论坛",
+            "color": "#FF9A8B"
+          },
+          {
+            "id": "通信",
+            "name": "通信",
+            "color": "#D55DC5"
+          },
+          {
+            "id": "音频为主",
+            "name": "音频为主",
+            "color": "#F3D250"
+          }
+        ],
+        "l2": {
+          "图文为主": [
+            "Bluesky",
+            "Facebook",
+            "Linkedin",
+            "Mastodon.Naver",
+            "Nextdoor",
+            "Threads",
+            "Toutiao",
+            "Twitter",
+            "Weibo",
+            "Xiaohongshu"
+          ],
+          "图片为主": [
+            "BeReal",
+            "Flickr",
+            "Instagram",
+            "Pinterest",
+            "Snapchat",
+            "Tumblr"
+          ],
+          "视频为主": [
+            "Bilibili",
+            "Douyin",
+            "House Party",
+            "Instagram Reels",
+            "Kuaishou",
+            "TikTok",
+            "Twitch",
+            "Vine",
+            "YouTube",
+            "Youku"
+          ],
+          "音频为主": [
+            "Spotify"
+          ],
+          "论坛": [
+            "Babycenter",
+            "Reddit",
+            "Tieba",
+            "What to expect"
+          ],
+          "通信": [
+            "Discord",
+            "Gaydar",
+            "Grindr",
+            "Romeo",
+            "SS",
+            "Signal",
+            "Skype",
+            "Slack",
+            "Telegram",
+            "Truman",
+            "WeChat",
+            "WhatsApp",
+            "Zoe",
+            "Zoom"
+          ],
+          "工具/搜索/电商": [
+            "Amazon Mechanical Turk",
+            "Flo",
+            "Google",
+            "Google Maps",
+            "Google Search"
+          ],
+          "区块链": [
+            "ReadyPlayerMe",
+            "Spatial.io"
+          ]
+        }
+      }
+    },
+    "平台属性": {
+      "id": "platform-attribute",
+      "displayName": "按平台属性分类",
+      "active": false,
+      "hierarchy": {
+        "l1": [
+          {
+            "id": "专业工具/办公平台",
+            "name": "专业工具/办公平台",
+            "color": "#FF9A8B"
+          },
+          {
+            "id": "中国本土平台",
+            "name": "中国本土平台",
+            "color": "#7ED6C2"
+          },
+          {
+            "id": "主流国际平台",
+            "name": "主流国际平台",
+            "color": "#84C1FF"
+          },
+          {
+            "id": "匿名/去中心平台",
+            "name": "匿名/去中心平台",
+            "color": "#A1C298"
+          },
+          {
+            "id": "垂直/边缘平台",
+            "name": "垂直/边缘平台",
+            "color": "#F3D250"
+          }
+        ],
+        "l2": {
+          "主流国际平台": [
+            "Amazon",
+            "Discord",
+            "Facebook",
+            "Flickr",
+            "Google",
+            "Google Maps",
+            "Google Search",
+            "Instagram",
+            "Instagram Reels",
+            "LinkedIn",
+            "Nextdoor",
+            "Pinterest",
+            "Reddit",
+            "Skype",
+            "Snapchat",
+            "Spotify",
+            "Telegram",
+            "Threads",
+            "TikTok",
+            "Tumblr",
+            "Twitch",
+            "Twitter",
+            "Vine",
+            "WhatsApp",
+            "YouTube"
+          ],
+          "中国本土平台": [
+            "Bilibili",
+            "Douyin",
+            "Kuaishou",
+            "Tieba",
+            "Toutiao",
+            "WeChat",
+            "Weibo",
+            "Xiaohongshu",
+            "Youku"
+          ],
+          "匿名/去中心平台": [
+            "Bluesky",
+            "Mastodon",
+            "Signal"
+          ],
+          "垂直/边缘平台": [
+            "BeReal",
+            "Flo",
+            "Gaydar",
+            "Grindr",
+            "House Party",
+            "Naver",
+            "ReadyPlayerMe",
+            "Romeo",
+            "Spatial.io",
+            "Truman",
+            "Zoe"
+          ],
+          "专业工具/办公平台": [
+            "SMs. Mechanical",
+            "Slack",
+            "Turk",
+            "Zoom"
+          ]
+        }
+      }
+    }
+  },
+  "switchMapping": {
+    "内容形式_to_平台属性": {
+      "视频为主": [
+        "中国本土平台",
+        "主流国际平台",
+        "垂直/边缘平台"
+      ],
+      "工具/搜索/电商": [
+        "主流国际平台",
+        "垂直/边缘平台"
+      ],
+      "通信": [
+        "专业工具/办公平台",
+        "中国本土平台",
+        "主流国际平台",
+        "匿名/去中心平台",
+        "垂直/边缘平台"
+      ],
+      "图片为主": [
+        "主流国际平台",
+        "垂直/边缘平台"
+      ],
+      "论坛": [
+        "中国本土平台",
+        "主流国际平台"
+      ],
+      "图文为主": [
+        "中国本土平台",
+        "主流国际平台",
+        "匿名/去中心平台"
+      ],
+      "区块链": [
+        "垂直/边缘平台"
+      ],
+      "音频为主": [
+        "主流国际平台"
+      ]
+    },
+    "平台属性_to_内容形式": {
+      "主流国际平台": [
+        "图文为主",
+        "图片为主",
+        "工具/搜索/电商",
+        "视频为主",
+        "论坛",
+        "通信",
+        "音频为主"
+      ],
+      "中国本土平台": [
+        "图文为主",
+        "视频为主",
+        "论坛",
+        "通信"
+      ],
+      "垂直/边缘平台": [
+        "区块链",
+        "图片为主",
+        "工具/搜索/电商",
+        "视频为主",
+        "通信"
+      ],
+      "专业工具/办公平台": [
+        "通信"
+      ],
+      "匿名/去中心平台": [
+        "图文为主",
+        "通信"
+      ]
+    }
+  }
+}

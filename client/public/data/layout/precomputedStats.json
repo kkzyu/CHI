@@ -1,0 +1,5020 @@
+{
+    "yearlyStats": {
+        "2020": {
+            "total": 25,
+            "awarded": 4,
+            "regular": 21,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 4,
+                "awarded": 3,
+                "subCategory": {
+                    "性别表现与个体差异": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "男性气质焦虑": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户画像与社会认同": {
+                    "total": 3,
+                    "awarded": 3,
+                    "tags": {
+                        "用户形象刻画": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "用户行为分析": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "真实账户与虚假账户表达差异": {
+                        "total": 2,
+                        "awarded": 2
+                        },
+                        "用户历史内容呈现": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 5,
+                "awarded": 1,
+                "subCategory": {
+                    "社交媒体使用": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "社交媒体使用": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "社交媒体使用时长": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户互动与社区": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "用户分享新闻意愿": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "徒步者社区分享": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "社区感理论": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "故事分享": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "用户互动": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台算法与功能设计": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "功能设计": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "合成社交信号": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "可用性": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "平台设置控制": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 9,
+                "awarded": 1,
+                "subCategory": {
+                    "内容与政治监管": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "信息审查": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "政治标签": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "信息披露与隐私保护": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "信息再利用": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚假信息与仇恨言论": {
+                    "total": 5,
+                    "awarded": 0,
+                    "tags": {
+                        "虚假信息": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "网络仇恨言论": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "社会行动与支持网络": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "协调公众参与": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "文化语境与全球视角": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "地域文化与社会背景": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "政府干预": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "疾病与健康传播": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "心理健康与情绪管理": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "抑郁症与社交媒体使用": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 8,
+                "awarded": 3,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 7,
+                    "awarded": 2,
+                    "tags": {
+                        "半结构化访谈": {
+                        "total": 7,
+                        "awarded": 2
+                        }
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "主题分析": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "定性内容分析": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "引导式设置浏览": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 7,
+                "awarded": 1,
+                "subCategory": {
+                    "实验与对照组设计": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "在线实验": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "对照实验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "人机交互实验": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "推论统计与假设检验": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "方差分析": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "因子设计": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "中介分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 5,
+                "awarded": 1,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 5,
+                    "awarded": 1,
+                    "tags": {
+                        "问卷调查": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "分析社交媒体数据集": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "数据标注": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "文本分析与语义建模": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "文本编码": {
+                        "total": 3,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "模型构建与算法优化": {
+                "total": 4,
+                "awarded": 1,
+                "subCategory": {
+                    "机器学习与模型构建": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "线性回归": {
+                        "total": 4,
+                        "awarded": 1
+                        },
+                        "逻辑回归模型": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "相关分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "算法评估与性能优化": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "误差度量": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 19,
+                "awarded": 4,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 17,
+                    "awarded": 3,
+                    "tags": {
+                        "Facebook": {
+                        "total": 11,
+                        "awarded": 1
+                        },
+                        "Twitter": {
+                        "total": 7,
+                        "awarded": 2
+                        },
+                        "Weibo": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "图片为主": {
+                    "total": 7,
+                    "awarded": 2,
+                    "tags": {
+                        "Instagram": {
+                        "total": 5,
+                        "awarded": 2
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "视频为主": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "YouTube": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "论坛": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "Reddit": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "通信": {
+                    "total": 5,
+                    "awarded": 0,
+                    "tags": {
+                        "WeChat": {
+                        "total": 3,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 19,
+                "awarded": 4,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 17,
+                    "awarded": 4,
+                    "tags": {
+                        "Facebook": {
+                        "total": 11,
+                        "awarded": 1
+                        },
+                        "Twitter": {
+                        "total": 7,
+                        "awarded": 2
+                        },
+                        "Instagram": {
+                        "total": 5,
+                        "awarded": 2
+                        },
+                        "YouTube": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Reddit": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "中国本土平台": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "WeChat": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "Weibo": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Toutiao": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        },
+        "2021": {
+            "total": 10,
+            "awarded": 1,
+            "regular": 9,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 2,
+                "awarded": 1,
+                "subCategory": {
+                    "性别表现与个体差异": {
+                    "total": 1,
+                    "awarded": 1,
+                    "tags": {
+                        "LGBTQ": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "青少年": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "青少年社交媒体环境设计": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "内容创作": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "美食博主行为模式": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "数据可视化": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "数据可视化": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "信息披露与隐私保护": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "信息披露": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚假信息与仇恨言论": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "新冠疫情中的反口罩群体": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "社会行动与支持网络": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "同伴支持系统": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "疾病与健康传播": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "疾病与社会认知": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "社交机器人识别": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "其他": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "其他": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "广告投放和消费": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "社交媒体信息与招聘决策": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 5,
+                "awarded": 1,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "半结构化访谈": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "设计参与与共创": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "设计工作坊": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "远程工作坊": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "主题分析": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "定性内容分析": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "开放编码": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "文本编码": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "卡片分类": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "故事板活动": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "焦点小组": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "实验与对照组设计": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "对照实验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "在线实验": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "推论统计与假设检验": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "方差分析": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "中介分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "倾向得分匹配法": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "回归与计量方法": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "线性回归": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "问卷调查": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "分析社交媒体数据集": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 10,
+                "awarded": 1,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 6,
+                    "awarded": 1,
+                    "tags": {
+                        "Facebook": {
+                        "total": 4,
+                        "awarded": 1
+                        },
+                        "Twitter": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "图片为主": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "Instagram": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Pinterest": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "视频为主": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "YouTube": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "TikTok": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "论坛": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "Reddit": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "通信": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "WhatsApp": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Zoom": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Discord": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 10,
+                "awarded": 1,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 10,
+                    "awarded": 1,
+                    "tags": {
+                        "Facebook": {
+                        "total": 4,
+                        "awarded": 1
+                        },
+                        "Twitter": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Instagram": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "WhatsApp": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "YouTube": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Reddit": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Pinterest": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "TikTok": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Discord": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        },
+        "2022": {
+            "total": 23,
+            "awarded": 3,
+            "regular": 20,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 7,
+                "awarded": 0,
+                "subCategory": {
+                    "残障人群": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "自闭症大学生的独特体验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "盲人用户": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "性别表现与个体差异": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "非二元性别者": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "性别角色意识": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "黑人女性": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户画像与社会认同": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "居住模式": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "自主性": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "信念": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 6,
+                "awarded": 0,
+                "subCategory": {
+                    "内容创作": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "内容创作者": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "上传者的职业化过程": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "设计创意": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "贺卡消息": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "社交媒体使用": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "社交媒体使用时长": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户互动与社区": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "在线社区": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "游戏行为": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台算法与功能设计": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "功能设计": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "非正式词汇": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 9,
+                "awarded": 1,
+                "subCategory": {
+                    "内容与政治监管": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "内容审核": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "信息审查": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "信息披露与隐私保护": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "隐私设置": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚假信息与仇恨言论": {
+                    "total": 6,
+                    "awarded": 0,
+                    "tags": {
+                        "虚假信息": {
+                        "total": 5,
+                        "awarded": 0
+                        },
+                        "网络仇恨言论": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "网络骚扰": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "信任现象": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "规范性问题与平台重构": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "社媒技术重新设计": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "规范性解离": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "媒体传播与组织参与": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "新闻业": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "伊斯兰布道": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "反公众政治": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "政治参与与舆情传播": {
+                    "total": 1,
+                    "awarded": 1,
+                    "tags": {
+                        "党派性": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "文化语境与全球视角": {
+                "total": 5,
+                "awarded": 1,
+                "subCategory": {
+                    "地域文化与社会背景": {
+                    "total": 5,
+                    "awarded": 1,
+                    "tags": {
+                        "全球南方": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "印度社媒用户": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "公共领域": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "农村社区": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "加勒比海": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "土著知识": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "非物质文化遗产": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "疾病与健康传播": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "心理健康与情绪管理": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "成瘾康复": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "社会支持": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "治愈": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "幸福感": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "疾病与社会认知": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "新冠疫情": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "健康信息": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 14,
+                "awarded": 0,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 11,
+                    "awarded": 0,
+                    "tags": {
+                        "半结构化访谈": {
+                        "total": 8,
+                        "awarded": 0
+                        },
+                        "访谈": {
+                        "total": 6,
+                        "awarded": 0
+                        },
+                        "民族志": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "参与式观察": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "情景询问": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "设计参与与共创": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "设计工作坊": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "设计研讨会": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 8,
+                    "awarded": 0,
+                    "tags": {
+                        "开放编码": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "主题分析": {
+                        "total": 7,
+                        "awarded": 0
+                        },
+                        "文本编码": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "归纳法": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "焦点小组": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "推论统计与假设检验": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "秩和检验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "克鲁斯卡尔沃利斯检验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "结构方程模型": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "回归与计量方法": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "回归分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "线性回归": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "混合效应回归": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "逻辑回归模型": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 7,
+                "awarded": 2,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 7,
+                    "awarded": 2,
+                    "tags": {
+                        "问卷调查": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "经验抽样法": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "创建自定义数据集": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "数据标注": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "分析社交媒体数据集": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "模型构建与算法优化": {
+                "total": 1,
+                "awarded": 1,
+                "subCategory": {
+                    "机器学习与模型构建": {
+                    "total": 1,
+                    "awarded": 1,
+                    "tags": {
+                        "随机森林模型": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "混合方法与综合研究": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "混合方法": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "混合方法研究": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "综合研究": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "纵向研究": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 23,
+                "awarded": 3,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 20,
+                    "awarded": 3,
+                    "tags": {
+                        "Twitter": {
+                        "total": 10,
+                        "awarded": 2
+                        },
+                        "Facebook": {
+                        "total": 9,
+                        "awarded": 1
+                        },
+                        "LinkedIn": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "图片为主": {
+                    "total": 9,
+                    "awarded": 0,
+                    "tags": {
+                        "Instagram": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "Pinterest": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Tumblr": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "视频为主": {
+                    "total": 11,
+                    "awarded": 0,
+                    "tags": {
+                        "Bilibili": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "TikTok": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "YouTube": {
+                        "total": 6,
+                        "awarded": 0
+                        },
+                        "VLIVE": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Weverse": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "House Party": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "论坛": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "Reddit": {
+                        "total": 4,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "通信": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "WhatsApp": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "Skype": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Discord": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 22,
+                "awarded": 3,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 21,
+                    "awarded": 3,
+                    "tags": {
+                        "Twitter": {
+                        "total": 10,
+                        "awarded": 2
+                        },
+                        "Facebook": {
+                        "total": 9,
+                        "awarded": 1
+                        },
+                        "TikTok": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "YouTube": {
+                        "total": 6,
+                        "awarded": 0
+                        },
+                        "Reddit": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "Instagram": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "WhatsApp": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "LinkedIn": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "Pinterest": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Tumblr": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Skype": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Discord": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "中国本土平台": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "Bilibili": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "垂直/边缘平台": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "VLIVE": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Weverse": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "House Party": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        },
+        "2023": {
+            "total": 29,
+            "awarded": 5,
+            "regular": 24,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 6,
+                "awarded": 0,
+                "subCategory": {
+                    "青少年": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "青少年社交行为": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "青少年政治参与": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "残障人群": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "自闭症成年用户": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "残障人士": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "认知障碍群体": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 6,
+                "awarded": 1,
+                "subCategory": {
+                    "内容创作": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "性内容创作动机": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "创意劳动": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "艺术创作": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚拟身份与影响力": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "虚拟影响者": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "社交媒体影响者": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "社交媒体使用": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "社交媒体使用时长": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "用户互动与社区": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "用户互动": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "文化背景": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台算法与功能设计": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "算法与LLM应用": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "推荐算法": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "个性化AI": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 9,
+                "awarded": 2,
+                "subCategory": {
+                    "内容与政治监管": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "内容审核": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "政治话语": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "信息披露与隐私保护": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "广告隐私控制": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚假信息与仇恨言论": {
+                    "total": 6,
+                    "awarded": 1,
+                    "tags": {
+                        "虚假信息": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "网络骚扰": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "污名应对策略": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "信任现象": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "规范性问题与平台重构": {
+                    "total": 6,
+                    "awarded": 1,
+                    "tags": {
+                        "社媒技术重新设计": {
+                        "total": 6,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "社会行动与支持网络": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "社会支持": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "社会运动": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "媒体传播与组织参与": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "非政府组织": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "非营利组织": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "文化语境与全球视角": {
+                "total": 2,
+                "awarded": 0,
+                "subCategory": {
+                    "地域文化与社会背景": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "非西方社会": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "南亚用户": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "疾病与健康传播": {
+                "total": 6,
+                "awarded": 1,
+                "subCategory": {
+                    "心理健康与情绪管理": {
+                    "total": 5,
+                    "awarded": 1,
+                    "tags": {
+                        "心理健康": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "产后抑郁症": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "疾病与社会认知": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "HIV污名问题": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "创伤性脑损伤": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "前瞻性记忆": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 17,
+                "awarded": 2,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 9,
+                    "awarded": 1,
+                    "tags": {
+                        "半结构化访谈": {
+                        "total": 8,
+                        "awarded": 1
+                        },
+                        "田野调查": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "半民族志方法": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "设计参与与共创": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "设计工作坊": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "远程工作坊": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "远程参与式设计": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "形成性用户研究": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 12,
+                    "awarded": 1,
+                    "tags": {
+                        "主题分析": {
+                        "total": 8,
+                        "awarded": 1
+                        },
+                        "文本编码": {
+                        "total": 4,
+                        "awarded": 1
+                        },
+                        "定性内容分析": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "开放编码": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "会议记录": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 7,
+                "awarded": 0,
+                "subCategory": {
+                    "实验与对照组设计": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "脑电图实验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "人机交互实验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "对照实验": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "被试间设计实验": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "推论统计与假设检验": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "主成分分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "差分模型": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "确认性因子分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "方差分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "回归与计量方法": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "混合效应回归": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "回归分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "线性回归": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 4,
+                "awarded": 0,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "问卷调查": {
+                        "total": 8,
+                        "awarded": 1
+                        },
+                        "数据标注": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "浏览器插件数据采集": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "爬虫信息抓取": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "文本分析与语义建模": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "BERT语义向量表示": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "余弦相似性量化分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "混合方法与综合研究": {
+                "total": 1,
+                "awarded": 1,
+                "subCategory": {
+                    "综合研究": {
+                    "total": 1,
+                    "awarded": 1,
+                    "tags": {
+                        "系统性文献回顾": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "文献综述": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 29,
+                "awarded": 5,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 18,
+                    "awarded": 1,
+                    "tags": {
+                        "Facebook": {
+                        "total": 9,
+                        "awarded": 0
+                        },
+                        "Twitter": {
+                        "total": 6,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "图片为主": {
+                    "total": 9,
+                    "awarded": 0,
+                    "tags": {
+                        "Instagram": {
+                        "total": 7,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "视频为主": {
+                    "total": 14,
+                    "awarded": 1,
+                    "tags": {
+                        "TikTok": {
+                        "total": 8,
+                        "awarded": 1
+                        },
+                        "YouTube": {
+                        "total": 5,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "论坛": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "Reddit": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Babycenter": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "What to expect": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "其他": {
+                    "total": 1,
+                    "awarded": 1,
+                    "tags": {
+                        "OnlyFans": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 28,
+                "awarded": 4,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 27,
+                    "awarded": 4,
+                    "tags": {
+                        "Instagram": {
+                        "total": 7,
+                        "awarded": 0
+                        },
+                        "TikTok": {
+                        "total": 8,
+                        "awarded": 1
+                        },
+                        "Facebook": {
+                        "total": 9,
+                        "awarded": 0
+                        },
+                        "YouTube": {
+                        "total": 5,
+                        "awarded": 0
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Twitter": {
+                        "total": 6,
+                        "awarded": 0
+                        },
+                        "Reddit": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "垂直/边缘平台": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "OnlyFans": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "Babycenter": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "What to expect": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        },
+        "2024": {
+            "total": 52,
+            "awarded": 8,
+            "regular": 44,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 15,
+                "awarded": 3,
+                "subCategory": {
+                    "青少年": {
+                    "total": 4,
+                    "awarded": 2,
+                    "tags": {
+                        "青少年社交行为": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "儿童设计": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "残障人群": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "自闭症成年用户": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "边缘化群体": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "社会歧视": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "性别表现与个体差异": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "女性游戏玩家": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "LGBTQ": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "性别辩论": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "女性健康": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "社会规范压力": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户画像与社会认同": {
+                    "total": 6,
+                    "awarded": 1,
+                    "tags": {
+                        "老年群体": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "身份偏见": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "身份重构": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "自我表达": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "个体差异": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "数字鸿沟": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 19,
+                "awarded": 1,
+                "subCategory": {
+                    "内容创作": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "短视频创作": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "用户生成内容": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "艺术创作": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "字幕生成": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚拟身份与影响力": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "虚拟形象交流": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "社交媒体使用": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "社交媒体使用": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "长期行为改变": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "信息寻求": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户互动与社区": {
+                    "total": 11,
+                    "awarded": 0,
+                    "tags": {
+                        "用户互动": {
+                        "total": 8,
+                        "awarded": 0
+                        },
+                        "邻里关系": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "社会连接": {
+                        "total": 5,
+                        "awarded": 0
+                        },
+                        "金融对话社区": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "代际沟通": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "求职招聘": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "话语策略": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "网络仇恨言论": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "数据可视化": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "数据可视化": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台算法与功能设计": {
+                "total": 10,
+                "awarded": 0,
+                "subCategory": {
+                    "算法与LLM应用": {
+                    "total": 6,
+                    "awarded": 0,
+                    "tags": {
+                        "个性推荐算法": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "群体推荐系统": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "LLM应用": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "概念归纳": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "算法透明与偏差": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "系统透明度": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "功能设计": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "设计摩擦": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "紧急响应设计": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 12,
+                "awarded": 2,
+                "subCategory": {
+                    "内容与政治监管": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "内容审核": {
+                        "total": 4,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "信息披露与隐私保护": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "安全隐私": {
+                        "total": 4,
+                        "awarded": 1
+                        },
+                        "家长控制": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚假信息与仇恨言论": {
+                    "total": 5,
+                    "awarded": 1,
+                    "tags": {
+                        "虚假信息": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "社交机器人识别": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "规范性问题与平台重构": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "社媒技术重新设计": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                "total": 4,
+                "awarded": 0,
+                "subCategory": {
+                    "社会行动与支持网络": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "社会支持": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "在线行动主义": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "在线辩论去极化": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "人道主义行动": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "冲突解决策略": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "文化语境与全球视角": {
+                "total": 4,
+                "awarded": 0,
+                "subCategory": {
+                    "地域文化与社会背景": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "文化背景": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "数字殖民主义": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "数字压制": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "疾病与健康传播": {
+                "total": 7,
+                "awarded": 3,
+                "subCategory": {
+                    "心理健康与情绪管理": {
+                    "total": 6,
+                    "awarded": 3,
+                    "tags": {
+                        "心理健康": {
+                        "total": 6,
+                        "awarded": 3
+                        },
+                        "患者视角": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "疾病与社会认知": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "女性健康": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "更年期研究": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 31,
+                "awarded": 3,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 21,
+                    "awarded": 2,
+                    "tags": {
+                        "半结构化访谈": {
+                        "total": 17,
+                        "awarded": 2
+                        },
+                        "田野调查": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "用户研究": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "设计参与与共创": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "设计工作坊": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "低保真原型": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 30,
+                    "awarded": 1,
+                    "tags": {
+                        "主题分析": {
+                        "total": 19,
+                        "awarded": 1
+                        },
+                        "定性内容分析": {
+                        "total": 10,
+                        "awarded": 0
+                        },
+                        "开放编码": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "文本编码": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "焦点小组讨论": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "专家评估": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 8,
+                "awarded": 1,
+                "subCategory": {
+                    "实验与对照组设计": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "人机交互实验": {
+                        "total": 5,
+                        "awarded": 0
+                        },
+                        "混合设计实验": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "推论统计与假设检验": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "重复测量方差分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "结构方程模型": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "中介分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "回归与计量方法": {
+                    "total": 5,
+                    "awarded": 1,
+                    "tags": {
+                        "相关分析": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "回归分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "线性回归": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 22,
+                "awarded": 4,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 18,
+                    "awarded": 4,
+                    "tags": {
+                        "问卷调查": {
+                        "total": 16,
+                        "awarded": 3
+                        },
+                        "数据挖掘": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "日志数据分析": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "数据标注": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "文本分析与语义建模": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "文本分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "提示工程": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "词嵌入": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "数据处理": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "聚类分析": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "时间序列分析": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "模型构建与算法优化": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "机器学习与模型构建": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "机器学习": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "算法评估与性能优化": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "技术评估": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "误差度量": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "混合方法与综合研究": {
+                "total": 4,
+                "awarded": 1,
+                "subCategory": {
+                    "混合方法": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "混合方法研究": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "综合研究": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "系统性文献回顾": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "文献综述": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "可视化与交互原型": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "交互与原型设计": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "交互设计": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "工具开发与评估": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "工具包评估": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 51,
+                "awarded": 8,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 33,
+                    "awarded": 6,
+                    "tags": {
+                        "Facebook": {
+                        "total": 12,
+                        "awarded": 3
+                        },
+                        "Twitter": {
+                        "total": 14,
+                        "awarded": 3
+                        },
+                        "Weibo": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "LinkedIn": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "Nextdoor": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "图片为主": {
+                    "total": 17,
+                    "awarded": 4,
+                    "tags": {
+                        "Instagram": {
+                        "total": 14,
+                        "awarded": 3
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "BeReal": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "视频为主": {
+                    "total": 19,
+                    "awarded": 3,
+                    "tags": {
+                        "TikTok": {
+                        "total": 12,
+                        "awarded": 2
+                        },
+                        "YouTube": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "Kuaishou": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Instagram Reels": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Vine": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "音频为主": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "Spotify": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "论坛": {
+                    "total": 7,
+                    "awarded": 1,
+                    "tags": {
+                        "Reddit": {
+                        "total": 7,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "通信": {
+                    "total": 8,
+                    "awarded": 2,
+                    "tags": {
+                        "WhatsApp": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Telegram": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "WeChat": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "XTC": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Truman": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "TopL": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Zoe": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "工具/搜索/电商": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "Google Maps": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Flo": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Amazon Mechanical Turk": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Google Search": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "区块链": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "Spatial.io": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "ReadyPlayerMe": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 49,
+                "awarded": 8,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 43,
+                    "awarded": 7,
+                    "tags": {
+                        "Facebook": {
+                        "total": 12,
+                        "awarded": 3
+                        },
+                        "Twitter": {
+                        "total": 14,
+                        "awarded": 3
+                        },
+                        "Instagram": {
+                        "total": 14,
+                        "awarded": 3
+                        },
+                        "TikTok": {
+                        "total": 12,
+                        "awarded": 2
+                        },
+                        "YouTube": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "Reddit": {
+                        "total": 7,
+                        "awarded": 1
+                        },
+                        "Snapchat": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "WhatsApp": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Telegram": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "LinkedIn": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "Spotify": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Google Maps": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Instagram Reels": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Google Search": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Amazon": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Nextdoor": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Vine": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "中国本土平台": {
+                    "total": 6,
+                    "awarded": 0,
+                    "tags": {
+                        "WeChat": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Weibo": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Kuaishou": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "XTC": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "垂直/边缘平台": {
+                    "total": 6,
+                    "awarded": 0,
+                    "tags": {
+                        "BeReal": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "TopL": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Zoe": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Flo": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Truman": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "ReadyPlayerMe": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            }
+            }
+        },
+        "2025": {
+            "total": 58,
+            "awarded": 12,
+            "regular": 46,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 12,
+                "awarded": 4,
+                "subCategory": {
+                    "残障人群": {
+                    "total": 5,
+                    "awarded": 2,
+                    "tags": {
+                        "听障人群": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "ADHD": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "视障用户": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "性别表现与个体差异": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "LGBTQ": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "性别辩论": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "数字女性主义与赋权": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "用户画像与社会认同": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "亲子媒介": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "边缘化群体": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "自我调节": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "LGBT+老年人": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 15,
+                "awarded": 1,
+                "subCategory": {
+                    "社交媒体使用": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "社交媒体使用": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "点击行为": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "用户行为演变": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "后悔情绪": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "用户互动与社区": {
+                    "total": 10,
+                    "awarded": 1,
+                    "tags": {
+                        "在线社区": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "用户互动": {
+                        "total": 8,
+                        "awarded": 1
+                        },
+                        "积极反馈": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "众包动机": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "用户生成内容": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "在线自我披露": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "虚拟身份与影响力": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "粉丝文化": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "内容创作": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "高光视频交互生成": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台算法与功能设计": {
+                "total": 12,
+                "awarded": 2,
+                "subCategory": {
+                    "算法与LLM应用": {
+                    "total": 6,
+                    "awarded": 1,
+                    "tags": {
+                        "个性推荐算法": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "赛博格系统": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "LLM应用": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "算法透明与偏差": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "AI内容标签": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "AI透明度": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "AI歧视": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "价值观对齐": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "AI伦理": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "功能设计": {
+                    "total": 4,
+                    "awarded": 2,
+                    "tags": {
+                        "TTS交互设计": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "控制设计": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "欺骗性设计": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "视频弹幕": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "暗黑模式": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "可用性": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "Web3社交媒体可供性": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "音频媒体可访问性": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 14,
+                "awarded": 3,
+                "subCategory": {
+                    "内容与政治监管": {
+                    "total": 10,
+                    "awarded": 3,
+                    "tags": {
+                        "内容审核": {
+                        "total": 10,
+                        "awarded": 3
+                        }
+                    }
+                    },
+                    "信息披露与隐私保护": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "安全隐私": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "家长控制": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "虚假信息与仇恨言论": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "虚假信息": {
+                        "total": 6,
+                        "awarded": 1
+                        },
+                        "污名应对策略": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "网络仇恨言论": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "社会行动与支持网络": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "社会支持": {
+                        "total": 3,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "文化语境与全球视角": {
+                "total": 3,
+                "awarded": 0,
+                "subCategory": {
+                    "地域文化与社会背景": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "数字殖民主义": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "文化背景": {
+                        "total": 4,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "疾病与健康传播": {
+                "total": 6,
+                "awarded": 1,
+                "subCategory": {
+                    "心理健康与情绪管理": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "心理健康": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "数字情绪调节": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "用户信任": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "疾病与社会认知": {
+                    "total": 3,
+                    "awarded": 0,
+                    "tags": {
+                        "在线自我诊断": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "健康饮食": {
+                        "total": 3,
+                        "awarded": 0
+                        },
+                        "可用性偏差": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "认知改变": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "其他": {
+                "total": 3,
+                "awarded": 1,
+                "subCategory": {
+                    "其他": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "VR编舞工具": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "日常AR应用": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "人机交互": {
+                        "total": 2,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 31,
+                "awarded": 6,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 23,
+                    "awarded": 5,
+                    "tags": {
+                        "半结构化访谈": {
+                        "total": 19,
+                        "awarded": 4
+                        },
+                        "参与式观察": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "田野调查": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "在线社区观察": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "用户研究": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "设计参与与共创": {
+                    "total": 8,
+                    "awarded": 0,
+                    "tags": {
+                        "设计工作坊": {
+                        "total": 5,
+                        "awarded": 0
+                        },
+                        "参与式艺术": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "推测性设计": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 21,
+                    "awarded": 3,
+                    "tags": {
+                        "主题分析": {
+                        "total": 19,
+                        "awarded": 3
+                        },
+                        "亲和图分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "文本编码": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "内容分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 1,
+                    "awarded": 1,
+                    "tags": {
+                        "焦点小组讨论": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 10,
+                "awarded": 2,
+                "subCategory": {
+                    "实验与对照组设计": {
+                    "total": 7,
+                    "awarded": 2,
+                    "tags": {
+                        "人机交互实验": {
+                        "total": 10,
+                        "awarded": 1
+                        },
+                        "实验室研究": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "推论统计与假设检验": {
+                    "total": 2,
+                    "awarded": 0,
+                    "tags": {
+                        "重复测量方差分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "聚类分析": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "潜在剖面分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "回归与计量方法": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "统计回归": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "线性混合模型": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "结构方程模型": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 16,
+                "awarded": 3,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 16,
+                    "awarded": 3,
+                    "tags": {
+                        "问卷调查": {
+                        "total": 14,
+                        "awarded": 2
+                        },
+                        "经验抽样法": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "爬虫信息抓取": {
+                        "total": 3,
+                        "awarded": 2
+                        },
+                        "数据标注": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "模型构建与算法优化": {
+                "total": 3,
+                "awarded": 1,
+                "subCategory": {
+                    "机器学习与模型构建": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "生成对抗网络": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "算法评估与性能优化": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "贝叶斯优化": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "误差度量": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "算法评估": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                },
+                "混合方法与综合研究": {
+                "total": 3,
+                "awarded": 1,
+                "subCategory": {
+                    "综合研究": {
+                    "total": 3,
+                    "awarded": 1,
+                    "tags": {
+                        "文献综述": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "纵向研究": {
+                        "total": 1,
+                        "awarded": 1
+                        },
+                        "计量分析": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "可视化与交互原型": {
+                "total": 1,
+                "awarded": 0,
+                "subCategory": {
+                    "交互与原型设计": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "TTS交互设计": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 58,
+                "awarded": 12,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 39,
+                    "awarded": 6,
+                    "tags": {
+                        "Twitter": {
+                        "total": 16,
+                        "awarded": 2
+                        },
+                        "Facebook": {
+                        "total": 18,
+                        "awarded": 1
+                        },
+                        "Weibo": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Xiaohongshu": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Threads": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Bluesky": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Mastodon": {
+                        "total": 2,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "图片为主": {
+                    "total": 27,
+                    "awarded": 4,
+                    "tags": {
+                        "Instagram": {
+                        "total": 20,
+                        "awarded": 3
+                        },
+                        "Snapchat": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "BeReal": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "视频为主": {
+                    "total": 36,
+                    "awarded": 6,
+                    "tags": {
+                        "TikTok": {
+                        "total": 17,
+                        "awarded": 4
+                        },
+                        "YouTube": {
+                        "total": 11,
+                        "awarded": 1
+                        },
+                        "Youtube": {
+                        "total": 5,
+                        "awarded": 0
+                        },
+                        "Twitch": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Bilibili": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Douyin": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Youku": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "音频为主": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "Spotify": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "论坛": {
+                    "total": 12,
+                    "awarded": 1,
+                    "tags": {
+                        "Reddit": {
+                        "total": 10,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "通信": {
+                    "total": 16,
+                    "awarded": 2,
+                    "tags": {
+                        "WhatsApp": {
+                        "total": 6,
+                        "awarded": 1
+                        },
+                        "Telegram": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "Signal": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Slack": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "Teams": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "工具/搜索/电商": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "Google Maps": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "区块链": {
+                    "total": 8,
+                    "awarded": 0,
+                    "tags": {
+                        "Bluesky": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Farcaster": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Friend.tech": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Hive": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Lens": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Mastodon": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Minds": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Mirror": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Nostr": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Steemit": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 56,
+                "awarded": 11,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 53,
+                    "awarded": 11,
+                    "tags": {
+                        "Facebook": {
+                        "total": 18,
+                        "awarded": 1
+                        },
+                        "Twitter": {
+                        "total": 16,
+                        "awarded": 2
+                        },
+                        "Instagram": {
+                        "total": 20,
+                        "awarded": 3
+                        },
+                        "TikTok": {
+                        "total": 17,
+                        "awarded": 4
+                        },
+                        "YouTube": {
+                        "total": 11,
+                        "awarded": 1
+                        },
+                        "Reddit": {
+                        "total": 10,
+                        "awarded": 1
+                        },
+                        "Snapchat": {
+                        "total": 4,
+                        "awarded": 0
+                        },
+                        "WhatsApp": {
+                        "total": 6,
+                        "awarded": 1
+                        },
+                        "Telegram": {
+                        "total": 5,
+                        "awarded": 1
+                        },
+                        "Threads": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Twitch": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Google Maps": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "中国本土平台": {
+                    "total": 6,
+                    "awarded": 2,
+                    "tags": {
+                        "Weibo": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Xiaohongshu": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Bilibili": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Douyin": {
+                        "total": 2,
+                        "awarded": 1
+                        },
+                        "Youku": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    },
+                    "匿名/去中心平台": {
+                    "total": 10,
+                    "awarded": 0,
+                    "tags": {
+                        "Bluesky": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Signal": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Mastodon": {
+                        "total": 2,
+                        "awarded": 0
+                        },
+                        "Farcaster": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Friend.tech": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Hive": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Lens": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Minds": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Mirror": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Nostr": {
+                        "total": 1,
+                        "awarded": 0
+                        },
+                        "Steemit": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "垂直/边缘平台": {
+                    "total": 1,
+                    "awarded": 0,
+                    "tags": {
+                        "BeReal": {
+                        "total": 1,
+                        "awarded": 0
+                        }
+                    }
+                    },
+                    "专业工具/办公平台": {
+                    "total": 4,
+                    "awarded": 1,
+                    "tags": {
+                        "Slack": {
+                        "total": 3,
+                        "awarded": 1
+                        },
+                        "Teams": {
+                        "total": 1,
+                        "awarded": 1
+                        }
+                    }
+                    }
+                }
+                }
+            }
+        }
+        },
+        "overall": {
+            "total": 197,
+            "awarded": 33,
+            "regular": 164,
+            "byCategory": {
+            "研究内容": {
+                "用户群体与个体特征": {
+                "total": 38,
+                "awarded": 7,
+                "subCategory": {
+                    "青少年": {
+                    "total": 8,
+                    "awarded": 2,
+                    "tags": {
+                        "青少年性相关交流": {"total": 1, "awarded": 0},
+                        "青少年政治参与": {"total": 1, "awarded": 0},
+                        "青少年社交行为": {"total": 4, "awarded": 1},
+                        "青少年社交媒体环境设计": {"total": 1, "awarded": 0},
+                        "青春期女孩": {"total": 1, "awarded": 0},
+                        "儿童设计": {"total": 2, "awarded": 1}
+                    }
+                    },
+                    "残障人群": {
+                    "total": 14,
+                    "awarded": 2,
+                    "tags": {
+                        "自闭症大学生的独特体验": {"total": 1, "awarded": 0},
+                        "自闭症成年用户": {"total": 2, "awarded": 0},
+                        "认知障碍群体": {"total": 2, "awarded": 0},
+                        "听障人群": {"total": 1, "awarded": 1},
+                        "ADHD": {"total": 1, "awarded": 0},
+                        "盲人用户": {"total": 1, "awarded": 0},
+                        "视障用户": {"total": 1, "awarded": 1},
+                        "边缘化群体": {"total": 3, "awarded": 0},
+                        "社会歧视": {"total": 2, "awarded": 0}
+                    }
+                    },
+                    "性别表现与个体差异": {
+                    "total": 12,
+                    "awarded": 2,
+                    "tags": {
+                        "女性游戏玩家": {"total": 1, "awarded": 0},
+                        "男性气质焦虑": {"total": 1, "awarded": 0},
+                        "LGBTQ": {"total": 6, "awarded": 2},
+                        "个体差异": {"total": 1, "awarded": 0},
+                        "非二元性别者": {"total": 1, "awarded": 0},
+                        "性别角色意识": {"total": 1, "awarded": 1},
+                        "黑人女性": {"total": 1, "awarded": 0},
+                        "LGBT+老年人": {"total": 1, "awarded": 0},
+                        "性别辩论": {"total": 1, "awarded": 0},
+                        "数字女性主义与赋权": {"total": 2, "awarded": 1},
+                        "女性健康": {"total": 2, "awarded": 1},
+                        "社会规范压力": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "用户画像与社会认同": {
+                    "total": 14,
+                    "awarded": 4,
+                    "tags": {
+                        "用户形象刻画": {"total": 1, "awarded": 1},
+                        "用户行为分析": {"total": 1, "awarded": 1},
+                        "用户历史内容呈现": {"total": 1, "awarded": 0},
+                        "居住模式": {"total": 1, "awarded": 0},
+                        "自主性": {"total": 1, "awarded": 0},
+                        "信念": {"total": 1, "awarded": 0},
+                        "亲子媒介": {"total": 2, "awarded": 0},
+                        "老年群体": {"total": 2, "awarded": 0},
+                        "身份偏见": {"total": 1, "awarded": 0},
+                        "身份重构": {"total": 1, "awarded": 1},
+                        "自我表达": {"total": 2, "awarded": 0},
+                        "自我调节": {"total": 1, "awarded": 0},
+                        "数字鸿沟": {"total": 1, "awarded": 1},
+                        "真实账户与虚假账户表达差异": {"total": 2, "awarded": 2}
+                    }
+                    }
+                }
+                },
+                "内容与用户交互行为": {
+                "total": 41,
+                "awarded": 3,
+                "subCategory": {
+                    "内容创作": {
+                    "total": 11,
+                    "awarded": 2,
+                    "tags": {
+                        "内容创作者": {"total": 1, "awarded": 0},
+                        "性内容创作动机": {"total": 1, "awarded": 1},
+                        "美食博主行为模式": {"total": 1, "awarded": 0},
+                        "上传者的职业化过程": {"total": 1, "awarded": 0},
+                        "设计创意": {"total": 1, "awarded": 0},
+                        "贺卡消息": {"total": 1, "awarded": 0},
+                        "短视频创作": {"total": 1, "awarded": 0},
+                        "用户生成内容": {"total": 1, "awarded": 0},
+                        "艺术创作": {"total": 3, "awarded": 0},
+                        "创意劳动": {"total": 1, "awarded": 0},
+                        "高光视频交互生成": {"total": 1, "awarded": 0},
+                        "字幕生成": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "虚拟身份与影响力": {
+                    "total": 5,
+                    "awarded": 0,
+                    "tags": {
+                        "虚拟影响者": {"total": 1, "awarded": 0},
+                        "社交媒体影响者": {"total": 1, "awarded": 0},
+                        "社交媒体商业": {"total": 1, "awarded": 0},
+                        "粉丝文化": {"total": 1, "awarded": 0},
+                        "虚拟形象交流": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "社交媒体使用": {
+                    "total": 11,
+                    "awarded": 3,
+                    "tags": {
+                        "社交媒体使用": {"total": 2, "awarded": 1},
+                        "社交媒体使用时长": {"total": 4, "awarded": 1},
+                        "长期行为改变": {"total": 1, "awarded": 0},
+                        "点击行为": {"total": 1, "awarded": 0},
+                        "信息寻求": {"total": 1, "awarded": 0},
+                        "用户行为演变": {"total": 2, "awarded": 1},
+                        "后悔情绪": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "用户互动与社区": {
+                    "total": 23,
+                    "awarded": 1,
+                    "tags": {
+                        "在线社区": {"total": 3, "awarded": 0},
+                        "用户互动": {"total": 13, "awarded": 1},
+                        "用户分享新闻意愿": {"total": 1, "awarded": 0},
+                        "徒步者社区分享": {"total": 1, "awarded": 0},
+                        "社区感理论": {"total": 1, "awarded": 0},
+                        "故事分享": {"total": 1, "awarded": 0},
+                        "邻里关系": {"total": 1, "awarded": 0},
+                        "社会连接": {"total": 5, "awarded": 0},
+                        "积极反馈": {"total": 1, "awarded": 0},
+                        "金融对话社区": {"total": 1, "awarded": 0},
+                        "代际沟通": {"total": 1, "awarded": 0},
+                        "求职招聘": {"total": 1, "awarded": 0},
+                        "话语策略": {"total": 1, "awarded": 0},
+                        "网络仇恨言论": {"total": 1, "awarded": 0},
+                        "众包动机": {"total": 1, "awarded": 0},
+                        "用户生成内容": {"total": 1, "awarded": 0},
+                        "在线自我披露": {"total": 1, "awarded": 1},
+                        "文化背景": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "数据可视化": {
+                        "total": 2,
+                        "awarded": 0,
+                        "tags": {
+                            "数据可视化": {"total": 2, "awarded": 0}
+                        }
+                    }
+                }
+                },
+                "平台算法与功能设计": {
+                "total": 19,
+                "awarded": 2,
+                "subCategory": {
+                    "算法与LLM应用": {
+                    "total": 11,
+                    "awarded": 1,
+                    "tags": {
+                        "推荐算法": {"total": 2, "awarded": 0},
+                        "个性推荐算法": {"total": 8, "awarded": 1},
+                        "群体推荐系统": {"total": 1, "awarded": 0},
+                        "个性化AI": {"total": 1, "awarded": 0},
+                        "LLM应用": {"total": 2, "awarded": 0},
+                        "概念归纳": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "算法透明与偏差": {
+                    "total": 5,
+                    "awarded": 0,
+                    "tags": {
+                        "AI内容标签": {"total": 1, "awarded": 0},
+                        "AI歧视": {"total": 1, "awarded": 0},
+                        "AI透明度": {"total": 1, "awarded": 0},
+                        "系统透明度": {"total": 1, "awarded": 0},
+                        "价值观对齐": {"total": 3, "awarded": 0},
+                        "AI伦理": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "功能设计": {
+                    "total": 9,
+                    "awarded": 3,
+                    "tags": {
+                        "合成社交信号": {"total": 1, "awarded": 0},
+                        "可适应承诺界面": {"total": 1, "awarded": 1},
+                        "TTS交互设计": {"total": 1, "awarded": 0},
+                        "控制设计": {"total": 1, "awarded": 1},
+                        "欺骗性设计": {"total": 1, "awarded": 1},
+                        "视频弹幕": {"total": 1, "awarded": 1},
+                        "暗黑模式": {"total": 1, "awarded": 0},
+                        "设计摩擦": {"total": 1, "awarded": 0},
+                        "紧急响应设计": {"total": 1, "awarded": 0},
+                        "非正式词汇": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "可用性": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "Web3社交媒体可供性": {"total": 1, "awarded": 0},
+                        "平台设置控制": {"total": 1, "awarded": 0},
+                        "音频媒体可访问性": {"total": 1, "awarded": 0}
+                    }
+                    }
+                }
+                },
+                "平台治理与规范": {
+                "total": 44,
+                "awarded": 8,
+                "subCategory": {
+                    "内容与政治监管": {
+                        "total": 19,
+                        "awarded": 5,
+                        "tags": {
+                            "内容审核": {"total": 13, "awarded": 3},
+                            "信息审查": {"total": 5, "awarded": 1},
+                            "政治标签": {"total": 1, "awarded": 1},
+                            "政治话语": {"total": 1, "awarded": 0}
+                        }
+                    },
+                    "信息披露与隐私保护": {
+                        "total": 11,
+                        "awarded": 1,
+                        "tags": {
+                            "信息披露": {"total": 2, "awarded": 0},
+                            "安全隐私": {"total": 7, "awarded": 2},
+                            "家长控制": {"total": 1, "awarded": 0},
+                            "广告隐私控制": {"total": 2, "awarded": 0},
+                            "隐私设置": {"total": 1, "awarded": 0},
+                            "信息再利用": {"total": 1, "awarded": 0}
+                        }
+                    },
+                    "虚假信息与仇恨言论": {
+                        "total": 22,
+                        "awarded": 2,
+                        "tags": {
+                            "虚假信息": {"total": 18, "awarded": 1},
+                            "网络仇恨言论": {"total": 3, "awarded": 1},
+                            "网络骚扰": {"total": 4, "awarded": 0},
+                            "污名应对策略": {"total": 5, "awarded": 0},
+                            "信任现象": {"total": 3, "awarded": 1},
+                            "真实账户与虚假账户表达差异": {"total": 2, "awarded": 2},
+                            "社交机器人识别": {"total": 2, "awarded": 0},
+                            "新冠疫情中的反口罩群体": {"total": 1, "awarded": 0},
+                            "可信度指标": {"total": 1, "awarded": 0},
+                            "大众评审": {"total": 1, "awarded": 0}
+                        }
+                    },
+                    "规范性问题与平台重构": {
+                        "total": 9,
+                        "awarded": 1,
+                        "tags": {
+                            "社媒技术重新设计": {"total": 8, "awarded": 1},
+                            "规范性解离": {"total": 1, "awarded": 0}
+                        }
+                    }
+                }
+                },
+                "社会问题与社会参与": {
+                    "total": 11,
+                    "awarded": 0,
+                    "subCategory": {
+                        "社会行动与支持网络": {
+                            "total": 10,
+                            "awarded": 0,
+                            "tags": {
+                                "社会支持": {"total": 9, "awarded": 0},
+                                "社会运动": {"total": 1, "awarded": 0},
+                                "在线行动主义": {"total": 1, "awarded": 0},
+                                "在线辩论去极化": {"total": 1, "awarded": 0},
+                                "公共领域": {"total": 1, "awarded": 0},
+                                "人道主义行动": {"total": 1, "awarded": 0},
+                                "冲突解决策略": {"total": 1, "awarded": 0},
+                                "协调公众参与": {"total": 1, "awarded": 0},
+                                "同伴支持系统": {"total": 1, "awarded": 0}
+                            }
+                        },
+                        "媒体传播与组织参与": {
+                            "total": 3,
+                            "awarded": 0,
+                            "tags": {
+                                "非政府组织": {"total": 1, "awarded": 0},
+                                "非营利组织": {"total": 1, "awarded": 0},
+                                "新闻业": {"total": 1, "awarded": 0},
+                                "伊斯兰布道": {"total": 1, "awarded": 0},
+                                "反公众政治": {"total": 1, "awarded": 0}
+                            }
+                        },
+                        "政治参与与舆情传播": {
+                            "total": 1,
+                            "awarded": 1,
+                            "tags": {
+                                "党派性": {"total": 1, "awarded": 1}
+                            }
+                        }
+                    }
+                },
+                "文化语境与全球视角": {
+                    "total": 12,
+                    "awarded": 1,
+                    "subCategory": {
+                        "地域文化与社会背景": {
+                            "total": 12,
+                            "awarded": 1,
+                            "tags": {
+                                "数字殖民主义": {"total": 2, "awarded": 0},
+                                "印度社媒用户": {"total": 2, "awarded": 0},
+                                "南亚用户": {"total": 1, "awarded": 0},
+                                "非西方社会": {"total": 1, "awarded": 0},
+                                "文化背景": {"total": 8, "awarded": 0},
+                                "殖民性问题": {"total": 1, "awarded": 0},
+                                "农村社区": {"total": 1, "awarded": 0},
+                                "土著知识": {"total": 1, "awarded": 1},
+                                "非物质文化遗产": {"total": 1, "awarded": 1},
+                                "政府干预": {"total": 1, "awarded": 0},
+                                "全球南方": {"total": 4, "awarded": 0},
+                                "公共领域": {"total": 1, "awarded": 0},
+                                "加勒比海": {"total": 1, "awarded": 0},
+                                "数字压制": {"total": 1, "awarded": 0}
+                            }
+                        }
+                    }
+                },
+                "疾病与健康传播": {
+                    "total": 17,
+                    "awarded": 5,
+                    "subCategory": {
+                        "心理健康与情绪管理": {
+                            "total": 13,
+                            "awarded": 4,
+                            "tags": {
+                                "抑郁症与社交媒体使用": {"total": 1, "awarded": 0},
+                                "心理健康": {"total": 11, "awarded": 4},
+                                "产后抑郁症": {"total": 1, "awarded": 0},
+                                "成瘾康复": {"total": 1, "awarded": 0},
+                                "治愈": {"total": 1, "awarded": 0},
+                                "幸福感": {"total": 1, "awarded": 0},
+                                "数字情绪调节": {"total": 2, "awarded": 0},
+                                "用户信任": {"total": 1, "awarded": 1},
+                                "患者视角": {"total": 1, "awarded": 0}
+                            }
+                        },
+                        "疾病与社会认知": {
+                            "total": 8,
+                            "awarded": 1,
+                            "tags": {
+                                "HIV污名问题": {"total": 1, "awarded": 0},
+                                "创伤性脑损伤": {"total": 1, "awarded": 0},
+                                "前瞻性记忆": {"total": 1, "awarded": 0},
+                                "在线自我诊断": {"total": 1, "awarded": 0},
+                                "新冠疫情": {"total": 1, "awarded": 0},
+                                "健康信息": {"total": 1, "awarded": 0},
+                                "女性健康": {"total": 2, "awarded": 1},
+                                "更年期研究": {"total": 1, "awarded": 1},
+                                "健康饮食": {"total": 3, "awarded": 0},
+                                "可用性偏差": {"total": 1, "awarded": 0},
+                                "认知改变": {"total": 1, "awarded": 0},
+                                "社交机器人识别": {"total": 1, "awarded": 0}
+                            }
+                        }
+                    }
+                }
+            },
+            "研究方法": {
+                "定性研究与用户参与方法": {
+                "total": 83,
+                "awarded": 14,
+                "subCategory": {
+                    "用户访谈与观察": {
+                    "total": 59,
+                    "awarded": 7,
+                    "tags": {
+                        "半结构化访谈": {"total": 51, "awarded": 7},
+                        "访谈": {"total": 6, "awarded": 0},
+                        "用户研究": {"total": 3, "awarded": 1},
+                        "参与式观察": {"total": 2, "awarded": 0},
+                        "田野调查": {"total": 5, "awarded": 1},
+                        "民族志": {"total": 2, "awarded": 0},
+                        "半民族志方法": {"total": 1, "awarded": 0},
+                        "情景询问": {"total": 1, "awarded": 0},
+                        "在线社区观察": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "设计参与与共创": {
+                    "total": 17,
+                    "awarded": 1,
+                    "tags": {
+                        "设计工作坊": {"total": 11, "awarded": 1},
+                        "远程工作坊": {"total": 2, "awarded": 0},
+                        "参与式艺术": {"total": 1, "awarded": 0},
+                        "远程参与式设计": {"total": 1, "awarded": 0},
+                        "推测性设计": {"total": 1, "awarded": 0},
+                        "形成性用户研究": {"total": 1, "awarded": 0},
+                        "设计研讨会": {"total": 1, "awarded": 0},
+                        "故事板活动": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "主题分析与编码策略": {
+                    "total": 57,
+                    "awarded": 5,
+                    "tags": {
+                        "开放编码": {"total": 7, "awarded": 1},
+                        "主题分析": {"total": 47, "awarded": 5},
+                        "定性内容分析": {"total": 21, "awarded": 1},
+                        "文本编码": {"total": 12, "awarded": 3},
+                        "归纳法": {"total": 1, "awarded": 0},
+                        "亲和图分析": {"total": 1, "awarded": 0},
+                        "内容分析": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "小组讨论与启发式反馈": {
+                    "total": 8,
+                    "awarded": 1,
+                    "tags": {
+                        "焦点小组": {"total": 4, "awarded": 0},
+                        "会议记录": {"total": 2, "awarded": 0},
+                        "卡片分类": {"total": 1, "awarded": 0},
+                        "引导式设置浏览": {"total": 1, "awarded": 0},
+                        "焦点小组讨论": {"total": 1, "awarded": 1}
+                    }
+                    }
+                }
+                },
+                "定量研究与实验设计": {
+                "total": 31,
+                "awarded": 3,
+                "subCategory": {
+                    "实验与对照组设计": {
+                    "total": 18,
+                    "awarded": 3,
+                    "tags": {
+                        "人机交互实验": {"total": 17, "awarded": 1},
+                        "在线实验": {"total": 4, "awarded": 0},
+                        "实验室研究": {"total": 1, "awarded": 0},
+                        "对照实验": {"total": 3, "awarded": 0},
+                        "被试间设计实验": {"total": 1, "awarded": 0},
+                        "准实验设计": {"total": 1, "awarded": 0},
+                        "混合设计实验": {"total": 2, "awarded": 0},
+                        "脑电图实验": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "推论统计与假设检验": {
+                    "total": 12,
+                    "awarded": 1,
+                    "tags": {
+                        "方差分析": {"total": 6, "awarded": 1},
+                        "重复测量方差分析": {"total": 1, "awarded": 0},
+                        "秩和检验": {"total": 1, "awarded": 0},
+                        "克鲁斯卡尔沃利斯检验": {"total": 1, "awarded": 0},
+                        "差分模型": {"total": 1, "awarded": 0},
+                        "因子设计": {"total": 1, "awarded": 1},
+                        "确认性因子分析": {"total": 1, "awarded": 0},
+                        "主成分分析": {"total": 1, "awarded": 0},
+                        "结构方程模型": {"total": 3, "awarded": 0},
+                        "潜在剖面分析": {"total": 1, "awarded": 0},
+                        "中介分析": {"total": 2, "awarded": 0},
+                        "倾向得分匹配法": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "回归与计量方法": {
+                    "total": 15,
+                    "awarded": 1,
+                    "tags": {
+                        "回归分析": {"total": 2, "awarded": 0},
+                        "多元回归": {"total": 1, "awarded": 1},
+                        "线性回归": {"total": 11, "awarded": 1},
+                        "逻辑回归模型": {"total": 2, "awarded": 0},
+                        "混合效应回归": {"total": 3, "awarded": 0},
+                        "线性混合模型": {"total": 1, "awarded": 0},
+                        "统计回归": {"total": 2, "awarded": 0},
+                        "相关分析": {"total": 3, "awarded": 0}
+                    }
+                    }
+                }
+                },
+                "数据采集与语义预处理": {
+                "total": 46,
+                "awarded": 7,
+                "subCategory": {
+                    "数据采集与标注": {
+                    "total": 44,
+                    "awarded": 7,
+                    "tags": {
+                        "问卷调查": {"total": 39, "awarded": 6},
+                        "分析社交媒体数据集": {"total": 10, "awarded": 1},
+                        "浏览器插件数据采集": {"total": 1, "awarded": 0},
+                        "经验抽样法": {"total": 6, "awarded": 0},
+                        "爬虫信息抓取": {"total": 4, "awarded": 2},
+                        "数据标注": {"total": 6, "awarded": 2},
+                        "创建自定义数据集": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "文本分析与语义建模": {
+                    "total": 5,
+                    "awarded": 1,
+                    "tags": {
+                        "文本分析": {"total": 1, "awarded": 0},
+                        "BERT语义向量表示": {"total": 1, "awarded": 0},
+                        "余弦相似性量化分析": {"total": 1, "awarded": 0},
+                        "提示工程": {"total": 1, "awarded": 0},
+                        "词嵌入": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "数据处理": {
+                        "total": 6,
+                        "awarded": 2,
+                        "tags": {
+                            "聚类分析": {"total": 3, "awarded": 1},
+                            "时间序列分析": {"total": 2, "awarded": 1},
+                            "日志数据分析": {"total": 2, "awarded": 0}
+                        }
+                    }
+                }
+                },
+                "模型构建与算法优化": {
+                    "total": 6,
+                    "awarded": 2,
+                    "subCategory": {
+                        "机器学习与模型构建": {
+                            "total": 4,
+                            "awarded": 1,
+                            "tags": {
+                                "机器学习": {"total": 1, "awarded": 0},
+                                "随机森林模型": {"total": 1, "awarded": 1},
+                                "生成对抗网络": {"total": 1, "awarded": 0}
+                            }
+                        },
+                        "算法评估与性能优化": {
+                            "total": 3,
+                            "awarded": 1,
+                            "tags": {
+                                "技术评估": {"total": 1, "awarded": 0},
+                                "贝叶斯优化": {"total": 1, "awarded": 1},
+                                "误差度量": {"total": 3, "awarded": 0},
+                                "算法评估": {"total": 1, "awarded": 1}
+                            }
+                        }
+                    }
+                },
+                "混合方法与综合研究": {
+                    "total": 6,
+                    "awarded": 2,
+                    "subCategory": {
+                        "混合方法": {
+                            "total": 4,
+                            "awarded": 0,
+                            "tags": {
+                                "混合方法研究": {"total": 4, "awarded": 0}
+                            }
+                        },
+                        "综合研究": {
+                            "total": 4,
+                            "awarded": 2,
+                            "tags": {
+                                "系统性文献回顾": {"total": 3, "awarded": 2},
+                                "文献综述": {"total": 3, "awarded": 1},
+                                "纵向研究": {"total": 2, "awarded": 1}
+                            }
+                        }
+                    }
+                },
+                "可视化与交互原型": {
+                    "total": 1,
+                    "awarded": 0,
+                    "subCategory": {
+                        "交互与原型设计": {
+                            "total": 1,
+                            "awarded": 0,
+                            "tags": {
+                                "交互设计": {"total": 1, "awarded": 0},
+                                "TTS交互设计": {"total": 1, "awarded": 0}
+                            }
+                        },
+                        "工具开发与评估": {
+                            "total": 1,
+                            "awarded": 0,
+                            "tags": {
+                                "工具包评估": {"total": 1, "awarded": 0}
+                            }
+                        }
+                    }
+                }
+            },
+            "研究平台": {
+                "内容形式": {
+                "total": 178,
+                "awarded": 31,
+                "subCategory": {
+                    "图文为主": {
+                    "total": 103,
+                    "awarded": 13,
+                    "tags": {
+                        "Facebook": {"total": 47, "awarded": 6},
+                        "Twitter": {"total": 47, "awarded": 7},
+                        "Weibo": {"total": 4, "awarded": 0},
+                        "LinkedIn": {"total": 5, "awarded": 0},
+                        "Xiaohongshu": {"total": 2, "awarded": 1},
+                        "Threads": {"total": 2, "awarded": 0},
+                        "Bluesky": {"total": 2, "awarded": 0},
+                        "Mastodon": {"total": 2, "awarded": 0},
+                        "Nextdoor": {"total": 1, "awarded": 0},
+                        "Toutiao": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "图片为主": {
+                    "total": 43,
+                    "awarded": 6,
+                    "tags": {
+                        "Instagram": {"total": 31, "awarded": 5},
+                        "Snapchat": {"total": 10, "awarded": 1},
+                        "BeReal": {"total": 1, "awarded": 0},
+                        "Pinterest": {"total": 2, "awarded": 0}
+                    }
+                    },
+                    "视频为主": {
+                    "total": 63,
+                    "awarded": 11,
+                    "tags": {
+                        "TikTok": {"total": 31, "awarded": 7},
+                        "YouTube": {"total": 20, "awarded": 2},
+                        "Bilibili": {"total": 3, "awarded": 1},
+                        "Kuaishou": {"total": 1, "awarded": 0},
+                        "Twitch": {"total": 2, "awarded": 0},
+                        "Douyin": {"total": 2, "awarded": 1},
+                        "Instagram Reels": {"total": 1, "awarded": 0},
+                        "Youku": {"total": 1, "awarded": 1},
+                        "Vine": {"total": 1, "awarded": 1},
+                        "VLIVE": {"total": 1, "awarded": 0},
+                        "Weverse": {"total": 1, "awarded": 0},
+                        "House Party": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "音频为主": {
+                    "total": 2,
+                    "awarded": 1,
+                    "tags": {
+                        "Spotify": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "论坛": {
+                    "total": 17,
+                    "awarded": 1,
+                    "tags": {
+                        "Reddit": {"total": 16, "awarded": 1},
+                        "Babycenter": {"total": 1, "awarded": 0},
+                        "What to expect": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "通信": {
+                    "total": 36,
+                    "awarded": 4,
+                    "tags": {
+                        "WhatsApp": {"total": 13, "awarded": 2},
+                        "Telegram": {"total": 7, "awarded": 2},
+                        "WeChat": {"total": 8, "awarded": 0},
+                        "Slack": {"total": 3, "awarded": 1},
+                        "Signal": {"total": 2, "awarded": 0},
+                        "XTC": {"total": 1, "awarded": 0},
+                        "Truman": {"total": 1, "awarded": 0},
+                        "TopL": {"total": 1, "awarded": 0},
+                        "Zoe": {"total": 1, "awarded": 0},
+                        "Skype": {"total": 1, "awarded": 0},
+                        "Zoom": {"total": 1, "awarded": 0},
+                        "Discord": {"total": 2, "awarded": 0},
+                        "Teams": {"total": 1, "awarded": 1}
+                    }
+                    },
+                    "工具/搜索/电商": {
+                    "total": 4,
+                    "awarded": 0,
+                    "tags": {
+                        "Google Maps": {"total": 3, "awarded": 0},
+                        "Flo": {"total": 1, "awarded": 0},
+                        "Amazon Mechanical Turk": {"total": 1, "awarded": 0},
+                        "Google Search": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "区块链": {
+                    "total": 10,
+                    "awarded": 0,
+                    "tags": {
+                        "Spatial.io": {"total": 1, "awarded": 0},
+                        "ReadyPlayerMe": {"total": 1, "awarded": 0},
+                        "Bluesky": {"total": 1, "awarded": 0},
+                        "Farcaster": {"total": 1, "awarded": 0},
+                        "Friend.tech": {"total": 1, "awarded": 0},
+                        "Hive": {"total": 1, "awarded": 0},
+                        "Lens": {"total": 1, "awarded": 0},
+                        "Mastodon": {"total": 2, "awarded": 0},
+                        "Minds": {"total": 1, "awarded": 0},
+                        "Mirror": {"total": 1, "awarded": 0},
+                        "Nostr": {"total": 1, "awarded": 0},
+                        "Steemit": {"total": 1, "awarded": 0}
+                    }
+                    }
+                }
+                },
+                "平台属性": {
+                "total": 173,
+                "awarded": 28,
+                "subCategory": {
+                    "主流国际平台": {
+                    "total": 147,
+                    "awarded": 26,
+                    "tags": {
+                        "Facebook": {"total": 47, "awarded": 6},
+                        "Twitter": {"total": 47, "awarded": 7},
+                        "Instagram": {"total": 31, "awarded": 5},
+                        "TikTok": {"total": 31, "awarded": 7},
+                        "YouTube": {"total": 20, "awarded": 2},
+                        "Reddit": {"total": 16, "awarded": 1},
+                        "Snapchat": {"total": 10, "awarded": 1},
+                        "WhatsApp": {"total": 13, "awarded": 2},
+                        "Telegram": {"total": 7, "awarded": 2},
+                        "LinkedIn": {"total": 5, "awarded": 0},
+                        "Spotify": {"total": 1, "awarded": 0},
+                        "Google Maps": {"total": 3, "awarded": 0},
+                        "Threads": {"total": 2, "awarded": 0},
+                        "Pinterest": {"total": 2, "awarded": 0},
+                        "Twitch": {"total": 2, "awarded": 0},
+                        "Instagram Reels": {"total": 1, "awarded": 0},
+                        "Google Search": {"total": 1, "awarded": 0},
+                        "Amazon": {"total": 1, "awarded": 0},
+                        "Nextdoor": {"total": 1, "awarded": 0},
+                        "Vine": {"total": 1, "awarded": 1},
+                        "Skype": {"total": 1, "awarded": 0},
+                        "Discord": {"total": 2, "awarded": 0},
+                        "Tumblr": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "中国本土平台": {
+                    "total": 15,
+                    "awarded": 2,
+                    "tags": {
+                        "WeChat": {"total": 8, "awarded": 0},
+                        "Weibo": {"total": 4, "awarded": 0},
+                        "Bilibili": {"total": 3, "awarded": 1},
+                        "Xiaohongshu": {"total": 2, "awarded": 1},
+                        "Kuaishou": {"total": 1, "awarded": 0},
+                        "Douyin": {"total": 2, "awarded": 1},
+                        "Youku": {"total": 1, "awarded": 1},
+                        "Tieba": {"total": 1, "awarded": 0},
+                        "Toutiao": {"total": 1, "awarded": 0},
+                        "XTC": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "匿名/去中心平台": {
+                    "total": 12,
+                    "awarded": 0,
+                    "tags": {
+                        "Bluesky": {"total": 2, "awarded": 0},
+                        "Signal": {"total": 2, "awarded": 0},
+                        "Mastodon": {"total": 2, "awarded": 0},
+                        "Farcaster": {"total": 1, "awarded": 0},
+                        "Friend.tech": {"total": 1, "awarded": 0},
+                        "Hive": {"total": 1, "awarded": 0},
+                        "Lens": {"total": 1, "awarded": 0},
+                        "Minds": {"total": 1, "awarded": 0},
+                        "Mirror": {"total": 1, "awarded": 0},
+                        "Nostr": {"total": 1, "awarded": 0},
+                        "Steemit": {"total": 1, "awarded": 0}
+                    }
+                    },
+                    "垂直/边缘平台": {
+                        "total": 13,
+                        "awarded": 1,
+                        "tags": {
+                            "BeReal": {"total": 1, "awarded": 0},
+                            "Zoe": {"total": 1, "awarded": 0},
+                            "Flo": {"total": 1, "awarded": 0},
+                            "Truman": {"total": 1, "awarded": 0},
+                            "ReadyPlayerMe": {"total": 1, "awarded": 0},
+                            "House Party": {"total": 1, "awarded": 0},
+                            "OnlyFans": {"total": 1, "awarded": 1},
+                            "Babycenter": {"total": 1, "awarded": 0},
+                            "What to expect": {"total": 1, "awarded": 0},
+                            "VLIVE": {"total": 1, "awarded": 0},
+                            "Weverse": {"total": 1, "awarded": 0},
+                            "TopL": {"total": 1, "awarded": 0}
+                        }
+                    },
+                    "专业工具/办公平台": {
+                        "total": 5,
+                        "awarded": 1,
+                        "tags": {
+                            "Slack": {"total": 3, "awarded": 1},
+                            "Zoom": {"total": 1, "awarded": 0},
+                            "Teams": {"total": 1, "awarded": 1}
+                        }
+                    }
+                }
+                }
+            }
+            }
+        }
+    }
+}

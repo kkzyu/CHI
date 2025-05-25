@@ -3,12 +3,15 @@
     <AppHeader />
     <main class="main-content-area">
       <router-view />
+      <GlobalLoading />
     </main>
   </div>
 </template>
 
 <script setup>
 import AppHeader from '@/components/layout/AppHeader.vue';
+import GlobalLoading from '@/components/common/LoadingSpinner.vue';
+
 </script>
 
 <style>

@@ -1,0 +1,152 @@
+
+{
+    "layoutSettings": {
+      "dimensions": {
+        "width": 1200,
+        "height": 600,
+        "margins": {
+          "top": 40,
+          "right": 60,
+          "bottom": 40,
+          "left": 60
+        }
+      },
+      "nodeSettings": {
+        "width": 20,
+        "minHeight": 30,
+        "maxHeight": 200,
+        "padding": 8,
+        "borderRadius": 4,
+        "spacing": {
+          "vertical": 10,
+          "horizontal": 180
+        }
+      },
+
+      "nodeLabelSettings": {
+        "showLabels": true,
+        "fontSize": 12,
+        "fontFamily": "sans-serif",
+        "fillColor": "#333",
+        "offsetX": 6, 
+        "textAnchor": "start", 
+        "maxTextLength": 25,
+        "truncateSuffix": "..."
+      },
+
+      "columnTitleSettings": {
+        "showTitles": true,
+        "fontSize": 14,
+        "fontFamily": "sans-serif",
+        "fillColor": "#000",
+        "fontWeight": "bold",
+        "paddingBottom": 20, 
+        "textAnchor": "middle" 
+      },
+
+      "linkSettings": {
+        "minWidth": 1,
+        "maxWidth": 50,
+        "opacity": 0.6,
+        "hoverOpacity": 0.8,
+        "curvature": 0.5,
+        "defaultColor": "rgba(0, 0, 0, 0.2)", 
+        "highlightColor": "rgba(255, 0, 0, 0.5)" 
+      },
+      "columnPositions": {
+        "3columns": {
+          "研究涉及平台": 0.15,
+          "研究内容": 0.5,
+          "研究方法": 0.85
+        }
+      }
+    },
+    "interactionConfig": {
+      "animations": {
+        "nodeExpansion": {
+          "duration": 600,
+          "easing": "easeInOutCubic",
+          "stagger": 50
+        },
+        "platformSwitch": {
+          "duration": 800,
+          "easing": "easeInOutQuart",
+          "fadeOut": 200,
+          "fadeIn": 400
+        },
+        "linkUpdate": {
+          "duration": 400,
+          "easing": "easeInOutQuad"
+        }
+      },
+      "hover": {
+        "nodeHighlight": {
+          "strokeWidth": 3,
+          "strokeColor": "#333",
+          "shadowBlur": 8
+        },
+        "linkHighlight": {
+          "opacity": 1.0,
+          "strokeWidth": 2
+        },
+        "tooltip": {
+          "offset": {"x": 10, "y": -10},
+          "maxWidth": 300,
+          "backgroundColor": "rgba(0,0,0,0.8)",
+          "textColor": "#fff",
+          "borderRadius": 6,
+          "fontSize": 12,
+          "padding": 8
+        }
+      }
+    },
+    "responsiveBreakpoints": {
+      "mobile": {
+        "maxWidth": 768,
+        "layout": {
+          "width": 360,
+          "height": 400,
+          "nodeWidth": 15,
+          "spacing": {
+            "horizontal": 100
+          },
+
+          "nodeLabelSettings": {
+            "fontSize": 10,
+            "maxTextLength": 15
+          }
+        }
+      },
+      "tablet": {
+        "maxWidth": 1024,
+        "layout": {
+          "width": 800,
+          "height": 500,
+          "spacing": {
+            "horizontal": 140
+          },
+          "nodeLabelSettings": {
+            "fontSize": 11
+          }
+        }
+      }
+    },
+    "levelLayoutRules": {
+      "mixed_levels": {
+        "L1_L1_L1": {
+          "nodeSpacing": 10,
+          "maxNodesPerColumn": 8
+        },
+        "L1_L2_L1": {
+          "nodeSpacing": 8,
+          "maxNodesPerColumn": 12,
+          "expandedColumnWidth": 1.2
+        },
+        "L2_L2_L3": {
+          "nodeSpacing": 6,
+          "maxNodesPerColumn": 20,
+          "compactMode": true
+        }
+      }
+    }
+  }

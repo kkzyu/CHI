@@ -1,0 +1,1562 @@
+{
+  "研究内容": {
+    "研究内容": {
+      "level": 1,
+      "displayName": "研究内容",
+      "description": "Cat: 研究内容, SankeyLvl: 1, OrigLvl: 1, ID: 研究内容",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 6,
+      "children": [
+        "用户群体与个体特征",
+        "内容与用户交互行为",
+        "平台算法与功能设计",
+        "平台治理与规范",
+        "社会问题与社会参与",
+        "文化语境与全球视角",
+        "疾病与健康传播"
+      ]
+    },
+    "用户群体与个体特征": {
+      "level": 2,
+      "displayName": "用户群体与个体特征",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 用户群体与个体特征",
+      "color": "#DC6866",
+      "totalPapers": 0,
+      "children": [
+        "用户群体与个体特征-青少年",
+        "用户群体与个体特征-残障人群",
+        "用户群体与个体特征-性别表现与个体差异",
+        "用户群体与个体特征-用户画像与社会认同"
+      ]
+    },
+    "用户群体与个体特征-青少年": {
+      "level": 3,
+      "displayName": "青少年",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 用户群体与个体特征-青少年",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "用户群体与个体特征"
+    },
+    "用户群体与个体特征-残障人群": {
+      "level": 3,
+      "displayName": "残障人群",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 用户群体与个体特征-残障人群",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "用户群体与个体特征"
+    },
+    "用户群体与个体特征-性别表现与个体差异": {
+      "level": 3,
+      "displayName": "性别表现与个体差异",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 用户群体与个体特征-性别表现与个体差异",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "用户群体与个体特征"
+    },
+    "用户群体与个体特征-用户画像与社会认同": {
+      "level": 3,
+      "displayName": "用户画像与社会认同",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 用户群体与个体特征-用户画像与社会认同",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "用户群体与个体特征"
+    },
+    "内容与用户交互行为": {
+      "level": 2,
+      "displayName": "内容与用户交互行为",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 内容与用户交互行为",
+      "color": "#97A7AA",
+      "totalPapers": 6,
+      "children": [
+        "内容与用户交互行为-内容创作",
+        "内容与用户交互行为-虚拟身份与影响力",
+        "内容与用户交互行为-社交媒体使用",
+        "内容与用户交互行为-用户互动与社区"
+      ]
+    },
+    "内容与用户交互行为-内容创作": {
+      "level": 3,
+      "displayName": "内容创作",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 内容与用户交互行为-内容创作",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "内容与用户交互行为"
+    },
+    "内容与用户交互行为-虚拟身份与影响力": {
+      "level": 3,
+      "displayName": "虚拟身份与影响力",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 内容与用户交互行为-虚拟身份与影响力",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "内容与用户交互行为"
+    },
+    "内容与用户交互行为-社交媒体使用": {
+      "level": 3,
+      "displayName": "社交媒体使用",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 内容与用户交互行为-社交媒体使用",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 6,
+      "parent": "内容与用户交互行为"
+    },
+    "内容与用户交互行为-用户互动与社区": {
+      "level": 3,
+      "displayName": "用户互动与社区",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 内容与用户交互行为-用户互动与社区",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "内容与用户交互行为"
+    },
+    "平台算法与功能设计": {
+      "level": 2,
+      "displayName": "平台算法与功能设计",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 平台算法与功能设计",
+      "color": "#6C97CE",
+      "totalPapers": 0,
+      "children": [
+        "平台算法与功能设计-算法与LLM应用",
+        "平台算法与功能设计-算法透明与偏差",
+        "平台算法与功能设计-功能设计",
+        "平台算法与功能设计-可用性"
+      ]
+    },
+    "平台算法与功能设计-算法与LLM应用": {
+      "level": 3,
+      "displayName": "算法与LLM应用",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台算法与功能设计-算法与LLM应用",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台算法与功能设计"
+    },
+    "平台算法与功能设计-算法透明与偏差": {
+      "level": 3,
+      "displayName": "算法透明与偏差",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台算法与功能设计-算法透明与偏差",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台算法与功能设计"
+    },
+    "平台算法与功能设计-功能设计": {
+      "level": 3,
+      "displayName": "功能设计",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台算法与功能设计-功能设计",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台算法与功能设计"
+    },
+    "平台算法与功能设计-可用性": {
+      "level": 3,
+      "displayName": "可用性",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台算法与功能设计-可用性",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台算法与功能设计"
+    },
+    "平台治理与规范": {
+      "level": 2,
+      "displayName": "平台治理与规范",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 平台治理与规范",
+      "color": "#7D90FD",
+      "totalPapers": 0,
+      "children": [
+        "平台治理与规范-内容与政治监管",
+        "平台治理与规范-信息披露与隐私保护",
+        "平台治理与规范-虚假信息与仇恨言论",
+        "平台治理与规范-规范性问题与平台重构"
+      ]
+    },
+    "平台治理与规范-内容与政治监管": {
+      "level": 3,
+      "displayName": "内容与政治监管",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台治理与规范-内容与政治监管",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台治理与规范"
+    },
+    "平台治理与规范-信息披露与隐私保护": {
+      "level": 3,
+      "displayName": "信息披露与隐私保护",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台治理与规范-信息披露与隐私保护",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台治理与规范"
+    },
+    "平台治理与规范-虚假信息与仇恨言论": {
+      "level": 3,
+      "displayName": "虚假信息与仇恨言论",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台治理与规范-虚假信息与仇恨言论",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台治理与规范"
+    },
+    "平台治理与规范-规范性问题与平台重构": {
+      "level": 3,
+      "displayName": "规范性问题与平台重构",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 平台治理与规范-规范性问题与平台重构",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "平台治理与规范"
+    },
+    "社会问题与社会参与": {
+      "level": 2,
+      "displayName": "社会问题与社会参与",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 社会问题与社会参与",
+      "color": "#AF98E0",
+      "totalPapers": 0,
+      "children": [
+        "社会问题与社会参与-社会行动与支持网络",
+        "社会问题与社会参与-媒体传播与组织参与",
+        "社会问题与社会参与-政治参与与舆情传播"
+      ]
+    },
+    "社会问题与社会参与-社会行动与支持网络": {
+      "level": 3,
+      "displayName": "社会行动与支持网络",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 社会问题与社会参与-社会行动与支持网络",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "社会问题与社会参与"
+    },
+    "社会问题与社会参与-媒体传播与组织参与": {
+      "level": 3,
+      "displayName": "媒体传播与组织参与",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 社会问题与社会参与-媒体传播与组织参与",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "社会问题与社会参与"
+    },
+    "社会问题与社会参与-政治参与与舆情传播": {
+      "level": 3,
+      "displayName": "政治参与与舆情传播",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 社会问题与社会参与-政治参与与舆情传播",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "社会问题与社会参与"
+    },
+    "文化语境与全球视角": {
+      "level": 2,
+      "displayName": "文化语境与全球视角",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 文化语境与全球视角",
+      "color": "#D55DC5",
+      "totalPapers": 0,
+      "children": [
+        "文化语境与全球视角-地域文化与社会背景"
+      ]
+    },
+    "文化语境与全球视角-地域文化与社会背景": {
+      "level": 3,
+      "displayName": "地域文化与社会背景",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 文化语境与全球视角-地域文化与社会背景",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "文化语境与全球视角"
+    },
+    "疾病与健康传播": {
+      "level": 2,
+      "displayName": "疾病与健康传播",
+      "description": "Cat: 研究内容, SankeyLvl: 2, OrigLvl: 2, ID: 疾病与健康传播",
+      "color": "#E3E3E3",
+      "totalPapers": 0,
+      "children": [
+        "疾病与健康传播-心理健康与情绪管理",
+        "疾病与健康传播-疾病与社会认知"
+      ]
+    },
+    "疾病与健康传播-心理健康与情绪管理": {
+      "level": 3,
+      "displayName": "心理健康与情绪管理",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 疾病与健康传播-心理健康与情绪管理",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "疾病与健康传播"
+    },
+    "疾病与健康传播-疾病与社会认知": {
+      "level": 3,
+      "displayName": "疾病与社会认知",
+      "description": "Cat: 研究内容, SankeyLvl: 3, OrigLvl: 3, ID: 疾病与健康传播-疾病与社会认知",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "疾病与健康传播"
+    }
+  },
+  "研究方法": {
+    "研究方法": {
+      "level": 1,
+      "displayName": "研究方法",
+      "description": "Cat: 研究方法, SankeyLvl: 1, OrigLvl: 1, ID: 研究方法",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "children": [
+        "定性研究与用户参与方法",
+        "定量研究与实验设计",
+        "数据采集与语义预处理",
+        "模型构建与算法优化",
+        "混合方法与综合研究",
+        "可视化与交互原型"
+      ]
+    },
+    "定性研究与用户参与方法": {
+      "level": 2,
+      "displayName": "定性研究与用户参与方法",
+      "description": "Cat: 研究方法, SankeyLvl: 2, OrigLvl: 2, ID: 定性研究与用户参与方法",
+      "color": "#FBDCA7",
+      "totalPapers": 0,
+      "children": [
+        "定性研究与用户参与方法-用户访谈与观察",
+        "定性研究与用户参与方法-设计参与与共创",
+        "定性研究与用户参与方法-主题分析与编码策略",
+        "定性研究与用户参与方法-小组讨论与启发式反馈"
+      ]
+    },
+    "定性研究与用户参与方法-用户访谈与观察": {
+      "level": 3,
+      "displayName": "用户访谈与观察",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定性研究与用户参与方法-用户访谈与观察",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定性研究与用户参与方法"
+    },
+    "定性研究与用户参与方法-设计参与与共创": {
+      "level": 3,
+      "displayName": "设计参与与共创",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定性研究与用户参与方法-设计参与与共创",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定性研究与用户参与方法"
+    },
+    "定性研究与用户参与方法-主题分析与编码策略": {
+      "level": 3,
+      "displayName": "主题分析与编码策略",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定性研究与用户参与方法-主题分析与编码策略",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定性研究与用户参与方法"
+    },
+    "定性研究与用户参与方法-小组讨论与启发式反馈": {
+      "level": 3,
+      "displayName": "小组讨论与启发式反馈",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定性研究与用户参与方法-小组讨论与启发式反馈",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定性研究与用户参与方法"
+    },
+    "定量研究与实验设计": {
+      "level": 2,
+      "displayName": "定量研究与实验设计",
+      "description": "Cat: 研究方法, SankeyLvl: 2, OrigLvl: 2, ID: 定量研究与实验设计",
+      "color": "#F9BC8B",
+      "totalPapers": 0,
+      "children": [
+        "定量研究与实验设计-实验与对照组设计",
+        "定量研究与实验设计-推论统计与假设检验",
+        "定量研究与实验设计-回归与计量方法"
+      ]
+    },
+    "定量研究与实验设计-实验与对照组设计": {
+      "level": 3,
+      "displayName": "实验与对照组设计",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定量研究与实验设计-实验与对照组设计",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定量研究与实验设计"
+    },
+    "定量研究与实验设计-推论统计与假设检验": {
+      "level": 3,
+      "displayName": "推论统计与假设检验",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定量研究与实验设计-推论统计与假设检验",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定量研究与实验设计"
+    },
+    "定量研究与实验设计-回归与计量方法": {
+      "level": 3,
+      "displayName": "回归与计量方法",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 定量研究与实验设计-回归与计量方法",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "定量研究与实验设计"
+    },
+    "数据采集与语义预处理": {
+      "level": 2,
+      "displayName": "数据采集与语义预处理",
+      "description": "Cat: 研究方法, SankeyLvl: 2, OrigLvl: 2, ID: 数据采集与语义预处理",
+      "color": "#FAB1DC",
+      "totalPapers": 0,
+      "children": [
+        "数据采集与语义预处理-数据采集与标注",
+        "数据采集与语义预处理-参与者抽样策略",
+        "数据采集与语义预处理-文本分析与语义建模",
+        "数据采集与语义预处理-数据处理"
+      ]
+    },
+    "数据采集与语义预处理-数据采集与标注": {
+      "level": 3,
+      "displayName": "数据采集与标注",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 数据采集与语义预处理-数据采集与标注",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "数据采集与语义预处理"
+    },
+    "数据采集与语义预处理-参与者抽样策略": {
+      "level": 3,
+      "displayName": "参与者抽样策略",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 数据采集与语义预处理-参与者抽样策略",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "数据采集与语义预处理"
+    },
+    "数据采集与语义预处理-文本分析与语义建模": {
+      "level": 3,
+      "displayName": "文本分析与语义建模",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 数据采集与语义预处理-文本分析与语义建模",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "数据采集与语义预处理"
+    },
+    "数据采集与语义预处理-数据处理": {
+      "level": 3,
+      "displayName": "数据处理",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 数据采集与语义预处理-数据处理",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "数据采集与语义预处理"
+    },
+    "模型构建与算法优化": {
+      "level": 2,
+      "displayName": "模型构建与算法优化",
+      "description": "Cat: 研究方法, SankeyLvl: 2, OrigLvl: 2, ID: 模型构建与算法优化",
+      "color": "#DCEFAC",
+      "totalPapers": 0,
+      "children": [
+        "模型构建与算法优化-机器学习与模型构建",
+        "模型构建与算法优化-算法评估与性能优化"
+      ]
+    },
+    "模型构建与算法优化-机器学习与模型构建": {
+      "level": 3,
+      "displayName": "机器学习与模型构建",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 模型构建与算法优化-机器学习与模型构建",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "模型构建与算法优化"
+    },
+    "模型构建与算法优化-算法评估与性能优化": {
+      "level": 3,
+      "displayName": "算法评估与性能优化",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 模型构建与算法优化-算法评估与性能优化",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "模型构建与算法优化"
+    },
+    "混合方法与综合研究": {
+      "level": 2,
+      "displayName": "混合方法与综合研究",
+      "description": "Cat: 研究方法, SankeyLvl: 2, OrigLvl: 2, ID: 混合方法与综合研究",
+      "color": "#BFD57A",
+      "totalPapers": 0,
+      "children": [
+        "混合方法与综合研究-混合方法",
+        "混合方法与综合研究-综合研究"
+      ]
+    },
+    "混合方法与综合研究-混合方法": {
+      "level": 3,
+      "displayName": "混合方法",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 混合方法与综合研究-混合方法",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "混合方法与综合研究"
+    },
+    "混合方法与综合研究-综合研究": {
+      "level": 3,
+      "displayName": "综合研究",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 混合方法与综合研究-综合研究",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "混合方法与综合研究"
+    },
+    "可视化与交互原型": {
+      "level": 2,
+      "displayName": "可视化与交互原型",
+      "description": "Cat: 研究方法, SankeyLvl: 2, OrigLvl: 2, ID: 可视化与交互原型",
+      "color": "#EA8928",
+      "totalPapers": 0,
+      "children": [
+        "可视化与交互原型-交互与原型设计",
+        "可视化与交互原型-工具开发与评估"
+      ]
+    },
+    "可视化与交互原型-交互与原型设计": {
+      "level": 3,
+      "displayName": "交互与原型设计",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 可视化与交互原型-交互与原型设计",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "可视化与交互原型"
+    },
+    "可视化与交互原型-工具开发与评估": {
+      "level": 3,
+      "displayName": "工具开发与评估",
+      "description": "Cat: 研究方法, SankeyLvl: 3, OrigLvl: 3, ID: 可视化与交互原型-工具开发与评估",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "可视化与交互原型"
+    }
+  },
+  "研究涉及平台-内容形式": {
+    "图文为主": {
+      "level": 2,
+      "displayName": "图文为主",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 图文为主",
+      "color": "#84C1FF",
+      "totalPapers": 160,
+      "children": [
+        "图文为主-Facebook",
+        "图文为主-Twitter",
+        "图文为主-Weibo",
+        "图文为主-Linkedin",
+        "图文为主-Bluesky",
+        "图文为主-Xiaohongshu",
+        "图文为主-Threads",
+        "图文为主-Mastodon.Naver",
+        "图文为主-Nextdoor",
+        "图文为主-Toutiao"
+      ]
+    },
+    "图文为主-Facebook": {
+      "level": 3,
+      "displayName": "Facebook",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Facebook",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 75,
+      "parent": "图文为主"
+    },
+    "图文为主-Twitter": {
+      "level": 3,
+      "displayName": "Twitter",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Twitter",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 69,
+      "parent": "图文为主"
+    },
+    "图文为主-Weibo": {
+      "level": 3,
+      "displayName": "Weibo",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Weibo",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 6,
+      "parent": "图文为主"
+    },
+    "图文为主-Linkedin": {
+      "level": 3,
+      "displayName": "Linkedin",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Linkedin",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "图文为主"
+    },
+    "图文为主-Bluesky": {
+      "level": 3,
+      "displayName": "Bluesky",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Bluesky",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "图文为主"
+    },
+    "图文为主-Xiaohongshu": {
+      "level": 3,
+      "displayName": "Xiaohongshu",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Xiaohongshu",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "图文为主"
+    },
+    "图文为主-Threads": {
+      "level": 3,
+      "displayName": "Threads",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Threads",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "图文为主"
+    },
+    "图文为主-Mastodon.Naver": {
+      "level": 3,
+      "displayName": "Mastodon.Naver",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Mastodon.Naver",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "图文为主"
+    },
+    "图文为主-Nextdoor": {
+      "level": 3,
+      "displayName": "Nextdoor",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Nextdoor",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "图文为主"
+    },
+    "图文为主-Toutiao": {
+      "level": 3,
+      "displayName": "Toutiao",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图文为主-Toutiao",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "图文为主"
+    },
+    "图片为主": {
+      "level": 2,
+      "displayName": "图片为主",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 图片为主",
+      "color": "#7ED6C2",
+      "totalPapers": 87,
+      "children": [
+        "图片为主-Instagram",
+        "图片为主-Snapchat",
+        "图片为主-BeReal",
+        "图片为主-Pinterest",
+        "图片为主-Flickr",
+        "图片为主-Tumblr"
+      ]
+    },
+    "图片为主-Instagram": {
+      "level": 3,
+      "displayName": "Instagram",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图片为主-Instagram",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 62,
+      "parent": "图片为主"
+    },
+    "图片为主-Snapchat": {
+      "level": 3,
+      "displayName": "Snapchat",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图片为主-Snapchat",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 18,
+      "parent": "图片为主"
+    },
+    "图片为主-BeReal": {
+      "level": 3,
+      "displayName": "BeReal",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图片为主-BeReal",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "图片为主"
+    },
+    "图片为主-Pinterest": {
+      "level": 3,
+      "displayName": "Pinterest",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图片为主-Pinterest",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "图片为主"
+    },
+    "图片为主-Flickr": {
+      "level": 3,
+      "displayName": "Flickr",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图片为主-Flickr",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "图片为主"
+    },
+    "图片为主-Tumblr": {
+      "level": 3,
+      "displayName": "Tumblr",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 图片为主-Tumblr",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "图片为主"
+    },
+    "视频为主": {
+      "level": 2,
+      "displayName": "视频为主",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 视频为主",
+      "color": "#A1C298",
+      "totalPapers": 83,
+      "children": [
+        "视频为主-TikTok",
+        "视频为主-YouTube",
+        "视频为主-Bilibili",
+        "视频为主-Kuaishou",
+        "视频为主-Twitch",
+        "视频为主-Douyin",
+        "视频为主-Instagram_Reels",
+        "视频为主-Youku",
+        "视频为主-Vine",
+        "视频为主-House_Party"
+      ]
+    },
+    "视频为主-TikTok": {
+      "level": 3,
+      "displayName": "TikTok",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-TikTok",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 52,
+      "parent": "视频为主"
+    },
+    "视频为主-YouTube": {
+      "level": 3,
+      "displayName": "YouTube",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-YouTube",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 18,
+      "parent": "视频为主"
+    },
+    "视频为主-Bilibili": {
+      "level": 3,
+      "displayName": "Bilibili",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Bilibili",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "视频为主"
+    },
+    "视频为主-Kuaishou": {
+      "level": 3,
+      "displayName": "Kuaishou",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Kuaishou",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "视频为主"
+    },
+    "视频为主-Twitch": {
+      "level": 3,
+      "displayName": "Twitch",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Twitch",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "视频为主"
+    },
+    "视频为主-Douyin": {
+      "level": 3,
+      "displayName": "Douyin",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Douyin",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "视频为主"
+    },
+    "视频为主-Instagram_Reels": {
+      "level": 3,
+      "displayName": "Instagram Reels",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Instagram_Reels",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "视频为主"
+    },
+    "视频为主-Youku": {
+      "level": 3,
+      "displayName": "Youku",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Youku",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "视频为主"
+    },
+    "视频为主-Vine": {
+      "level": 3,
+      "displayName": "Vine",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-Vine",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "视频为主"
+    },
+    "视频为主-House_Party": {
+      "level": 3,
+      "displayName": "House Party",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 视频为主-House_Party",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "视频为主"
+    },
+    "音频为主": {
+      "level": 2,
+      "displayName": "音频为主",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 音频为主",
+      "color": "#F3D250",
+      "totalPapers": 3,
+      "children": [
+        "音频为主-Spotify"
+      ]
+    },
+    "音频为主-Spotify": {
+      "level": 3,
+      "displayName": "Spotify",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 音频为主-Spotify",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "音频为主"
+    },
+    "论坛": {
+      "level": 2,
+      "displayName": "论坛",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 论坛",
+      "color": "#FF9A8B",
+      "totalPapers": 32,
+      "children": [
+        "论坛-Reddit",
+        "论坛-Tieba",
+        "论坛-Babycenter",
+        "论坛-What_to_expect"
+      ]
+    },
+    "论坛-Reddit": {
+      "level": 3,
+      "displayName": "Reddit",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 论坛-Reddit",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 29,
+      "parent": "论坛"
+    },
+    "论坛-Tieba": {
+      "level": 3,
+      "displayName": "Tieba",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 论坛-Tieba",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "论坛"
+    },
+    "论坛-Babycenter": {
+      "level": 3,
+      "displayName": "Babycenter",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 论坛-Babycenter",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "论坛"
+    },
+    "论坛-What_to_expect": {
+      "level": 3,
+      "displayName": "What to expect",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 论坛-What_to_expect",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "论坛"
+    },
+    "通信": {
+      "level": 2,
+      "displayName": "通信",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 通信",
+      "color": "#D55DC5",
+      "totalPapers": 42,
+      "children": [
+        "通信-WhatsApp",
+        "通信-Telegram",
+        "通信-WeChat",
+        "通信-Slack",
+        "通信-Signal",
+        "通信-Zoe",
+        "通信-Romeo",
+        "通信-Truman",
+        "通信-SS",
+        "通信-Gaydar",
+        "通信-Grindr",
+        "通信-Skype",
+        "通信-Zoom",
+        "通信-Discord"
+      ]
+    },
+    "通信-WhatsApp": {
+      "level": 3,
+      "displayName": "WhatsApp",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-WhatsApp",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 15,
+      "parent": "通信"
+    },
+    "通信-Telegram": {
+      "level": 3,
+      "displayName": "Telegram",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Telegram",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 7,
+      "parent": "通信"
+    },
+    "通信-WeChat": {
+      "level": 3,
+      "displayName": "WeChat",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-WeChat",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 6,
+      "parent": "通信"
+    },
+    "通信-Slack": {
+      "level": 3,
+      "displayName": "Slack",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Slack",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "通信"
+    },
+    "通信-Signal": {
+      "level": 3,
+      "displayName": "Signal",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Signal",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "通信"
+    },
+    "通信-Zoe": {
+      "level": 3,
+      "displayName": "Zoe",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Zoe",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-Romeo": {
+      "level": 3,
+      "displayName": "Romeo",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Romeo",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-Truman": {
+      "level": 3,
+      "displayName": "Truman",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Truman",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-SS": {
+      "level": 3,
+      "displayName": "SS",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-SS",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "通信"
+    },
+    "通信-Gaydar": {
+      "level": 3,
+      "displayName": "Gaydar",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Gaydar",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-Grindr": {
+      "level": 3,
+      "displayName": "Grindr",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Grindr",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-Skype": {
+      "level": 3,
+      "displayName": "Skype",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Skype",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-Zoom": {
+      "level": 3,
+      "displayName": "Zoom",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Zoom",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "通信"
+    },
+    "通信-Discord": {
+      "level": 3,
+      "displayName": "Discord",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 通信-Discord",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "通信"
+    },
+    "工具/搜索/电商": {
+      "level": 2,
+      "displayName": "工具/搜索/电商",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 工具/搜索/电商",
+      "color": "#C3AED6",
+      "totalPapers": 8,
+      "children": [
+        "工具/搜索/电商-Google",
+        "工具/搜索/电商-Google_Maps",
+        "工具/搜索/电商-Google_Search",
+        "工具/搜索/电商-Flo",
+        "工具/搜索/电商-Amazon_Mechanical_Turk"
+      ]
+    },
+    "工具/搜索/电商-Google": {
+      "level": 3,
+      "displayName": "Google",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 工具/搜索/电商-Google",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "工具/搜索/电商"
+    },
+    "工具/搜索/电商-Google_Maps": {
+      "level": 3,
+      "displayName": "Google Maps",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 工具/搜索/电商-Google_Maps",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "工具/搜索/电商"
+    },
+    "工具/搜索/电商-Google_Search": {
+      "level": 3,
+      "displayName": "Google Search",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 工具/搜索/电商-Google_Search",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "工具/搜索/电商"
+    },
+    "工具/搜索/电商-Flo": {
+      "level": 3,
+      "displayName": "Flo",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 工具/搜索/电商-Flo",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "工具/搜索/电商"
+    },
+    "工具/搜索/电商-Amazon_Mechanical_Turk": {
+      "level": 3,
+      "displayName": "Amazon Mechanical Turk",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 工具/搜索/电商-Amazon_Mechanical_Turk",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "工具/搜索/电商"
+    },
+    "区块链": {
+      "level": 2,
+      "displayName": "区块链",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 2, OrigLvl: 2, ID: 区块链",
+      "color": "#D4D2D5",
+      "totalPapers": 2,
+      "children": [
+        "区块链-Spatial.io",
+        "区块链-ReadyPlayerMe"
+      ]
+    },
+    "区块链-Spatial.io": {
+      "level": 3,
+      "displayName": "Spatial.io",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 区块链-Spatial.io",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "区块链"
+    },
+    "区块链-ReadyPlayerMe": {
+      "level": 3,
+      "displayName": "ReadyPlayerMe",
+      "description": "Cat: 研究涉及平台-内容形式, SankeyLvl: 3, OrigLvl: 3, ID: 区块链-ReadyPlayerMe",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "区块链"
+    }
+  },
+  "研究涉及平台-平台属性": {
+    "主流国际平台": {
+      "level": 2,
+      "displayName": "主流国际平台",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 2, OrigLvl: 2, ID: 主流国际平台",
+      "color": "#84C1FF",
+      "totalPapers": 2,
+      "children": [
+        "主流国际平台-Facebook",
+        "主流国际平台-Twitter",
+        "主流国际平台-Instagram",
+        "主流国际平台-TikTok",
+        "主流国际平台-YouTube",
+        "主流国际平台-Reddit",
+        "主流国际平台-Snapchat",
+        "主流国际平台-WhatsApp",
+        "主流国际平台-Telegram",
+        "主流国际平台-Google",
+        "主流国际平台-LinkedIn",
+        "主流国际平台-Spotify",
+        "主流国际平台-Google_Maps",
+        "主流国际平台-Threads",
+        "主流国际平台-Pinterest",
+        "主流国际平台-Twitch",
+        "主流国际平台-Instagram_Reels",
+        "主流国际平台-Google_Search",
+        "主流国际平台-Amazon",
+        "主流国际平台-Nextdoor",
+        "主流国际平台-Vine",
+        "主流国际平台-Flickr",
+        "主流国际平台-Skype",
+        "主流国际平台-Discord",
+        "主流国际平台-Tumblr"
+      ]
+    },
+    "主流国际平台-Facebook": {
+      "level": 3,
+      "displayName": "Facebook",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Facebook",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Twitter": {
+      "level": 3,
+      "displayName": "Twitter",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Twitter",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Instagram": {
+      "level": 3,
+      "displayName": "Instagram",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Instagram",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-TikTok": {
+      "level": 3,
+      "displayName": "TikTok",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-TikTok",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-YouTube": {
+      "level": 3,
+      "displayName": "YouTube",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-YouTube",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Reddit": {
+      "level": 3,
+      "displayName": "Reddit",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Reddit",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Snapchat": {
+      "level": 3,
+      "displayName": "Snapchat",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Snapchat",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-WhatsApp": {
+      "level": 3,
+      "displayName": "WhatsApp",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-WhatsApp",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Telegram": {
+      "level": 3,
+      "displayName": "Telegram",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Telegram",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Google": {
+      "level": 3,
+      "displayName": "Google",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Google",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-LinkedIn": {
+      "level": 3,
+      "displayName": "LinkedIn",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-LinkedIn",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 2,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Spotify": {
+      "level": 3,
+      "displayName": "Spotify",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Spotify",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Google_Maps": {
+      "level": 3,
+      "displayName": "Google Maps",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Google_Maps",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Threads": {
+      "level": 3,
+      "displayName": "Threads",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Threads",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Pinterest": {
+      "level": 3,
+      "displayName": "Pinterest",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Pinterest",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Twitch": {
+      "level": 3,
+      "displayName": "Twitch",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Twitch",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Instagram_Reels": {
+      "level": 3,
+      "displayName": "Instagram Reels",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Instagram_Reels",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Google_Search": {
+      "level": 3,
+      "displayName": "Google Search",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Google_Search",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Amazon": {
+      "level": 3,
+      "displayName": "Amazon",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Amazon",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Nextdoor": {
+      "level": 3,
+      "displayName": "Nextdoor",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Nextdoor",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Vine": {
+      "level": 3,
+      "displayName": "Vine",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Vine",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Flickr": {
+      "level": 3,
+      "displayName": "Flickr",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Flickr",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Skype": {
+      "level": 3,
+      "displayName": "Skype",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Skype",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Discord": {
+      "level": 3,
+      "displayName": "Discord",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Discord",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "主流国际平台-Tumblr": {
+      "level": 3,
+      "displayName": "Tumblr",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 主流国际平台-Tumblr",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "主流国际平台"
+    },
+    "中国本土平台": {
+      "level": 2,
+      "displayName": "中国本土平台",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 2, OrigLvl: 2, ID: 中国本土平台",
+      "color": "#7ED6C2",
+      "totalPapers": 0,
+      "children": [
+        "中国本土平台-WeChat",
+        "中国本土平台-Weibo",
+        "中国本土平台-Bilibili",
+        "中国本土平台-Xiaohongshu",
+        "中国本土平台-Kuaishou",
+        "中国本土平台-Douyin",
+        "中国本土平台-Youku",
+        "中国本土平台-Tieba",
+        "中国本土平台-Toutiao"
+      ]
+    },
+    "中国本土平台-WeChat": {
+      "level": 3,
+      "displayName": "WeChat",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-WeChat",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Weibo": {
+      "level": 3,
+      "displayName": "Weibo",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Weibo",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Bilibili": {
+      "level": 3,
+      "displayName": "Bilibili",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Bilibili",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Xiaohongshu": {
+      "level": 3,
+      "displayName": "Xiaohongshu",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Xiaohongshu",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Kuaishou": {
+      "level": 3,
+      "displayName": "Kuaishou",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Kuaishou",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Douyin": {
+      "level": 3,
+      "displayName": "Douyin",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Douyin",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Youku": {
+      "level": 3,
+      "displayName": "Youku",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Youku",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Tieba": {
+      "level": 3,
+      "displayName": "Tieba",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Tieba",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "中国本土平台-Toutiao": {
+      "level": 3,
+      "displayName": "Toutiao",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 中国本土平台-Toutiao",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "中国本土平台"
+    },
+    "匿名/去中心平台": {
+      "level": 2,
+      "displayName": "匿名/去中心平台",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 2, OrigLvl: 2, ID: 匿名/去中心平台",
+      "color": "#A1C298",
+      "totalPapers": 3,
+      "children": [
+        "匿名/去中心平台-Bluesky",
+        "匿名/去中心平台-Signal",
+        "匿名/去中心平台-Mastodon"
+      ]
+    },
+    "匿名/去中心平台-Bluesky": {
+      "level": 3,
+      "displayName": "Bluesky",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 匿名/去中心平台-Bluesky",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "匿名/去中心平台"
+    },
+    "匿名/去中心平台-Signal": {
+      "level": 3,
+      "displayName": "Signal",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 匿名/去中心平台-Signal",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "匿名/去中心平台"
+    },
+    "匿名/去中心平台-Mastodon": {
+      "level": 3,
+      "displayName": "Mastodon",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 匿名/去中心平台-Mastodon",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 3,
+      "parent": "匿名/去中心平台"
+    },
+    "垂直/边缘平台": {
+      "level": 2,
+      "displayName": "垂直/边缘平台",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 2, OrigLvl: 2, ID: 垂直/边缘平台",
+      "color": "#F3D250",
+      "totalPapers": 1,
+      "children": [
+        "垂直/边缘平台-BeReal",
+        "垂直/边缘平台-Zoe",
+        "垂直/边缘平台-Naver",
+        "垂直/边缘平台-Romeo",
+        "垂直/边缘平台-Flo",
+        "垂直/边缘平台-Truman",
+        "垂直/边缘平台-Gaydar",
+        "垂直/边缘平台-Grindr",
+        "垂直/边缘平台-Spatial.io",
+        "垂直/边缘平台-ReadyPlayerMe",
+        "垂直/边缘平台-House_Party"
+      ]
+    },
+    "垂直/边缘平台-BeReal": {
+      "level": 3,
+      "displayName": "BeReal",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-BeReal",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Zoe": {
+      "level": 3,
+      "displayName": "Zoe",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Zoe",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Naver": {
+      "level": 3,
+      "displayName": "Naver",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Naver",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 1,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Romeo": {
+      "level": 3,
+      "displayName": "Romeo",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Romeo",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Flo": {
+      "level": 3,
+      "displayName": "Flo",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Flo",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Truman": {
+      "level": 3,
+      "displayName": "Truman",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Truman",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Gaydar": {
+      "level": 3,
+      "displayName": "Gaydar",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Gaydar",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Grindr": {
+      "level": 3,
+      "displayName": "Grindr",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Grindr",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-Spatial.io": {
+      "level": 3,
+      "displayName": "Spatial.io",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-Spatial.io",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-ReadyPlayerMe": {
+      "level": 3,
+      "displayName": "ReadyPlayerMe",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-ReadyPlayerMe",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "垂直/边缘平台-House_Party": {
+      "level": 3,
+      "displayName": "House Party",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 垂直/边缘平台-House_Party",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "垂直/边缘平台"
+    },
+    "专业工具/办公平台": {
+      "level": 2,
+      "displayName": "专业工具/办公平台",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 2, OrigLvl: 2, ID: 专业工具/办公平台",
+      "color": "#FF9A8B",
+      "totalPapers": 0,
+      "children": [
+        "专业工具/办公平台-Slack",
+        "专业工具/办公平台-SMs._Mechanical",
+        "专业工具/办公平台-Turk",
+        "专业工具/办公平台-Zoom"
+      ]
+    },
+    "专业工具/办公平台-Slack": {
+      "level": 3,
+      "displayName": "Slack",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 专业工具/办公平台-Slack",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "专业工具/办公平台"
+    },
+    "专业工具/办公平台-SMs._Mechanical": {
+      "level": 3,
+      "displayName": "SMs. Mechanical",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 专业工具/办公平台-SMs._Mechanical",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "专业工具/办公平台"
+    },
+    "专业工具/办公平台-Turk": {
+      "level": 3,
+      "displayName": "Turk",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 专业工具/办公平台-Turk",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "专业工具/办公平台"
+    },
+    "专业工具/办公平台-Zoom": {
+      "level": 3,
+      "displayName": "Zoom",
+      "description": "Cat: 研究涉及平台-平台属性, SankeyLvl: 3, OrigLvl: 3, ID: 专业工具/办公平台-Zoom",
+      "color": "#PLACEHOLDER",
+      "totalPapers": 0,
+      "parent": "专业工具/办公平台"
+    }
+  }
+}
