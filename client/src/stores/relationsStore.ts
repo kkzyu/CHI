@@ -26,18 +26,18 @@ export const useRelationsStore = defineStore('relations', () => {
     // ───────────────────── 工具函数：生成 L1 快照 ─────────────────────
     function buildL1Snapshot() {
         // ---------- ① 生成三列节点 ----------
-        const platformL1Ids = dataStore.getPlatformL1Nodes(state.currentPlatformType) ?? [];
-
-        const platformNodes = platformL1Ids.map((id: string) => {
-            // 尝试从 platformConfiguration 中获取 name / color
-            const pType = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
-            const meta = pType?.nodeMetadata?.[id] || {};
+        const platformL1Raw = dataStore.getPlatformL1Nodes(state.currentPlatformType) ?? [];
+        // 该数组元素可能是字符串，也可能是 { id, name, color }
+        const platformNodes = platformL1Raw.map((n: any) => {
+            const id = typeof n === 'string' ? n : n.id;
+            const name = typeof n === 'string' ? n : n.name ?? n.id;
+            const color = typeof n === 'string' ? '#6ca0dc' : n.color ?? '#6ca0dc';
             return {
                 id,
-                name: meta.displayName || id,
+                name,
                 column: 0,
-                color: meta.color || '#6ca0dc',
-                value: meta.totalPapers || 1,
+                color,
+                value: 1,
             };
         });
 
@@ -66,17 +66,36 @@ export const useRelationsStore = defineStore('relations', () => {
         const nodes = [...platformNodes, ...methodNodes, ...contentNodes];
 
         // ---------- ② 生成连线 ----------
-        // 挑选一个典型的 L1-L1-L1 组合：研究涉及平台_L1 ↔ 研究方法_L1、研究内容_L1 ↔ 研究方法_L1 等。
-        // 这里只取 "研究内容_L1__研究方法_L1" 这组，后续可补充更多。
-        const rawLinksObj = dataStore.crossLevelConnections?.connections?.['研究内容_L1__研究方法_L1'] ?? {};
         const links: any[] = [];
-        for (const key in rawLinksObj) {
-            if (!Object.prototype.hasOwnProperty.call(rawLinksObj, key)) continue;
-            const [source, target] = key.split('__');
-            const info = rawLinksObj[key];
+
+        // a) 平台 (L1)  →  方法 (L1)
+        const platformKeyPrefix =
+            state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L2__研究方法_L1'
+                : '研究涉及平台-平台属性_L2__研究方法_L1';
+
+        const rawPlatformMethod = dataStore.crossLevelConnections?.connections?.[platformKeyPrefix] ?? {};
+        for (const key in rawPlatformMethod) {
+            if (!Object.prototype.hasOwnProperty.call(rawPlatformMethod, key)) continue;
+            const [platform, method] = key.split('__');
+            const info = rawPlatformMethod[key];
             links.push({
-                source,
-                target,
+                source: platform,
+                target: method,
+                value: info.paperCount ?? 1,
+                paperIds: info.paperIds ?? [],
+            });
+        }
+
+        // b) 方法 (L1)  →  内容 (L1)  —— 通过反转 "研究内容_L1__研究方法_L1"
+        const rawContentMethod = dataStore.crossLevelConnections?.connections?.['研究内容_L1__研究方法_L1'] ?? {};
+        for (const key in rawContentMethod) {
+            if (!Object.prototype.hasOwnProperty.call(rawContentMethod, key)) continue;
+            const [content, method] = key.split('__');
+            const info = rawContentMethod[key];
+            links.push({
+                source: method, // 反向
+                target: content,
                 value: info.paperCount ?? 1,
                 paperIds: info.paperIds ?? [],
             });
