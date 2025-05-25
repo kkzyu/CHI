@@ -1,0 +1,118 @@
+{
+  "stateTemplates": {
+    "initial": {
+      "platformType": "内容形式",
+      "levels": {
+        "研究涉及平台": 1,
+        "研究内容": 1,
+        "研究方法": 1
+      },
+      "expandedNodes": [],
+      "selectedFilters": {
+        "years": [
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "awardStatus": "all"
+      }
+    },
+    "mixed_expansion_example": {
+      "platformType": "内容形式",
+      "levels": {
+        "研究涉及平台": 2,
+        "研究内容": 1,
+        "研究方法": 3
+      },
+      "expandedNodes": [
+        {
+          "category": "研究涉及平台",
+          "nodeId": "图文为主",
+          "expandedToLevel": 2,
+          "children": [
+            "Bluesky",
+            "Facebook",
+            "Linkedin",
+            "Mastodon.Naver",
+            "Nextdoor",
+            "Threads",
+            "Toutiao",
+            "Twitter",
+            "Weibo",
+            "Xiaohongshu"
+          ]
+        },
+        {
+          "category": "研究方法",
+          "nodeId": "定量研究与实验设计-实验与对照组设计",
+          "expandedToLevel": 3,
+          "children": [
+            "用户实验",
+            "人机交互实验",
+            "众包实验",
+            "在线实验",
+            "实验室研究",
+            "对照实验",
+            "被试间设计实验",
+            "准实验设计",
+            "混合设计实验",
+            "自然实验",
+            "脑电图实验"
+          ]
+        }
+      ],
+      "activeConnections": [
+        "研究涉及平台_L2__研究内容_L1",
+        "研究内容_L1__研究方法_L3"
+      ],
+      "selectedFilters": {
+        "years": [
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "awardStatus": "all"
+      }
+    }
+  },
+  "navigationHistory": [
+    {
+      "timestamp": "2024-01-01T10:00:00Z",
+      "action": "expand",
+      "target": {
+        "category": "研究内容",
+        "nodeId": "用户群体与个体特征",
+        "fromLevel": 1,
+        "toLevel": 2
+      },
+      "previousState": "initial"
+    },
+    {
+      "timestamp": "2024-01-01T10:05:00Z",
+      "action": "switch_platform_type",
+      "target": {
+        "from": "内容形式",
+        "to": "平台属性"
+      },
+      "affectedConnections": [
+        "研究涉及平台_L1__研究内容_L1"
+      ]
+    }
+  ],
+  "transitionRules": {
+    "platform_switch": {
+      "preserve_other_expansions": true,
+      "recalculate_connections": true,
+      "animation_duration": 800
+    },
+    "node_expansion": {
+      "max_mixed_levels": 3,
+      "auto_collapse_siblings": false,
+      "update_connection_weights": true
+    }
+  }
+}

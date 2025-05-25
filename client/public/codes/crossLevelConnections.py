@@ -1,213 +1,137 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-构建跨域连接关系：
-1. 读取层次化标签  client/public/data/tags.txt
-2. 读取论文原始数据 client/public/data/papers.json
-3. 识别"研究涉及平台"下每个具体平台所对应的
-   a) 内容形式（图文为主、视频为主 …）
-   b) 平台属性（主流国际平台、中国本土平台 …）
-4. 统计五类跨域连接：
-     研究涉及平台-内容形式(Lx)   ↔ 研究内容(Ly)
-     研究涉及平台-内容形式(Lx)   ↔ 研究方法(Ly)
-     研究内容(Lx)               ↔ 研究方法(Ly)
-     研究涉及平台-平台属性(Lx)   ↔ 研究内容(Ly)
-     研究涉及平台-平台属性(Lx)   ↔ 研究方法(Ly)
-5. 计算 connectionStrength（strong ≥6, medium 3-5, weak <3）
-6. 生成全部 27 种 levelCombinations（平台/内容/方法 三域×3 层）
-7. 输出到 client/public/data/crossLevelConnections.json
-"""
-import json, re, itertools
-from collections import defaultdict, OrderedDict
+
+from __future__ import annotations
+
+import json
+from collections import defaultdict
+from itertools import product
 from pathlib import Path
+from typing import Dict, List, Set
 
-TAG_FILE  = Path("F:/202502/CHIvis/client/public/data/tags.txt")
-PAPER_FILE = Path("F:/202502/CHIvis/client/public/data/papers.json")
-OUT_FILE = Path("F:/202502/CHIvis/client/public/data/crossLevelConnections.json")
+# ---------------------------------------------------------------------------
+# Configuration ----------------------------------------------------------------
 
+PAPERS_FILE = "F:/202502/CHIvis/client/public/data/processedPapers.json"
+HIERARCHY_FILE = "F:/202502/CHIvis/client/public/data/hierarchyMapping.json"
+NODE_META_FILE = "F:/202502/CHIvis/client/public/data/nodeMetadata.json"
+OUTPUT_FILE = "F:/202502/CHIvis/client/public/data/crossLevelConnections.json"
 
-########################################################################
-# 1. 解析层次化标签
-########################################################################
-def parse_tags():
-    """
-    解析 tags.txt，返回：
-    1) research_content_levels : {tag: level(1/2/3)}
-    2) research_method_levels  : {tag: level}
-    3) platform2form           : {platform: 内容形式(顶层 L1)}
-    4) platform2attr           : {platform: 平台属性(顶层 L1)}
-    """
-    research_content_levels, research_method_levels = {}, {}
-    platform2form, platform2attr = {}, {}
+# Tag domain keys
+PLATFORM_CONTENT = "研究涉及平台-内容形式"
+PLATFORM_ATTR = "研究涉及平台-平台属性"
+RESEARCH_CONTENT = "研究内容"
+RESEARCH_METHOD = "研究方法"
 
-    current_section   = None        # 研究内容 / 研究方法 / 研究平台-内容形式 / 研究平台-平台属性
-    stack             = []          # 记录层次
-    section_prefix_re = re.compile(r"^#+\s*\*\*(.+?)\*\*")
-    bullet_re         = re.compile(r"^(\s*)-\s*(.+?)\s*$")
+LEVELS = ["l1", "l2", "l3"]
 
-    for line in TAG_FILE.read_text(encoding="utf-8").splitlines():
-        # 去掉 BOM/空行/注释
-        if not line.strip(): continue
+# Strength thresholds
+STRONG_THR = 20
+MEDIUM_THR = 10
 
-        m_sec = section_prefix_re.match(line)
-        if m_sec:
-            sec = m_sec.group(1).strip()
-            # 兼容"研究平台"之下的子标题，先清空 stack
-            stack = []
-            if sec in ("研究内容", "研究方法"):
-                current_section = sec
-            elif sec == "研究平台":
-                current_section = sec   # 先标记，随后靠子标题识别 form / attr
-            continue
+# ---------------------------------------------------------------------------
+# Helper functions -----------------------------------------------------------
 
-        m_b = bullet_re.match(line)
-        if not m_b: continue
+def classify_strength(count: int) -> str:
+    if count >= STRONG_THR:
+        return "strong"
+    if count >= MEDIUM_THR:
+        return "medium"
+    return "weak"
 
-        indent = len(m_b.group(1)) // 4          # 每 4 空格一个缩进
-        tag    = m_b.group(2).strip()
-        # 调整栈大小以保持与 indent 同步
-        while len(stack) > indent: stack.pop()
-        # 将当期 tag 压栈
-        if len(stack) == indent:
-            stack.append(tag)
-        else:   # 同一层追加
-            stack[-1] = tag
+def add_connection(store: Dict[str, Dict[str, Dict[str, object]]],
+                   conn_type: str,
+                   left_label: str,
+                   right_label: str,
+                   paper_id: str):
+    label_key = f"{left_label}__{right_label}"
+    info = store.setdefault(conn_type, {}).setdefault(label_key, {"paperIds": [], "paperCount": 0})
+    info["paperIds"].append(paper_id)
+    info["paperCount"] += 1
 
-        # 根据当前大区分配
-        if current_section == "研究内容":
-            level = len(stack)
-            research_content_levels[tag] = level
-        elif current_section == "研究方法":
-            level = len(stack)
-            research_method_levels[tag] = level
-        elif current_section == "研究平台":
-            # 需要先判断内容形式 / 平台属性
-            # 第一层 bullet 是 **内容形式** / **平台属性**
-            if indent == 0:
-                if tag in ("内容形式", "平台属性"):
-                    sub_mode = tag            # 标记子模式
-                continue
-            # indent==1 时 tag 为 L1（如 图文为主、主流国际平台）
-            if indent == 1:
-                l1_cat = tag
-                parent_mode = stack[0]        # 内容形式 or 平台属性
-                continue
-            # indent==2 时 tag 为平台列表，添加映射
-            if indent >= 2:
-                platform2form[tag] = l1_cat   if parent_mode == "内容形式"   else platform2form.get(tag)
-                platform2attr[tag] = l1_cat   if parent_mode == "平台属性"  else platform2attr.get(tag)
-
-    return research_content_levels, research_method_levels, platform2form, platform2attr
-
-########################################################################
-# 2. 读取论文
-########################################################################
-def load_papers():
-    return json.loads(PAPER_FILE.read_text(encoding="utf-8"))
-
-########################################################################
-# 3. 统计连接
-########################################################################
-def strength(count:int)->str:
-    return "strong" if count>=6 else "medium" if count>=3 else "weak"
+# ---------------------------------------------------------------------------
+# Main -----------------------------------------------------------------------
 
 def main():
-    rc_levels, rm_levels, p2form, p2attr = parse_tags()
-    papers = load_papers()
+    # Load data files
+    with open(PAPERS_FILE, "r", encoding="utf-8") as f:
+        papers_data = json.load(f)
 
-    # connections[conn_type][lhs__rhs] = set(paperIds)
-    connections = defaultdict(lambda: defaultdict(set))
+    # connections[conn_type][labelPair] = {paperCount, paperIds, connectionStrength}
+    connections: Dict[str, Dict[str, Dict[str, object]]] = {}
 
-    for paper in papers:
-        pid   = paper["id"]
-        plats = paper.get("研究涉及平台", [])
-        rcats = paper.get("研究内容", [])
-        rmeth = paper.get("研究方法", [])
+    # Iterate over papers
+    for paper in papers_data.get("papers", []):
+        pid = paper.get("id")
+        tags = paper.get("tags", {})
 
-        # 处理平台映射
-        form_tags  = [(p, p2form[p])  for p in plats if p in p2form]
-        attr_tags  = [(p, p2attr[p])  for p in plats if p in p2attr]
+        # Extract levels for each domain -> dict(level -> List[str])
+        def extract(domain_key: str) -> Dict[str, List[str]]:
+            return tags.get(domain_key, {}) if isinstance(tags.get(domain_key, {}), dict) else {}
 
-        # A) 研究涉及平台-内容形式(Lx) ↔ 研究内容(Ly)
-        for _, form in form_tags:
-            for r in rcats:
-                if r not in rc_levels: continue
-                lx = 1   # 内容形式只有 L1
-                ly = rc_levels[r]
-                conn_type = f"研究涉及平台-内容形式_L{lx}__研究内容_L{ly}"
-                key = f"{form}__{r}"
-                connections[conn_type][key].add(pid)
+        platform_content_tags = extract(PLATFORM_CONTENT)
+        platform_attr_tags = extract(PLATFORM_ATTR)
+        research_content_tags = extract(RESEARCH_CONTENT)
+        research_method_tags = extract(RESEARCH_METHOD)
 
-        # B) 研究涉及平台-内容形式(Lx) ↔ 研究方法(Ly)
-        for _, form in form_tags:
-            for m in rmeth:
-                if m not in rm_levels: continue
-                lx = 1
-                ly = rm_levels[m]
-                conn_type = f"研究涉及平台-内容形式_L{lx}__研究方法_L{ly}"
-                key = f"{form}__{m}"
-                connections[conn_type][key].add(pid)
+        # Helper to iterate over level items
+        def iter_pairs(left: Dict[str, List[str]], right: Dict[str, List[str]]):
+            for l_level, l_tags in left.items():
+                for r_level, r_tags in right.items():
+                    for l in l_tags:
+                        for r in r_tags:
+                            yield l_level.upper(), r_level.upper(), l, r
 
-        # C) 研究内容(Lx) ↔ 研究方法(Ly)
-        for r in rcats:
-            if r not in rc_levels: continue
-            lx = rc_levels[r]
-            for m in rmeth:
-                if m not in rm_levels: continue
-                ly = rm_levels[m]
-                conn_type = f"研究内容_L{lx}__研究方法_L{ly}"
-                key = f"{r}__{m}"
-                connections[conn_type][key].add(pid)
+        # A. PLATFORM_CONTENT vs RESEARCH_CONTENT
+        for l_lv, r_lv, l, r in iter_pairs(platform_content_tags, research_content_tags):
+            conn_type = f"研究涉及平台-内容形式_{l_lv}__研究内容_{r_lv}"
+            add_connection(connections, conn_type, l, r, pid)
 
-        # D) 研究涉及平台-平台属性(Lx) ↔ 研究内容(Ly)
-        for _, attr in attr_tags:
-            for r in rcats:
-                if r not in rc_levels: continue
-                lx = 1      # 平台属性同为 L1
-                ly = rc_levels[r]
-                conn_type = f"研究涉及平台-平台属性_L{lx}__研究内容_L{ly}"
-                key = f"{attr}__{r}"
-                connections[conn_type][key].add(pid)
+        # B. PLATFORM_CONTENT vs RESEARCH_METHOD
+        for l_lv, r_lv, l, r in iter_pairs(platform_content_tags, research_method_tags):
+            conn_type = f"研究涉及平台-内容形式_{l_lv}__研究方法_{r_lv}"
+            add_connection(connections, conn_type, l, r, pid)
 
-        # E) 研究涉及平台-平台属性(Lx) ↔ 研究方法(Ly)
-        for _, attr in attr_tags:
-            for m in rmeth:
-                if m not in rm_levels: continue
-                lx = 1
-                ly = rm_levels[m]
-                conn_type = f"研究涉及平台-平台属性_L{lx}__研究方法_L{ly}"
-                key = f"{attr}__{m}"
-                connections[conn_type][key].add(pid)
+        # C. RESEARCH_CONTENT vs RESEARCH_METHOD
+        for l_lv, r_lv, l, r in iter_pairs(research_content_tags, research_method_tags):
+            conn_type = f"研究内容_{l_lv}__研究方法_{r_lv}"
+            add_connection(connections, conn_type, l, r, pid)
 
-    # 4. 整理连接结果
-    conn_json = OrderedDict()
-    for ctype, pairs in connections.items():
-        conn_json[ctype] = OrderedDict()
-        for key, pset in sorted(pairs.items(), key=lambda kv: (-len(kv[1]), kv[0])):
-            paper_ids = sorted(pset)
-            conn_json[ctype][key] = {
-                "paperCount": len(paper_ids),
-                "paperIds":   paper_ids,
-                "connectionStrength": strength(len(paper_ids))
-            }
+        # D. PLATFORM_ATTR vs RESEARCH_CONTENT
+        for l_lv, r_lv, l, r in iter_pairs(platform_attr_tags, research_content_tags):
+            conn_type = f"研究涉及平台-平台属性_{l_lv}__研究内容_{r_lv}"
+            add_connection(connections, conn_type, l, r, pid)
 
-    # 5. levelCombinations—3 域×3 层 = 27 种
-    levels = ["L1","L2","L3"]
-    level_combinations = [ "_".join(t) for t in itertools.product(levels, repeat=3) ]
+        # E. PLATFORM_ATTR vs RESEARCH_METHOD
+        for l_lv, r_lv, l, r in iter_pairs(platform_attr_tags, research_method_tags):
+            conn_type = f"研究涉及平台-平台属性_{l_lv}__研究方法_{r_lv}"
+            add_connection(connections, conn_type, l, r, pid)
 
-    # 打印所有排列组合以便检查
-    print("全部 levelCombinations（平台/内容/方法 三域 × 3 层）:")
-    print(", ".join(level_combinations))
+    # Compute connectionStrength and deduplicate paperIds
+    for conn_type, pair_map in connections.items():
+        for stats in pair_map.values():
+            unique_ids = list(dict.fromkeys(stats["paperIds"]))  # preserve order
+            stats["paperIds"] = unique_ids
+            stats["paperCount"] = len(unique_ids)
+            stats["connectionStrength"] = classify_strength(stats["paperCount"])
 
-    # 6. 写出 JSON
-    OUT_FILE.write_text(
-        json.dumps({
-            "connections": conn_json,
-            "levelCombinations": level_combinations
-        }, ensure_ascii=False, indent=2),
-        encoding="utf-8"
-    )
-    print(f"\n✅ 生成完成 → {OUT_FILE}")
+    # Build levelCombinations: 3^3 combinations for (Platform domain, Research Content, Research Method)
+    lvl_codes = ["L1", "L2", "L3"]
+    level_combos = ["_".join(combo) for combo in product(lvl_codes, repeat=3)]
+
+    # Print combinations for verification
+    print("All level combinations (Platform/Content/Method):")
+    for combo in level_combos:
+        print(combo)
+    print(f"Total combinations: {len(level_combos)}")
+
+    output = {
+        "connections": connections,
+        "levelCombinations": level_combos,
+    }
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+    print(f"Cross-level connections written to {OUTPUT_FILE}")
+
 
 if __name__ == "__main__":
     main()
