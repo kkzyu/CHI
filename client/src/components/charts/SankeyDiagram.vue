@@ -21,8 +21,14 @@ interface SankeyLink {
   value: number;
 }
 
-const props = defineProps<{ nodes: SankeyNode[]; links: SankeyLink[] }>();
+const props = defineProps<{
+  nodes: SankeyNode[];
+  links: SankeyLink[];
+  prevNodes?: { id:string; x0:number; y0:number }[];
+}>();
 const svgRef = ref<SVGSVGElement|null>(null);
+const emit = defineEmits(['node-toggle']);
+
 
 function render() {
   if(!svgRef.value) return;
@@ -31,6 +37,10 @@ function render() {
                 .attr('viewBox',`0 0 ${width} ${height}`)
                 .attr('width','100%').attr('height','100%');
   svg.selectAll('*').remove();          // 清屏
+
+  // 新建图层
+  const linkLayer = svg.append('g').attr('class','links');
+  const nodeLayer = svg.append('g').attr('class','nodes');
 
   // 深拷贝，避免 d3-sankey 修改原数组
   const graph = d3Sankey<SankeyNode, SankeyLink>()
@@ -44,42 +54,97 @@ function render() {
     links: props.links.map((l) => ({ ...l })),
   });
 
-  // 画连线
-  svg.append('g')
-     .selectAll('path')
-     .data(result.links)
-     .enter()
-     .append('path')
-     .attr('d', sankeyLinkHorizontal())
-     .attr('fill','none')
-     .attr('stroke','#999')
-     .attr('stroke-opacity',0.4)
-     .attr('stroke-width', d=>Math.max(1,d.width));
+  const linkSel = linkLayer.selectAll('path')
+    .data(result.links, (d:any)=> d.source.id + '→' + d.target.id);
+
+  const linkEnter = linkSel.enter().append('path')
+        .attr('fill','none')
+        .attr('stroke','#999')
+        .attr('stroke-opacity',0.3);
+
+  linkEnter.merge(linkSel as any)
+        .transition().duration(600)
+        .attr('d', sankeyLinkHorizontal())
+        .attr('stroke-width', (d:any)=>Math.max(1,d.width));
+
+  linkSel.exit().transition().duration(400).style('opacity',0).remove();
 
   // 画节点
-  const nodeG = svg.append('g')
-     .selectAll('g')
-     .data(result.nodes)
-     .enter()
-     .append('g')
-     .attr('transform', d=>`translate(${d.x0},${d.y0})`);
+  const nodeSel = nodeLayer.selectAll('g')
+     .data(result.nodes, (d:any)=> d.id);
 
-  nodeG.append('rect')
-       .attr('width', d=>d.x1-d.x0)
-       .attr('height',d=>d.y1-d.y0)
-       .attr('fill', d=>d.color || '#69c');
+  // --- Enter ---
+  const nodeEnter = nodeSel.enter().append('g')
+        .attr('transform', d => {
+          const prev = props.prevNodes?.find(p => p.id === d.id);
+          return prev ? `translate(${prev.x0},${prev.y0})` 
+                      : `translate(${d.x0},${d.y0})`;
+        })
+        .style('opacity', 0);   // 仅设置初值，不做 transition
 
-  nodeG.append('text')
-       .attr('x', -6)
-       .attr('y', d=> (d.y1-d.y0)/2 )
-       .attr('dy','0.35em')
-       .attr('text-anchor','end')
-       .style('font-size','10px')
-       .text(d=>d.name);
+  // 进入节点子元素
+  nodeEnter.append('rect')
+        .attr('width', d => d.x1 - d.x0)
+        .attr('height', d => d.y1 - d.y0)
+        .attr('fill', d => d.color || '#69c');
+
+  nodeEnter.append('text')
+        .attr('x',  d => d.column === 0 ? (d.x1 - d.x0) + 6 : -6)
+        .attr('y',  d => (d.y1 - d.y0) / 2)
+        .attr('dy', '0.35em')
+        .attr('text-anchor', d => d.column === 0 ? 'start' : 'end')
+        .style('font-size', '10px')
+        .text(d => d.name);
+
+  // --- Enter 过渡 ---
+  nodeEnter.transition().duration(600)
+        .style('opacity', 1)
+        .attr('transform', d => `translate(${d.x0},${d.y0})`);
+
+  // 合并更新阶段
+  nodeSel.merge(nodeEnter)
+        .transition().duration(600)
+        .attr('transform', d => `translate(${d.x0},${d.y0})`)
+        .select('rect')
+          .attr('width',  d => d.x1 - d.x0)
+          .attr('height', d => d.y1 - d.y0);
+
+  // --- Exit ---
+  nodeSel.exit()
+        .transition().duration(400)
+        .style('opacity', 0)
+        .remove();
+
+  nodeLayer.selectAll('g')
+      .on('dblclick', (evt:any,d:any)=>{
+        emit('node-toggle',{ id:d.id, column:d.column });
+      });
+
+  // ========== Hover 高亮 ==========
+  function highlight(nodeId:string) {
+    linkLayer.selectAll<SVGPathElement,any>('path')
+      .style('stroke-opacity', l =>
+        (l.source.id===nodeId || l.target.id===nodeId) ? 0.9 : 0.05);
+    nodeLayer.selectAll<SVGGElement,any>('g')
+      .style('opacity', n => n.id===nodeId ? 1 : 0.4);
+  }
+  function clearHighlight() {
+    linkLayer.selectAll('path').style('stroke-opacity',0.3);
+    nodeLayer.selectAll('g').style('opacity',1);
+  }
+
+  nodeLayer.selectAll('g')
+    .on('mouseover', (_,d:any)=> highlight(d.id))
+    .on('mouseout',  clearHighlight);
 }
 
+
 onMounted(render);
-watch(()=>[props.nodes,props.links], render, { deep:true });
+let rafId:number;
+watch(()=>[props.nodes,props.links],()=>{
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(render);
+},{deep:true});
 </script>
 
 <style scoped>
