@@ -283,8 +283,8 @@ function processAllPaperData() {
 async function fetchAllData() {
   try {
     const [papersResponse, tagsHierarchyResponse] = await Promise.all([
-      fetch('public/data/papers.json'), // Assuming papers.json is in public/data
-      fetch('public/data/allTagsById.json') // Assuming allTagsById.json is in public/data
+      fetch(`${import.meta.env.BASE_URL}data/papers.json`),
+      fetch(`${import.meta.env.BASE_URL}data/allTagsById.json`)
     ]);
 
     if (!papersResponse.ok) throw new Error(`HTTP error! status: ${papersResponse.status} for papers.json`);
