@@ -15,7 +15,7 @@
   /* Screen width: 1920px. Remaining: 1920 - 1872 = 48px */
   /* We can use this for gaps. Let's aim for two gaps of 24px each. */
   --column-gap: 24px;
-
+  --column-gap-sm: 12px; /* 更小的三栏间距 */
 
   /* Colors ( reusing from previous, adjust as needed ) */
   --color-primary: #4f46e5;
@@ -55,4 +55,9 @@
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* Layout margins */
+  --layout-side-margin: 16px; /* 左右外边距 */
+  --layout-bottom-margin: 16px; /* 底部外边距 */
+  --layout-bottom-margin-lg: 40px; /* 更大的底部外边距 */
 }

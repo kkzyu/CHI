@@ -1,6 +1,6 @@
 <template>
-  <div class="panel-content">
-    <div class="panel-title-bar">
+  <div class="panel-content" ref="panelContentRef">
+    <div class="panel-title-bar" ref="panelTitleBarRef">
       <div class="title-group">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="title-icon">
           <path d="M8.26782 16.733L21.2195 16.6591L21.2368 19.6931L8.28513 19.7671L8.26782 16.733ZM8.27 23.6692L18.1402 23.5952L18.163 26.6293L8.29276 26.7033L8.27 23.6692ZM8.27427 9.80968L30.2097 9.7106L30.2234 12.7447L8.28802 12.8438L8.27427 9.80968Z" fill="currentColor"/>
@@ -21,14 +21,21 @@
         </div>
       </div>
     </div>
-    <div class="paper-cards-container">
-       <PaperCard v-for="paper in filteredPapers" :key="paper.id" :paper-data="paper" :search-term="searchTerm" />
-      <div v-if="allPapers.length > 0 && filteredPapers.length === 0 && searchTerm" class="no-results-message">
-        未找到包含“{{ searchTerm }}”标签的论文。
+
+    <div v-if="isLoading" class="loading-message">正在加载论文数据...</div>
+    <div class="paper-cards-container" v-if="!isLoading && allPapers.length > 0">
+      <PaperCard
+        v-for="paper in filteredPapers"
+        :key="paper.id"
+        :paper-data="paper"
+        :search-term="searchTerm"
+      />
+      <div v-if="filteredPapers.length === 0 && searchTerm" class="no-results-message">
+        未找到包含"{{ searchTerm }}"的论文。
       </div>
-      <div v-if="allPapers.length === 0" class="no-data-message">
-        当前无论文数据。
-      </div>
+    </div>
+    <div v-if="!isLoading && allPapers.length === 0" class="no-data-message">
+      未能加载论文数据或数据文件为空。
     </div>
   </div>
 </template>
@@ -39,54 +46,74 @@ import PaperCard from '@/components/paper/PaperCard.vue';
 
 const searchTerm = ref('');
 const allPapers = ref([]); // 存储所有论文数据
-const dummyPaper = (id) => {
-  let currentAwardType = null;
-  if (id % 3 === 1) { // 例如：id 为 1, 4, ... 的论文显示 honoraryMentionSVG
-    currentAwardType = 'honorary';
-  } else if (id % 3 === 2) { // 例如：id 为 2, 5, ... 的论文显示 bestPaperSVG
-    currentAwardType = 'best';
-  }
-  // id % 3 === 0 的论文则 currentAwardType 为 null，不显示徽章
-    // 为了方便测试搜索，让标签内容更多样化
-  const researchContentBase = ['广告投放', '用户消费', '社交媒体', '推荐系统'];
-  const researchMethodBase = ['倾向得分匹配', '对照实验', '线性回归', '机器学习'];
-  const platformBase = ['Snapchat', 'TikTok', 'Web平台', '移动应用'];
+const isLoading = ref(true); // 开始时设置为true，直到数据加载完成
+const panelContentRef = ref(null);
+const panelTitleBarRef = ref(null);
 
-  return {
-    id: `paper-${id}`,
-    award_type: currentAwardType, // **确保这里是 award_type**
-    doi: `10.1145/3411764.3445394`,
-    doi_url: `https://doi.org/10.1145/3411764.3445394`,
-    title: `AdverTiming Matters: Examining User Ad Consumption for Effective Ad Allocations on Social Media`,
-    authors: [
-      'Saha, Koustuv',
-      'Liu, Yozen',
-      'Vincent, Nicholas',
-      'Chowdhury, Farhan Asif',
-      'Neves, Leonardo',
-      'Shah, Neil',
-      `Bos, Maarten W.` // 略作区分
-    ],
-    year: 2021,
-    abstract: `Showing ads delivers revenue for online content distributors, but ad exposure can compromise user experience and cause user fatigue and frustration. Correctly balancing ads with other content is imperative. Currently, ad allocation relies primarily on demographics and inferred user interests, which are treated as static features and can be privacy-intrusive. This paper uses person-centric and momentary context features to understand optimal ad-timing. In a quasi-experimental study on a three-month longitudinal dataset of 100K Snapchat users, we find ad timing influences ad effectiveness. We draw insights on the relationship between ad effectiveness and momentary behaviors such as duration, interactivity, and interaction diversity. We simulate ad reallocation, finding that our study-driven insights lead to greater value for the platform. This work advances our understanding of ad consumption and bears implications for designing responsible ad allocation systems, improving both user and platform outcomes. We discuss privacy-preserving components and ethical implications of our work.`,
-    tags: {
-      research_content: [researchContentBase[id % researchContentBase.length], `内容 #${id}`, platformBase[id % platformBase.length].toLowerCase()],
-      research_method: [researchMethodBase[id % researchMethodBase.length], `方法 ${id}`],
-      platform: [platformBase[id % platformBase.length], `平台特性 ${id}`]
+// 数据转换函数，将从JSON读取的原始对象转换为PaperCard期望的格式
+const transformPaperData = (rawDataArray) => {
+  return rawDataArray.map((item, index) => {
+    let awardType = null;
+    // JSON中的 "Tags" 字段可能是字符串或数组，用于判断奖项
+    let awardSourceField = '';
+    if (Array.isArray(item.Tags)) {
+      awardSourceField = item.Tags.join(' ').toLowerCase();
+    } else if (item.Tags && typeof item.Tags === 'string') {
+      awardSourceField = item.Tags.toLowerCase();
     }
-  };
+
+    if (awardSourceField.includes('#honorable mention')) {
+      awardType = 'honorary';
+    } else if (awardSourceField.includes('#best paper')) { // 假设最佳论文的标记
+      awardType = 'best';
+    }
+
+    const doiUrl = item.DOI || null;
+    let doiText = null;
+    if (doiUrl && typeof doiUrl === 'string') {
+      const match = doiUrl.match(/(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i);
+      doiText = match ? match[0] : (doiUrl.startsWith('http') ? null : doiUrl);
+    }
+
+    const authorsArray = typeof item.Authors === 'string'
+      ? item.Authors.split('\n').map(a => a.trim()).filter(a => a)
+      : (Array.isArray(item.Authors) ? item.Authors.map(a => String(a).trim()).filter(a => a) : []);
+
+    return {
+      id: item.ID || `paper-json-${index}-${(item.Name || 'untitled').substring(0,10).replace(/\s/g,'-')}`,
+      award_type: awardType,
+      title: item.Name || 'N/A',
+      doi: doiText,
+      doi_url: doiUrl,
+      authors: authorsArray,
+      year: item.Year ? parseInt(item.Year) : null,
+      abstract: item.Abstract || 'N/A',
+      tags: {
+        research_content: Array.isArray(item.研究内容) ? item.研究内容.map(t => String(t).trim()).filter(t => t) : [],
+        research_method: Array.isArray(item.研究方法) ? item.研究方法.map(t => String(t).trim()).filter(t => t) : [],
+        platform: Array.isArray(item.研究涉及平台) ? item.研究涉及平台.map(t => String(t).trim()).filter(t => t) : []
+      },
+    };
+  });
 };
 
-onMounted(() => {
-  // 生成一些虚拟数据用于展示
-  const initialPapers = [];
-  for (let i = 1; i <= 10; i++) { // 生成10条虚拟数据
-    initialPapers.push(dummyPaper(i));
+onMounted(async () => {
+  isLoading.value = true;
+  try {
+    const response = await fetch('data/raw/papers.json'); // 注意路径，相对于public目录, 但是public是CHI
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const jsonData = await response.json();
+    allPapers.value = transformPaperData(jsonData);
+  } catch (error) {
+    console.error("无法加载或解析 papers.json:", error);
+    alert("加载论文数据失败，请检查文件是否存在且格式正确。");
+  } finally {
+    isLoading.value = false;
   }
-  allPapers.value = initialPapers;
 });
 
-// 计算属性，用于根据 searchTerm 筛选论文, 如果用户输入的搜索词匹配论文的任何一个标签，或者匹配论文的奖项类型对应的文本（“荣誉提名”或“最佳论文”），则该论文卡片会被显示。
 const filteredPapers = computed(() => {
   const term = searchTerm.value.toLowerCase().trim();
   if (!term) {
@@ -120,22 +147,33 @@ const filteredPapers = computed(() => {
     return tagMatch || awardMatch;
   });
 });
+
+
 </script>
 
 <style scoped>
 .panel-content {
+  background-color: white;
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-y: auto;
 }
 
-.panel-title-bar { /* 原 .panel-title */
+.panel-title-bar {
   display: flex;
   align-items: center;
   justify-content: space-between; /* 将标题组和搜索框推向两端 */
-  margin-bottom: var(--space-md, 16px);
   flex-shrink: 0;
-  /* height: 40px; /* 可以设定一个固定高度以确保对齐和一致性 */
+  position: sticky;
+  background-color: white; /* 必须有背景色，防止内容透视 */
+  z-index: 150; /* 确保在最上层 */
+  top: 0;
+  padding: 20px 16px 12px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px; /* 原本如果更大可改为8px或更小 */
+  border-bottom: none;
 }
 
 .title-group {
@@ -155,10 +193,6 @@ const filteredPapers = computed(() => {
 
 .title-text {
   font-weight: 600; /* 可以让标题文字加粗一些 */
-}
-
-.search-bar-container {
-  /* 容器不需要太多样式，主要控制内部wrapper */
 }
 
 .search-input-wrapper {
@@ -209,8 +243,10 @@ const filteredPapers = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center cards if they are narrower than container */
-  gap: var(--space-md);
+  gap: 10px; /* 如原gap较大可适当减小 */
   flex-grow: 1;
   /* overflow-y: auto; The parent .details-column in DashboardLayout handles scrolling */
+  padding-top: 0px;
+  box-sizing: border-box;
 }
 </style>

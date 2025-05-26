@@ -1,10 +1,9 @@
 <template>
-  <div class="paper-card">
+  <div class="paper-card" :class="cardClass">
     <div v-if="selectedAwardSvg" class="award-badge" :class="{ 'award-highlight': isAwardMatched }" v-html="selectedAwardSvg"></div>
 
     <div class="top-section">
       <h3 class="paper-title">{{ paperData.title }}</h3>
-      <p class="paper-venue" v-if="paperData.venue">{{ paperData.venue }}</p>
       <div class="doi-authors-container">
         <div class="doi-block">
           <p v-if="paperData.doi && paperData.doi_url" class="paper-doi">
@@ -103,7 +102,6 @@ const props = defineProps({
     default: () => ({
       award_type: null, // 现在应该是 'honorary' 或 'best'
       title: '默认标题',
-      venue: null,
       doi: '',
       doi_url: '',
       authors: [],
@@ -113,8 +111,7 @@ const props = defineProps({
         research_content: [],
         research_method: [],
         platform: [],
-      },
-      pdf_url: '#',
+      }
     }),
   },
   searchTerm: {
@@ -181,6 +178,12 @@ const truncateAbstract = (text, length) => {
   }
   return text.substring(0, length) + '...';
 };
+
+const cardClass = computed(() => {
+  return {
+    'no-award': !selectedAwardSvg.value
+  };
+});
 </script>
 
 <style scoped>
@@ -204,6 +207,10 @@ const truncateAbstract = (text, length) => {
   flex-direction: column;
   position: relative; /* For award badge positioning */
   overflow: visible; /* 如果徽章稍微超出边界，可能需要设为 visible 或调整 */
+}
+
+.paper-card.no-award {
+  padding-top: 4px; /* 或根据实际需要调整 */
 }
 
 .award-badge {
@@ -233,12 +240,6 @@ const truncateAbstract = (text, length) => {
   padding: 0 0; /* 微调高亮区域的垂直填充 */
   margin: 0 0; /* 抵消padding带来的额外高度 */
   border-radius: 2px;
-  /* 下划线样式选项
-   text-decoration: underline;
-  text-decoration-color: var(--color-primary, #007bff);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
-  background-color: transparent; *//* 使用下划线时背景应透明 */
 }
 
 /* Top Section: Title, DOI, Authors */
@@ -259,12 +260,6 @@ const truncateAbstract = (text, length) => {
   margin-bottom: var(--space-xxs, 4px);
   line-height: 1.3;
   /* 允许多行，但由top-section的固定高度和overflow控制 */
-}
-
-.paper-venue {
-  font-size: var(--font-size-sm, 0.875rem);
-  color: var(--color-text-secondary, #555);
-  margin-bottom: var(--space-xs, 8px);
 }
 
 .doi-authors-container {

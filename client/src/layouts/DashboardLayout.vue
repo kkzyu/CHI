@@ -10,6 +10,7 @@
       <slot name="details"></slot>
     </div>
   </div>
+  <div class="dashboard-bottom-spacer"></div>
 </template>
 
 <script setup>
@@ -19,10 +20,12 @@
 <style scoped>
 .dashboard-layout {
   display: flex;
-  gap: var(--column-gap);
-  width: calc(var(--overview-panel-width) + var(--relations-panel-width) + var(--details-panel-width) + 2 * var(--column-gap));
-  max-width: 100%; /* Ensure it doesn't overflow its container in App.vue */
-  height: var(--panel-height); /* Fixed height for all columns' content area */
+  gap: var(--column-gap-sm);
+  width: calc(var(--overview-panel-width) + var(--relations-panel-width) + var(--details-panel-width) + 2 * var(--column-gap-sm));
+  max-width: 100%;
+  height: var(--panel-height);
+  margin: 0 var(--layout-side-margin) var(--layout-bottom-margin-lg) var(--layout-side-margin);
+  
 }
 
 .column {
@@ -47,6 +50,12 @@
 
 .details-column {
   width: var(--details-panel-width);
-  overflow-y: auto; /* Scrollable */
+  padding: 0%; /* No padding for the details column */
+}
+
+.dashboard-bottom-spacer {
+  height: 40px;
+  width: 100%;
+  pointer-events: none;
 }
 </style>
