@@ -6,6 +6,8 @@
 import { onMounted, watch, ref } from 'vue';
 import * as d3 from 'd3';
 import { sankey as d3Sankey, sankeyLinkHorizontal } from 'd3-sankey';
+import { useRelationsStore } from '@/stores/relationsStore'; // 添加这行
+import { useDataStore } from '@/stores/dataStore'; 
 
 interface SankeyNode {
   id: string;
@@ -137,7 +139,53 @@ function render() {
     .on('mouseover', (_,d:any)=> highlight(d.id))
     .on('mouseout',  clearHighlight);
 }
+// 在接口定义后添加：
+const relationsStore = useRelationsStore();
+const dataStore = useDataStore();
 
+// 添加调试函数
+// 修改 debugNodeExpansion 函数
+
+// 修改 debugNodeExpansion 函数
+
+// 在 debugNodeExpansion 函数中添加更多调试信息
+
+function debugNodeExpansion() {
+    console.log('=== 节点展开调试 ===');
+    
+    // 1. 检查数据源
+    console.log('hierarchyMapping 研究内容:', dataStore.hierarchyMapping?.['研究内容']);
+    
+    // 特别检查目标节点的子节点元数据
+    const targetChildren = dataStore.hierarchyMapping?.['研究内容']?.l1_to_l2?.['用户群体与个体特征'];
+    console.log('目标节点的子节点列表:', targetChildren);
+    
+    // 检查每个子节点的元数据
+    if (targetChildren) {
+        targetChildren.forEach(childId => {
+            const childMeta = Object.values<any>(dataStore.nodeMetadata?.['研究内容'] ?? {})
+                .find(n => n.displayName === childId && n.level === 3);
+            console.log(`子节点 ${childId} 的元数据:`, childMeta);
+        });
+    }
+    
+    // 检查所有研究内容的元数据
+    console.log('所有研究内容元数据的 level 分布:');
+    const allContentMeta = Object.values<any>(dataStore.nodeMetadata?.['研究内容'] ?? {});
+    const levelCounts = allContentMeta.reduce((acc, item) => {
+        acc[item.level] = (acc[item.level] || 0) + 1;
+        return acc;
+    }, {});
+    console.log('Level 分布:', levelCounts);
+    
+    // 其余调试代码保持不变...
+}
+// 在 onMounted 中调用
+onMounted(() => {
+    render();
+    // 延迟调试，确保数据已加载
+    setTimeout(debugNodeExpansion, 1000);
+});
 
 onMounted(render);
 let rafId:number;
