@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, reactive } from 'vue';
 import { useDataStore } from './dataStore';
+import { node } from 'globals';
 
 export const useRelationsStore = defineStore('relations', () => {
     // ───────────────────── 原始数据依赖 ─────────────────────
@@ -292,15 +293,17 @@ export const useRelationsStore = defineStore('relations', () => {
                     console.log(`子节点 ${childId} 的元数据:`, childMeta);
                     if (childMeta) {
                         const hasChildren = dataStore.hierarchyMapping?.['研究内容']?.l2_to_l3?.[childId]?.length > 0;
+                        const nodeId = childMeta.displayName;
                         const newNode = {
-                            id: childId,
-                            name: childMeta.displayName || childId,
+                            id: nodeId,
+                            name: nodeId,
                             column: 2,
                             color: childMeta.color || '#dc6866',
                             value: childMeta.totalPapers || 1,
                             level: 'L2',
                             parentId,
                             hasChildren,
+                            originalId: childId, // 保留原始ID
                         };
                         console.log(`添加L2子节点:`, newNode);
                         nodes.push(newNode);
@@ -410,26 +413,65 @@ export const useRelationsStore = defineStore('relations', () => {
         console.log(`找到连接数量: ${Object.keys(platformContentConnections).length}`);
 
          // 🔥 关键修复：如果是L1平台到内容的连接，需要聚合L2平台的数据
-        if (state.columnLevels[0] === 'L1') {
+        if (state.columnLevels[0] === 'L1'&& platformContentConnectionKey.includes('_L2__')) {
             // L1平台显示时，需要将L2平台的连接聚合到对应的L1平台
+            console.log('处理L1平台聚合连接');
+            console.log('当前显示的平台节点:', nodes.filter(n => n.column === 0).map(n => n.id));
+            console.log('当前显示的内容节点:', nodes.filter(n => n.column === 2).map(n => n.id));
+            for (const connectionKey in platformContentConnections) {
+                const [platformId, contentId] = connectionKey.split('__');
+                const connectionInfo = platformContentConnections[connectionKey];
+                
+                console.log(`处理直连: ${platformId} → ${contentId}`);
+                
+                // 检查两端节点是否存在
+                const platformNode = nodes.find(n => n.column === 0 && n.id === platformId);
+                const contentNode = nodes.find(n => n.column === 2 && n.id === contentId);
+                
+                if (platformNode && contentNode) {
+                    links.push({
+                        source: platformId,
+                        target: contentId,
+                        value: connectionInfo.paperCount || 1,
+                        paperIds: connectionInfo.paperIds || [],
+                        connectionStrength: connectionInfo.connectionStrength
+                    });
+                    console.log(`✅ 创建L1平台→内容连接: ${platformId} → ${contentId} (${connectionInfo.paperCount || 1})`);
+                } else {
+                    console.log(`连接节点不存在: ${platformId} → ${contentId}`);
+                    console.log(`平台节点存在: ${!!platformNode}, 内容节点存在: ${!!contentNode}`);
+                    if (!platformNode) {
+                        console.log(`❌ 平台节点 "${platformId}" 不存在，可用平台节点:`, nodes.filter(n => n.column === 0).map(n => n.id));
+                    }
+                    if (!contentNode) {
+                        console.log(`❌ 内容节点 "${contentId}" 不存在，可用内容节点:`, nodes.filter(n => n.column === 2).map(n => n.id));
+                    }
+                }
+            }
+        } else if (state.columnLevels[0] === 'L1' && platformContentConnectionKey.includes('_L3__')) {
+            // L1平台显示，使用L3级别数据源：需要聚合具体平台到L1分类
+            console.log('处理L1平台聚合连接（数据源为L3级别）');
             const platformConfig = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
             const aggregatedConnections = new Map<string, any>();
 
-            // 遍历所有L2平台的连接
+            // 遍历所有L3平台的连接
             for (const connectionKey in platformContentConnections) {
-                const [l2PlatformId, contentId] = connectionKey.split('__');
+                const [l3PlatformId, contentId] = connectionKey.split('__');
                 const connectionInfo = platformContentConnections[connectionKey];
                 
-                // 找到这个L2平台属于哪个L1平台
+                console.log(`处理L3连接: ${l3PlatformId} → ${contentId}`);
+                
+                // 找到这个L3平台属于哪个L1平台
                 let l1PlatformId = null;
                 for (const [l1Id, l2Children] of Object.entries(platformConfig?.hierarchy?.l2 ?? {})) {
-                    if (l2Children.includes(l2PlatformId)) {
+                    if (l2Children.includes(l3PlatformId)) {
                         l1PlatformId = l1Id;
                         break;
                     }
                 }
 
                 if (l1PlatformId) {
+                    console.log(`${l3PlatformId} 属于 L1平台: ${l1PlatformId}`);
                     const aggregatedKey = `${l1PlatformId}__${contentId}`;
                     if (aggregatedConnections.has(aggregatedKey)) {
                         // 聚合连接数据
@@ -444,6 +486,8 @@ export const useRelationsStore = defineStore('relations', () => {
                             connectionStrength: connectionInfo.connectionStrength
                         });
                     }
+                } else {
+                    console.log(`❌ 找不到 ${l3PlatformId} 对应的L1平台`);
                 }
             }
 
@@ -463,12 +507,14 @@ export const useRelationsStore = defineStore('relations', () => {
                         paperIds: aggregatedInfo.paperIds,
                         connectionStrength: aggregatedInfo.connectionStrength
                     });
-                    console.log(`创建聚合平台→内容连接: ${platformId} → ${contentId} (${aggregatedInfo.paperCount})`);
+                    console.log(`✅ 创建聚合平台→内容连接: ${platformId} → ${contentId} (${aggregatedInfo.paperCount})`);
                 }
             }
-        } else if(state.columnLevels[0] === 'L2'){
+        } else if (state.columnLevels[0] === 'L2') {
+            // L2平台显示时，直接使用具体平台的连接
+            console.log('处理L2平台直连');
             console.log('当前显示L2平台节点:', nodes.filter(n => n.column === 0).map(n => n.id));
-            // L2平台显示时，直接使用L2平台的连接
+            
             for (const connectionKey in platformContentConnections) {
                 const [platformId, contentId] = connectionKey.split('__');
                 const connectionInfo = platformContentConnections[connectionKey];
@@ -485,7 +531,7 @@ export const useRelationsStore = defineStore('relations', () => {
                         paperIds: connectionInfo.paperIds ?? [],
                         connectionStrength: connectionInfo.connectionStrength
                     });
-                    console.log(`创建平台→内容连接: ${platformId} → ${contentId} (${connectionInfo.paperCount || 1})`);
+                    console.log(`✅ 创建L2平台→内容连接: ${platformId} → ${contentId} (${connectionInfo.paperCount || 1})`);
                 } else {
                     console.log(`连接节点不存在: ${platformId} → ${contentId}`);
                     console.log(`平台节点存在: ${!!platformNode}, 内容节点存在: ${!!contentNode}`);
@@ -493,7 +539,7 @@ export const useRelationsStore = defineStore('relations', () => {
             }
         }
 
-
+        console.log(`平台→内容连接创建完成，当前连接数: ${links.length}`);
         // 2. 研究内容 → 研究方法连接
         console.log('=== 生成研究内容→研究方法连接 ===');
         
@@ -522,10 +568,18 @@ export const useRelationsStore = defineStore('relations', () => {
         const contentMethodConnections = allConnections[contentMethodConnectionKey] ?? {};
         console.log(`使用连接键: ${contentMethodConnectionKey}`);
         console.log(`找到连接数量: ${Object.keys(contentMethodConnections).length}`);
-
+        // 🔥 关键修复：添加详细的调试信息
+        console.log('当前显示的内容节点:', nodes.filter(n => n.column === 2).map(n => ({ 
+            id: n.id, 
+            name: n.name, 
+            originalId: n.originalId 
+        })));
+        console.log('当前显示的方法节点:', nodes.filter(n => n.column === 1).map(n => n.id));
         for (const connectionKey in contentMethodConnections) {
             const [contentId, methodId] = connectionKey.split('__');
             const connectionInfo = contentMethodConnections[connectionKey];
+            
+            console.log(`处理连接: ${contentId} → ${methodId}`);
             
             // 检查两端节点是否存在
             const contentNode = nodes.find(n => n.column === 2 && n.id === contentId);
@@ -627,9 +681,51 @@ export const useRelationsStore = defineStore('relations', () => {
             } else {
                 // 研究方法或研究内容 L2 → L3
                 const categoryMap = colIdx === 1 ? '研究方法' : '研究内容';
-                const l3Children = dataStore.hierarchyMapping?.[categoryMap]?.l2_to_l3?.[nodeId] ?? [];
+                let l3Children = dataStore.hierarchyMapping?.[categoryMap]?.l2_to_l3?.[nodeId] ?? [];
+                // 🔥 如果直接查找失败，尝试通过完整ID查找
+                if (l3Children.length === 0) {
+                    console.log('直接查找失败，尝试通过完整ID查找...');
+                    
+                    // 查找所有可能的完整ID
+                    const allL2ToL3Mapping = dataStore.hierarchyMapping?.[categoryMap]?.l2_to_l3 ?? {};
+                    console.log('所有L2→L3映射键:', Object.keys(allL2ToL3Mapping));
+                    
+                    // 尝试找到匹配的完整ID（包含displayName的ID）
+                    let matchedFullId = null;
+                    for (const fullId in allL2ToL3Mapping) {
+                        // 检查完整ID是否包含当前nodeId，或者通过元数据匹配
+                        const metadata = dataStore.nodeMetadata?.[categoryMap]?.[fullId];
+                        if (metadata && metadata.displayName === nodeId) {
+                            matchedFullId = fullId;
+                            break;
+                        }
+                        // 或者检查ID是否以nodeId结尾
+                        if (fullId.endsWith('-' + nodeId) || fullId.endsWith(nodeId)) {
+                            matchedFullId = fullId;
+                            break;
+                        }
+                    }
+                    
+                    if (matchedFullId) {
+                        l3Children = allL2ToL3Mapping[matchedFullId] ?? [];
+                        console.log(`找到匹配的完整ID: ${matchedFullId}, L3子节点:`, l3Children);
+                    } else {
+                        console.log('未找到匹配的完整ID');
+                        
+                        // 🔥 最后一种尝试：从当前显示的L2节点中找到originalId
+                        const currentL2Nodes = visibleNodes.value.filter(n => n.column === colIdx && n.level === 'L2');
+                        const targetNode = currentL2Nodes.find(n => n.id === nodeId || n.name === nodeId);
+                        
+                        if (targetNode && targetNode.originalId) {
+                            console.log(`使用节点的originalId: ${targetNode.originalId}`);
+                            l3Children = dataStore.hierarchyMapping?.[categoryMap]?.l2_to_l3?.[targetNode.originalId] ?? [];
+                            console.log(`通过originalId找到的L3子节点:`, l3Children);
+                        }
+                    }
+                }
+                
                 hasChildren = l3Children.length > 0;
-                console.log(`${categoryMap} L2节点 ${nodeId} 的L3子节点:`, l3Children);
+                console.log(`${categoryMap} L2节点 ${nodeId} 最终的L3子节点:`, l3Children);
             }
         }
 
@@ -650,7 +746,13 @@ export const useRelationsStore = defineStore('relations', () => {
             }
         } else if (newLevel === 'L3') {
             // L2→L3：清空之前的记录，只记录展开的L2节点
-            state.expandedNodes[colIdx] = [nodeId];
+            // 🔥 关键修复：需要找到正确的L2节点ID来记录
+            const currentL2Nodes = visibleNodes.value.filter(n => n.column === colIdx && n.level === 'L2');
+            const targetNode = currentL2Nodes.find(n => n.id === nodeId || n.name === nodeId);
+            
+            const nodeIdToRecord = targetNode?.originalId || nodeId;
+            state.expandedNodes[colIdx] = [nodeIdToRecord];
+            console.log(`记录展开的L2节点ID: ${nodeIdToRecord}`);
         }
 
         console.log('调用后 columnLevels:', [...state.columnLevels]);

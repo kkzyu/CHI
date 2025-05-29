@@ -33,7 +33,7 @@ import DetailsPanel from '@/components/panels/DetailsPanel.vue';
 }
 .dashboard-header {
   width: 100%;
-  max-width: 1872px;
+  max-width: 2872px;
   margin-bottom: 12px;
 }
 </style>
