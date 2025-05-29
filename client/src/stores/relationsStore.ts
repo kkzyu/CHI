@@ -19,12 +19,12 @@ export const useRelationsStore = defineStore('relations', () => {
 
     // 1. 预生成 "两种分类下，平台 L1 节点 id 列表"
     const platformL1Map = computed(() => ({
-        '内容形式': dataStore.platformConfiguration.platformTypes['内容形式'].hierarchy.l1,
-        '平台属性': dataStore.platformConfiguration.platformTypes['平台属性'].hierarchy.l1,
+        '内容形式': dataStore.platformConfiguration?.platformTypes?.['内容形式']?.hierarchy?.l1 || [],
+        '平台属性': dataStore.platformConfiguration?.platformTypes?.['平台属性']?.hierarchy?.l1 || [],
     }));
 
     // 2. 读取 switchMapping（内容形式 → 平台属性，反向再做一次）
-    const switchMap = computed(() => dataStore.platformConfiguration.switchMapping);
+    const switchMap = computed(() => dataStore.platformConfiguration?.switchMapping || {});
 
     // ───────────────────── 工具函数：生成 L1 快照 ─────────────────────
     function buildL1Snapshot() {
@@ -135,12 +135,11 @@ export const useRelationsStore = defineStore('relations', () => {
                 const name = typeof n === 'string' ? n : n.name ?? n.id;
                 const color = typeof n === 'string' ? '#6ca0dc' : n.color ?? '#6ca0dc';
                 
-                // 🔥 修复：检查平台是否有L2子节点
-                const categoryKey = state.currentPlatformType === '内容形式' 
-                    ? '研究涉及平台-内容形式' 
-                    : '研究涉及平台-平台属性';
-                const l1Key = state.currentPlatformType === '内容形式' ? '内容形式' : '平台属性';
-                const hasChildren = (dataStore.hierarchyMapping?.[categoryKey]?.l1_to_l2?.[l1Key]?.length ?? 0) > 0;
+                const platformConfig = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
+                const l2Children = platformConfig?.hierarchy?.l2?.[id] ?? [];
+                const hasChildren = l2Children.length > 0;
+                
+                console.log(`平台L1节点 ${id} 的L2子节点数量: ${l2Children.length}`);
                 
                 return {
                     id,
@@ -155,55 +154,44 @@ export const useRelationsStore = defineStore('relations', () => {
             nodes.push(...platformNodes);
             console.log(`平台 L1 节点数量: ${platformNodes.length}`);
         } else if (state.columnLevels[0] === 'L2' && state.expandedNodes[0].length > 0) {
-            // 🔥 新增：生成平台 L2 节点
-            const categoryKey = state.currentPlatformType === '内容形式' 
-                ? '研究涉及平台-内容形式' 
-                : '研究涉及平台-平台属性';
-            const l1Key = state.currentPlatformType === '内容形式' ? '内容形式' : '平台属性';
+            // 生成平台 L2 节点
+            console.log('=== 生成平台 L2 节点 ===');
+            const platformConfig = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
             
-            const platformL2Children = dataStore.hierarchyMapping?.[categoryKey]?.l1_to_l2?.[l1Key] ?? [];
-            platformL2Children.forEach(l2NodeId => {
-                // 检查是否有L3子节点
-                const l3Children = dataStore.hierarchyMapping?.[categoryKey]?.l2_to_l3?.[l2NodeId] ?? [];
-                const hasChildren = l3Children.length > 0;
+            state.expandedNodes[0].forEach(expandedL1NodeId => {
+                console.log(`处理展开的平台L1节点: ${expandedL1NodeId}`);
                 
-                nodes.push({
-                    id: l2NodeId,
-                    name: l2NodeId,
-                    column: 0,
-                    color: '#6ca0dc',
-                    value: 1,
-                    level: 'L2',
-                    parentId: l1Key,
-                    hasChildren,
+                // 从 platformConfiguration 获取L2子节点
+                const l2Children = platformConfig?.hierarchy?.l2?.[expandedL1NodeId] ?? [];
+                console.log(`L1节点 ${expandedL1NodeId} 的L2子节点:`, l2Children);
+                
+                l2Children.forEach(l2NodeId => {
+                    
+                    const hasChildren = false;
+                    
+                    // 获取平台颜色（继承父节点颜色或使用默认颜色）
+                    const parentColor = dataStore.getPlatformL1Nodes(state.currentPlatformType)
+                        ?.find((n: any) => (typeof n === 'string' ? n : n.id) === expandedL1NodeId)?.color ?? '#6ca0dc';
+                    
+                    const platformNode = {
+                        id: l2NodeId,
+                        name: l2NodeId,
+                        column: 0,
+                        color: parentColor,
+                        value: 1,
+                        level: 'L2',
+                        parentId: expandedL1NodeId,
+                        hasChildren,
+                    };
+                    
+                    console.log(`添加平台L2节点:`, platformNode);
+                    nodes.push(platformNode);
                 });
             });
             console.log(`平台 L2 节点数量: ${nodes.filter(n => n.column === 0).length}`);
-        } else if (state.columnLevels[0] === 'L3' && state.expandedNodes[0].length > 0) {
-            // 🔥 新增：生成平台 L3 节点
-            const categoryKey = state.currentPlatformType === '内容形式' 
-                ? '研究涉及平台-内容形式' 
-                : '研究涉及平台-平台属性';
-            
-            state.expandedNodes[0].forEach(expandedNodeId => {
-                const l3Children = dataStore.hierarchyMapping?.[categoryKey]?.l2_to_l3?.[expandedNodeId] ?? [];
-                l3Children.forEach(l3ChildId => {
-                    nodes.push({
-                        id: l3ChildId,
-                        name: l3ChildId,
-                        column: 0,
-                        color: '#6ca0dc',
-                        value: 1,
-                        level: 'L3',
-                        parentId: expandedNodeId,
-                        hasChildren: false,
-                    });
-                });
-            });
-            console.log(`平台 L3 节点数量: ${nodes.filter(n => n.column === 0).length}`);
         }
 
-        // ② 生成研究方法列节点（第1列）- 修复元数据查找
+        // ② 生成研究方法列节点（第1列）
         if (state.columnLevels[1] === 'L1') {
             const methodNodes = Object.values<any>(dataStore.nodeMetadata?.['研究方法'] ?? {})
                 .filter((n) => n.level === 2) // level===2 表示 L1
@@ -227,7 +215,6 @@ export const useRelationsStore = defineStore('relations', () => {
             state.expandedNodes[1].forEach(parentId => {
                 const children = dataStore.hierarchyMapping?.['研究方法']?.l1_to_l2?.[parentId] ?? [];
                 children.forEach(childId => {
-                    // 🔥 修复：如果没有元数据，创建基本节点
                     const allMethodMeta = dataStore.nodeMetadata?.['研究方法'] ?? {};
                     const childMeta = allMethodMeta[childId];
                     
@@ -273,7 +260,7 @@ export const useRelationsStore = defineStore('relations', () => {
             console.log(`研究方法 L3 节点数量: ${nodes.filter(n => n.column === 1).length}`);
         }
 
-        // ③ 生成研究内容列节点（第2列）- 始终生成
+        // ③ 生成研究内容列节点（第2列）
         if (state.columnLevels[2] === 'L1') {
             const contentNodes = Object.values<any>(dataStore.nodeMetadata?.['研究内容'] ?? {})
                 .filter((n) => n.level === 2) // level===2 表示 L1
@@ -299,7 +286,6 @@ export const useRelationsStore = defineStore('relations', () => {
                 console.log(`找到子节点:`, children);
 
                 children.forEach(childId => {
-                    // 🔥 修复：使用直接键查找
                     const allContentMeta = dataStore.nodeMetadata?.['研究内容'] ?? {};
                     const childMeta = allContentMeta[childId];
 
@@ -328,7 +314,6 @@ export const useRelationsStore = defineStore('relations', () => {
             // 生成研究内容 L3 节点
             state.expandedNodes[2].forEach(expandedNodeId => {
                 console.log(`处理L2展开节点: ${expandedNodeId}`);
-                // 直接按L2节点查找L3子节点
                 const l3Children = dataStore.hierarchyMapping?.['研究内容']?.l2_to_l3?.[expandedNodeId] ?? [];
                 console.log(`L2节点 ${expandedNodeId} 的L3子节点:`, l3Children);
 
@@ -349,7 +334,6 @@ export const useRelationsStore = defineStore('relations', () => {
                         });
                     } else {
                         console.warn(`❌ 找不到L3节点 ${l3ChildId} 的元数据`);
-                        // 即使没有元数据，也尝试创建基本节点
                         const basicNode = {
                             id: l3ChildId,
                             name: l3ChildId,
@@ -366,7 +350,6 @@ export const useRelationsStore = defineStore('relations', () => {
                 });
             });
             console.log(`研究内容 L3 节点数量: ${nodes.filter(n => n.column === 2).length}`);
-
         }
 
         console.log('=== 节点生成完成 ===');
@@ -377,163 +360,194 @@ export const useRelationsStore = defineStore('relations', () => {
             total: nodes.length
         });
 
-        // ④ 生成连接
-        // a) 平台 → 研究内容 的连接
-        const platformKeyPrefix = state.currentPlatformType === '内容形式'
-            ? '研究涉及平台-内容形式_L2__研究内容_L1'
-            : '研究涉及平台-平台属性_L2__研究内容_L1';
+        // ④ 生成连接 - 完全重写连接逻辑
+        
+        // 🔥 关键修复：平台 → 研究内容 的连接
+        // 从 crossLevelConnections 获取所有相关的连接数据
+        const allConnections = dataStore.crossLevelConnections?.connections ?? {};
+        
+        // 1. 平台 → 研究内容连接
+        console.log('=== 生成平台→研究内容连接 ===');
+        
+        // 根据当前平台层级和内容层级选择正确的连接数据源
+        let platformContentConnectionKey = '';
+        
+        if (state.columnLevels[0] === 'L1' && state.columnLevels[2] === 'L1') {
+        // L1平台 → L1内容：使用 L2平台→L1内容 数据，需要按L1平台分组聚合
+            platformContentConnectionKey = state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L2__研究内容_L1'
+                : '研究涉及平台-平台属性_L2__研究内容_L1';
+        } else if (state.columnLevels[0] === 'L2' && state.columnLevels[2] === 'L1') {
+            // L2平台 → L1内容：直接使用L2平台数据
+            platformContentConnectionKey = state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L3__研究内容_L1'
+                : '研究涉及平台-平台属性_L3__研究内容_L1';
+        } else if (state.columnLevels[0] === 'L1' && state.columnLevels[2] === 'L2') {
+            // L1平台 → L2内容
+            platformContentConnectionKey = state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L2__研究内容_L2'
+                : '研究涉及平台-平台属性_L2__研究内容_L2';
+        } else if (state.columnLevels[0] === 'L2' && state.columnLevels[2] === 'L2') {
+            // L2平台 → L2内容：直接使用
+            platformContentConnectionKey = state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L3__研究内容_L2'
+                : '研究涉及平台-平台属性_L3__研究内容_L2';
+        } else if (state.columnLevels[0] === 'L1' && state.columnLevels[2] === 'L3') {
+            // L1平台 → L3内容
+            platformContentConnectionKey = state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L2__研究内容_L3'
+                : '研究涉及平台-平台属性_L2__研究内容_L3';
+        } else if (state.columnLevels[0] === 'L2' && state.columnLevels[2] === 'L3') {
+            // L2平台 → L3内容：直接使用
+            platformContentConnectionKey = state.currentPlatformType === '内容形式'
+                ? '研究涉及平台-内容形式_L3__研究内容_L3'
+                : '研究涉及平台-平台属性_L3__研究内容_L3';
+        }
 
-        const rawPlatformContent = dataStore.crossLevelConnections?.connections?.[platformKeyPrefix] ?? {};
-        console.log('平台-内容连接数据:', Object.keys(rawPlatformContent).length);
 
-        for (const key in rawPlatformContent) {
-            const [platform, content] = key.split('__');
-            const info = rawPlatformContent[key];
+        const platformContentConnections = allConnections[platformContentConnectionKey] ?? {};
+        console.log(`使用连接键: ${platformContentConnectionKey}`);
+        console.log(`找到连接数量: ${Object.keys(platformContentConnections).length}`);
 
-            const platformExists = nodes.some(n => n.column === 0 && n.id === platform);
-            let contentExists = false;
+         // 🔥 关键修复：如果是L1平台到内容的连接，需要聚合L2平台的数据
+        if (state.columnLevels[0] === 'L1') {
+            // L1平台显示时，需要将L2平台的连接聚合到对应的L1平台
+            const platformConfig = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
+            const aggregatedConnections = new Map<string, any>();
 
-            if (state.columnLevels[2] === 'L1') {
-                contentExists = nodes.some(n => n.column === 2 && n.id === content);
-                if (platformExists && contentExists) {
-                    links.push({
-                        source: platform,
-                        target: content,
-                        value: info.paperCount ?? 1,
-                        paperIds: info.paperIds ?? [],
-                    });
-                }
-            } else if (state.columnLevels[2] === 'L2') {
-                // 检查这个L1内容是否是展开节点的父节点
-                contentExists = state.expandedNodes[2].includes(content);
-                if (contentExists) {
-                    // 将连接分配给该父节点的所有子节点
-                    const children = dataStore.hierarchyMapping?.['研究内容']?.l1_to_l2?.[content] ?? [];
-                    children.forEach(childId => {
-                        const childExists = nodes.some(n => n.column === 2 && n.id === childId);
-                        if (platformExists && childExists) {
-                            links.push({
-                                source: platform,
-                                target: childId,
-                                value: Math.ceil((info.paperCount ?? 1) / children.length),
-                                paperIds: info.paperIds ?? [],
-                            });
-                        }
-                    });
-                }
-            } else if (state.columnLevels[2] === 'L3') {
-                // 🔥 新增：平台 → 内容L3
-                const currentL3Nodes = nodes.filter(n => n.column === 2 && n.level === 'L3');
-
-                currentL3Nodes.forEach(l3Node => {
-                    // 通过L3节点找到对应的L2父节点
-                    const l2ParentId = l3Node.parentId;
-
-                    // 通过L2节点找到对应的L1父节点
-                    const l1ParentId = dataStore.hierarchyMapping?.['研究内容']?.l2_to_l1?.[l2ParentId];
-
-                    // 检查L1父节点是否与当前连接的content匹配
-                    if (l1ParentId === content && platformExists) {
-                        links.push({
-                            source: platform,
-                            target: l3Node.id,
-                            value: Math.ceil((info.paperCount ?? 1) / currentL3Nodes.length),
-                            paperIds: info.paperIds ?? [],
-                        });
-                        console.log(`创建平台到L3连接: ${platform} -> ${l3Node.id}`);
+            // 遍历所有L2平台的连接
+            for (const connectionKey in platformContentConnections) {
+                const [l2PlatformId, contentId] = connectionKey.split('__');
+                const connectionInfo = platformContentConnections[connectionKey];
+                
+                // 找到这个L2平台属于哪个L1平台
+                let l1PlatformId = null;
+                for (const [l1Id, l2Children] of Object.entries(platformConfig?.hierarchy?.l2 ?? {})) {
+                    if (l2Children.includes(l2PlatformId)) {
+                        l1PlatformId = l1Id;
+                        break;
                     }
+                }
+
+                if (l1PlatformId) {
+                    const aggregatedKey = `${l1PlatformId}__${contentId}`;
+                    if (aggregatedConnections.has(aggregatedKey)) {
+                        // 聚合连接数据
+                        const existing = aggregatedConnections.get(aggregatedKey);
+                        existing.paperCount += connectionInfo.paperCount || 0;
+                        existing.paperIds = [...existing.paperIds, ...(connectionInfo.paperIds || [])];
+                    } else {
+                        // 新建聚合连接
+                        aggregatedConnections.set(aggregatedKey, {
+                            paperCount: connectionInfo.paperCount || 0,
+                            paperIds: connectionInfo.paperIds || [],
+                            connectionStrength: connectionInfo.connectionStrength
+                        });
+                    }
+                }
+            }
+
+            // 创建聚合后的连接
+            for (const [aggregatedKey, aggregatedInfo] of aggregatedConnections) {
+                const [platformId, contentId] = aggregatedKey.split('__');
+                
+                // 检查两端节点是否存在
+                const platformNode = nodes.find(n => n.column === 0 && n.id === platformId);
+                const contentNode = nodes.find(n => n.column === 2 && n.id === contentId);
+                
+                if (platformNode && contentNode) {
+                    links.push({
+                        source: platformId,
+                        target: contentId,
+                        value: aggregatedInfo.paperCount,
+                        paperIds: aggregatedInfo.paperIds,
+                        connectionStrength: aggregatedInfo.connectionStrength
+                    });
+                    console.log(`创建聚合平台→内容连接: ${platformId} → ${contentId} (${aggregatedInfo.paperCount})`);
+                }
+            }
+        } else if(state.columnLevels[0] === 'L2'){
+            console.log('当前显示L2平台节点:', nodes.filter(n => n.column === 0).map(n => n.id));
+            // L2平台显示时，直接使用L2平台的连接
+            for (const connectionKey in platformContentConnections) {
+                const [platformId, contentId] = connectionKey.split('__');
+                const connectionInfo = platformContentConnections[connectionKey];
+                
+                // 检查两端节点是否存在
+                const platformNode = nodes.find(n => n.column === 0 && n.id === platformId);
+                const contentNode = nodes.find(n => n.column === 2 && n.id === contentId);
+                
+                if (platformNode && contentNode) {
+                    links.push({
+                        source: platformId,
+                        target: contentId,
+                        value: connectionInfo.paperCount ?? 1,
+                        paperIds: connectionInfo.paperIds ?? [],
+                        connectionStrength: connectionInfo.connectionStrength
+                    });
+                    console.log(`创建平台→内容连接: ${platformId} → ${contentId} (${connectionInfo.paperCount || 1})`);
+                } else {
+                    console.log(`连接节点不存在: ${platformId} → ${contentId}`);
+                    console.log(`平台节点存在: ${!!platformNode}, 内容节点存在: ${!!contentNode}`);
+                }
+            }
+        }
+
+
+        // 2. 研究内容 → 研究方法连接
+        console.log('=== 生成研究内容→研究方法连接 ===');
+        
+        let contentMethodConnectionKey = '';
+        
+        if (state.columnLevels[2] === 'L1' && state.columnLevels[1] === 'L1') {
+            contentMethodConnectionKey = '研究内容_L1__研究方法_L1';
+        } else if (state.columnLevels[2] === 'L1' && state.columnLevels[1] === 'L2') {
+            contentMethodConnectionKey = '研究内容_L1__研究方法_L2';
+        } else if (state.columnLevels[2] === 'L1' && state.columnLevels[1] === 'L3') {
+            contentMethodConnectionKey = '研究内容_L1__研究方法_L3';
+        } else if (state.columnLevels[2] === 'L2' && state.columnLevels[1] === 'L1') {
+            contentMethodConnectionKey = '研究内容_L2__研究方法_L1';
+        } else if (state.columnLevels[2] === 'L2' && state.columnLevels[1] === 'L2') {
+            contentMethodConnectionKey = '研究内容_L2__研究方法_L2';
+        } else if (state.columnLevels[2] === 'L2' && state.columnLevels[1] === 'L3') {
+            contentMethodConnectionKey = '研究内容_L2__研究方法_L3';
+        } else if (state.columnLevels[2] === 'L3' && state.columnLevels[1] === 'L1') {
+            contentMethodConnectionKey = '研究内容_L3__研究方法_L1';
+        } else if (state.columnLevels[2] === 'L3' && state.columnLevels[1] === 'L2') {
+            contentMethodConnectionKey = '研究内容_L3__研究方法_L2';
+        } else if (state.columnLevels[2] === 'L3' && state.columnLevels[1] === 'L3') {
+            contentMethodConnectionKey = '研究内容_L3__研究方法_L3';
+        }
+
+        const contentMethodConnections = allConnections[contentMethodConnectionKey] ?? {};
+        console.log(`使用连接键: ${contentMethodConnectionKey}`);
+        console.log(`找到连接数量: ${Object.keys(contentMethodConnections).length}`);
+
+        for (const connectionKey in contentMethodConnections) {
+            const [contentId, methodId] = connectionKey.split('__');
+            const connectionInfo = contentMethodConnections[connectionKey];
+            
+            // 检查两端节点是否存在
+            const contentNode = nodes.find(n => n.column === 2 && n.id === contentId);
+            const methodNode = nodes.find(n => n.column === 1 && n.id === methodId);
+            
+            if (contentNode && methodNode) {
+                links.push({
+                    source: contentId,
+                    target: methodId,
+                    value: connectionInfo.paperCount ?? 1,
+                    paperIds: connectionInfo.paperIds ?? [],
+                    connectionStrength: connectionInfo.connectionStrength
                 });
+                console.log(`创建内容→方法连接: ${contentId} → ${methodId} (${connectionInfo.paperCount || 1})`);
+            } else {
+                console.log(`连接节点不存在: ${contentId} → ${methodId}`);
+                console.log(`内容节点存在: ${!!contentNode}, 方法节点存在: ${!!methodNode}`);
             }
         }
 
-        // b) 研究内容 → 研究方法 的连接
-        const rawContentMethod = dataStore.crossLevelConnections?.connections?.['研究内容_L1__研究方法_L1'] ?? {};
-        console.log('内容-方法连接数据:', Object.keys(rawContentMethod).length);
-
-        for (const key in rawContentMethod) {
-            const [content, method] = key.split('__');
-            const info = rawContentMethod[key];
-
-            // 🔥 修复：添加完整的连接逻辑
-            if (state.columnLevels[2] === 'L1' && state.columnLevels[1] === 'L1') {
-                // L1 → L1
-                const contentExists = nodes.some(n => n.column === 2 && n.id === content);
-                const methodExists = nodes.some(n => n.column === 1 && n.id === method);
-                if (contentExists && methodExists) {
-                    links.push({
-                        source: content,
-                        target: method,
-                        value: info.paperCount ?? 1,
-                        paperIds: info.paperIds ?? [],
-                    });
-                    console.log(`创建L1→L1连接: ${content} → ${method}`);
-                }
-            } else if (state.columnLevels[2] === 'L2' && state.columnLevels[1] === 'L1') {
-                // L2 → L1
-                if (state.expandedNodes[2].includes(content)) {
-                    const children = dataStore.hierarchyMapping?.['研究内容']?.l1_to_l2?.[content] ?? [];
-                    const methodExists = nodes.some(n => n.column === 1 && n.id === method);
-                    if (methodExists) {
-                        children.forEach(childId => {
-                            const childExists = nodes.some(n => n.column === 2 && n.id === childId);
-                            if (childExists) {
-                                links.push({
-                                    source: childId,
-                                    target: method,
-                                    value: Math.ceil((info.paperCount ?? 1) / children.length),
-                                    paperIds: info.paperIds ?? [],
-                                });
-                            }
-                        });
-                    }
-                }
-            } else if (state.columnLevels[2] === 'L1' && state.columnLevels[1] === 'L2') {
-                // L1 → L2
-                if (state.expandedNodes[1].includes(method)) {
-                    const children = dataStore.hierarchyMapping?.['研究方法']?.l1_to_l2?.[method] ?? [];
-                    const contentExists = nodes.some(n => n.column === 2 && n.id === content);
-                    if (contentExists) {
-                        children.forEach(childId => {
-                            const childExists = nodes.some(n => n.column === 1 && n.id === childId);
-                            if (childExists) {
-                                links.push({
-                                    source: content,
-                                    target: childId,
-                                    value: Math.ceil((info.paperCount ?? 1) / children.length),
-                                    paperIds: info.paperIds ?? [],
-                                });
-                                console.log(`创建L1→L2连接: ${content} → ${childId}`);
-                            }
-                        });
-                    }
-                }
-            } else if (state.columnLevels[2] === 'L2' && state.columnLevels[1] === 'L2') {
-                // L2 → L2
-                if (state.expandedNodes[2].includes(content) && state.expandedNodes[1].includes(method)) {
-                    const contentChildren = dataStore.hierarchyMapping?.['研究内容']?.l1_to_l2?.[content] ?? [];
-                    const methodChildren = dataStore.hierarchyMapping?.['研究方法']?.l1_to_l2?.[method] ?? [];
-                    
-                    contentChildren.forEach(contentChildId => {
-                        methodChildren.forEach(methodChildId => {
-                            const contentChildExists = nodes.some(n => n.column === 2 && n.id === contentChildId);
-                            const methodChildExists = nodes.some(n => n.column === 1 && n.id === methodChildId);
-                            if (contentChildExists && methodChildExists) {
-                                links.push({
-                                    source: contentChildId,
-                                    target: methodChildId,
-                                    value: Math.ceil((info.paperCount ?? 1) / (contentChildren.length * methodChildren.length)),
-                                    paperIds: info.paperIds ?? [],
-                                });
-                                console.log(`创建L2→L2连接: ${contentChildId} → ${methodChildId}`);
-                            }
-                        });
-                    });
-                }
-            }
-            // 可以继续添加 L3 相关的连接逻辑...
-        }
-
-        console.log('最终生成的连接数量:', links.length);
+        console.log('=== 连接生成完成 ===');
+        console.log(`最终生成的连接数量: ${links.length}`);
         console.log('连接详情:', links.slice(0, 5));
 
         return { nodes, links };
@@ -576,6 +590,7 @@ export const useRelationsStore = defineStore('relations', () => {
 
         pushHistory();
 
+        const maxLevel = colIdx === 0 ? 'L2' : 'L3';
         if (state.columnLevels[colIdx] === 'L3') {
             console.log('已经是L3，无法继续展开');
             return;
@@ -587,17 +602,15 @@ export const useRelationsStore = defineStore('relations', () => {
 
         if (currentLevel === 'L1') {
             if (colIdx === 0) {
-                // 🔥 修复：启用平台节点展开
-                const categoryKey = state.currentPlatformType === '内容形式' 
-                    ? '研究涉及平台-内容形式' 
-                    : '研究涉及平台-平台属性';
+                // 平台节点展开
+                console.log(`检查平台节点 ${nodeId} 的L2子节点`);
+                console.log('当前平台类型:', state.currentPlatformType);
                 
-                // 检查平台是否有L2子节点
-                const platformL2Children = dataStore.hierarchyMapping?.[categoryKey]?.l1_to_l2?.['内容形式'] ?? 
-                                         dataStore.hierarchyMapping?.[categoryKey]?.l1_to_l2?.['平台属性'] ?? [];
-                hasChildren = platformL2Children.length > 0;
+                const platformConfig = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
+                const l2Children = platformConfig?.hierarchy?.l2?.[nodeId] ?? [];
                 
-                console.log(`平台节点 ${nodeId} 的L2子节点:`, platformL2Children);
+                console.log(`平台节点 ${nodeId} 的L2子节点:`, l2Children);
+                hasChildren = l2Children.length > 0;
                 console.log(`平台节点是否有子节点:`, hasChildren);
             } else {
                 // 研究方法或研究内容
@@ -609,13 +622,8 @@ export const useRelationsStore = defineStore('relations', () => {
         } else if (currentLevel === 'L2') {
             // L2 → L3
             if (colIdx === 0) {
-                // 平台 L2 → L3
-                const categoryKey = state.currentPlatformType === '内容形式' 
-                    ? '研究涉及平台-内容形式' 
-                    : '研究涉及平台-平台属性';
-                const l3Children = dataStore.hierarchyMapping?.[categoryKey]?.l2_to_l3?.[nodeId] ?? [];
-                hasChildren = l3Children.length > 0;
-                console.log(`平台L2节点 ${nodeId} 的L3子节点:`, l3Children);
+                hasChildren = false;
+                console.log(`平台L2节点 ${nodeId} 没有L3子节点（平台最多到L2）`);
             } else {
                 // 研究方法或研究内容 L2 → L3
                 const categoryMap = colIdx === 1 ? '研究方法' : '研究内容';
