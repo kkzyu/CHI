@@ -1,26 +1,57 @@
 export function buildPlatformNodes(dataStore: any, state: any): any[] {
     const nodes: any[] = [];
+    
+    // 计算每个节点的论文数量(去重)
+    const nodePaperIds: Record<string, Set<string>> = {};
+    
+    // 处理所有连接类型
+    const connectionsByType = dataStore.crossLevelConnections?.connections ?? {};
+    
+    // 收集所有相关的论文ID
+    Object.entries(connectionsByType).forEach(([connectionType, connections]: [string, any]) => {
+        // 只处理与平台相关的连接
+        if (connectionType.includes('研究涉及平台')) {
+            Object.entries(connections).forEach(([connectionKey, connectionInfo]: [string, any]) => {
+                const [source, target] = connectionKey.split('__');
+                // 平台节点始终是source
+                const platformNode = source;
+                
+                // 初始化集合
+                if (!nodePaperIds[platformNode]) nodePaperIds[platformNode] = new Set();
+                
+                // 添加论文ID
+                const paperIds = connectionInfo.paperIds || [];
+                paperIds.forEach((paperId: string) => {
+                    nodePaperIds[platformNode].add(paperId);
+                });
+            });
+        }
+    });
+    
+    // 辅助函数：获取节点的论文数量
+    const getNodePaperCount = (nodeId: string): number => {
+        return nodePaperIds[nodeId]?.size || 0;
+    };
 
     if (state.columnLevels[0] === 'L1') {
-        // 生成平台 L1 节点
+        // 平台L1节点
         const platformL1Raw = dataStore.getPlatformL1Nodes(state.currentPlatformType) ?? [];
         const platformNodes = platformL1Raw.map((n: any) => {
             const id = typeof n === 'string' ? n : n.id;
             const name = typeof n === 'string' ? n : n.name ?? n.id;
             const color = typeof n === 'string' ? '#6ca0dc' : n.color ?? '#6ca0dc';
             
-            // 检查是否有L2子节点
-            const platformConfig = dataStore.platformConfiguration?.platformTypes?.[state.currentPlatformType];
-            const hasChildren = platformConfig?.hierarchy?.l2?.[id]?.length > 0;
+            // 使用去重后的论文数量
+            const paperCount = getNodePaperCount(id);
             
             return {
                 id,
                 name,
                 column: 0,
                 color,
-                value: 1,
+                value: paperCount || 1, // 至少为1，确保节点可见
                 level: 'L1',
-                hasChildren,
+                hasChildren: true,
             };
         });
         nodes.push(...platformNodes);
@@ -38,12 +69,15 @@ export function buildPlatformNodes(dataStore: any, state: any): any[] {
             console.log(`L1平台 ${parentId} 的L2子节点:`, l2Children);
 
             l2Children.forEach(childId => {
+                // 使用去重后的论文数量
+                const paperCount = getNodePaperCount(childId);
+                
                 const newNode = {
                     id: childId,
                     name: childId,
                     column: 0,
                     color: '#6ca0dc',
-                    value: 1,
+                    value: paperCount || 1, // 至少为1，确保节点可见
                     level: 'L2',
                     parentId,
                     hasChildren: false, // 平台最多到L2
