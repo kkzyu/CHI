@@ -132,16 +132,18 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                         // 使用去重后的论文数量
                         const paperCount = getNodePaperCount(l3ChildId);
                         
+                        // 🔥 关键修复：确保column属性始终为2（研究内容列）
                         const newNode = {
                             id: l3ChildId,
                             name: l3ChildId,
-                            column: 2,
+                            column: 2, // 强制设置为内容列
                             color: '#dc6866',
                             value: paperCount || 1, // 至少为1，确保节点可见
                             level: 'L3',
                             parentId: expandedL2NodeId,
                             hasChildren: false,
                             originalL2Parent: matchedKey, // 记录原始的L2父节点完整ID
+                            contentCategory: '研究内容', // 添加明确的类别标记
                         };
                         console.log(`✅ 添加L3节点:`, newNode);
                         nodes.push(newNode);
@@ -159,16 +161,18 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     // 使用去重后的论文数量
                     const paperCount = getNodePaperCount(l3ChildId);
                     
+                    // 🔥 关键修复：确保column属性始终为2（研究内容列）
                     const newNode = {
                         id: l3ChildId,
                         name: l3ChildId,
-                        column: 2,
+                        column: 2, // 强制设置为内容列
                         color: '#dc6866',
                         value: paperCount || 1, // 至少为1，确保节点可见
                         level: 'L3',
                         parentId: expandedL2NodeId,
                         hasChildren: false,
                         originalL2Parent: expandedL2NodeId, // 直接使用展开的L2节点ID
+                        contentCategory: '研究内容', // 添加明确的类别标记
                     };
                     console.log(`✅ 添加L3节点:`, newNode);
                     nodes.push(newNode);

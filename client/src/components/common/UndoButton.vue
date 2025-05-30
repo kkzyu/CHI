@@ -1,5 +1,5 @@
 <template>
-    <button class="undo-btn" :disabled="!relations.canUndo" @click="relations.popHistory">
+    <button class="undo-btn" :disabled="!relations.canUndo" @click="relations.popHistory" title="撤销上一次操作">
       ⬅ 回退
     </button>
   </template>
@@ -10,6 +10,10 @@
   </script>
   
   <style scoped>
-  .undo-btn{ padding:4px 10px; margin-bottom:8px; }
+  .undo-btn{ 
+    padding: 4px 10px; 
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
   .undo-btn:disabled{ opacity:.4; cursor:not-allowed; }
   </style>

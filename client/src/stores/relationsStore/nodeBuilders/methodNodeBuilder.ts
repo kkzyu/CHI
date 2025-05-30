@@ -145,6 +145,7 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                             parentId: expandedL2NodeId,
                             hasChildren: false,
                             originalL2Parent: matchedKey,
+                            contentCategory: '研究方法', // 添加明确的类别标记
                         };
                         console.log(`✅ 添加L3方法节点:`, newNode);
                         nodes.push(newNode);
@@ -172,6 +173,7 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                         parentId: expandedL2NodeId,
                         hasChildren: false,
                         originalL2Parent: expandedL2NodeId,
+                        contentCategory: '研究方法', // 添加明确的类别标记
                     };
                     console.log(`✅ 添加L3方法节点:`, newNode);
                     nodes.push(newNode);
