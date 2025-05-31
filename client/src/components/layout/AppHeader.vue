@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 var(--space-lg) 0 8px;
+  padding: 10px var(--space-lg) 0 8px;
   flex-shrink: 0;
 }
 
@@ -39,7 +39,7 @@
   letter-spacing: 0;
   position: relative;
   top: 2px;
-  left: 0px;
+  left: 25px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

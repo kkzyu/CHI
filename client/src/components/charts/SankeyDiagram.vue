@@ -107,7 +107,8 @@ let labelLayer: any;
 
 function render() {
   if(!svgRef.value) return;
-  const width = 900, height = 600;
+  const width = 900, height = 700;
+  const margin = 20; // 新增左右margin
   const svg = d3.select(svgRef.value)
                 .attr('viewBox',`0 0 ${width} ${height}`)
                 .attr('width','100%').attr('height','100%');
@@ -138,82 +139,62 @@ function render() {
 
   // 添加三栏标题 - 确保与桑基图中的列顺序匹配
   const columnTitles: ColumnTitle[] = [
-    { text: '研究平台', x: width * 0.16, y: 30, align: 'middle' }, // 对应第0列，调整为节点中央上方
-    { text: '研究内容', x: width * 0.5, y: 30, align: 'middle' }, // 对应第1列，保持在中央
-    { text: '研究方法', x: width * 0.84, y: 30, align: 'middle' }  // 对应第2列，调整为节点中央上方
+    { text: '研究平台', x: 0, y: 40, align: 'start' },       // 左侧margin
+    { text: '研究内容', x: width / 2, y: 40, align: 'middle' }, // 居中
+    { text: '研究方法', x: width , y: 40, align: 'end' }    // 右侧margin
   ];
 
   // 更新标题
-  const titleSelection = labelLayer.selectAll('g.column-title')
+  const titleSelection = labelLayer.selectAll('text.column-title')
     .data(columnTitles, (d: ColumnTitle) => d.text);
-  
+    
   // 删除不再需要的标题
   titleSelection.exit().remove();
-  
-  // 添加新标题
+    
+  // 进入/更新逻辑
   const titleEnter = titleSelection.enter()
-    .append('g')
+    .append('text')
     .attr('class', 'column-title')
+    .attr('x', (d: ColumnTitle) => d.x)
+    .attr('y', (d: ColumnTitle) => d.y)
+    .attr('text-anchor', (d: ColumnTitle) => d.align)
+    .text((d: ColumnTitle) => d.text)
+    .style('font-size', '16px')
+    .style('font-weight', '600')
+    .style('fill', '#2c3e50')
     .style('cursor', 'pointer')
     .on('click', function(event, d: ColumnTitle) {
-      // 直接映射到桑基图中的列索引
+      // 点击处理逻辑
       let columnIndex;
       if (d.text === '研究平台') columnIndex = 0;
-      else if (d.text === '研究内容') columnIndex = 1;
-      else if (d.text === '研究方法') columnIndex = 2;
-      
+      else if (d.text === '研究内容') columnIndex = 2;
+      else if (d.text === '研究方法') columnIndex = 1;
       if (columnIndex !== undefined) {
         emit('reset-column', columnIndex);
       }
     })
     .on('mouseover', function() {
-      d3.select(this).select('rect')
-        .transition().duration(200)
-        .attr('fill', '#f5f5f5'); // 浅灰色高亮
+      d3.select(this)
+        .style('font-size', '17px');
     })
     .on('mouseout', function() {
-      d3.select(this).select('rect')
-        .transition().duration(200)
-        .attr('fill', '#f9f9f9'); // 更浅的灰色
+      d3.select(this)
+        .style('font-size', '16px');
     });
 
-  // 添加背景矩形
-  titleEnter.append('rect')
-    .attr('x', (d: ColumnTitle) => d.x - 50) // 固定宽度100px，所以x坐标向左偏移50px使其居中
-    .attr('y', (d: ColumnTitle) => d.y - 15)
-    .attr('width', 100) // 统一宽度
-    .attr('height', 28)
-    .attr('fill', '#f9f9f9') // 非常浅的灰色
-    .attr('rx', 3)
-    .attr('ry', 3)
-    .attr('stroke', '#e0e0e0')
-    .attr('stroke-width', 1);
 
-  // 添加文本
-  titleEnter.append('text')
-    .attr('x', (d: ColumnTitle) => d.x) // 文本位置与标题中心对齐
-    .attr('y', (d: ColumnTitle) => d.y + 5) // 微调垂直位置
-    .attr('text-anchor', 'middle') // 所有标题都居中对齐
-    .attr('font-size', '14px')
-    .attr('font-weight', '500')
-    .attr('fill', '#333333')
-    .text((d: ColumnTitle) => d.text);
-
-  // 更新标题位置
-  titleSelection.merge(titleEnter as any)
-    .attr('transform', (d: ColumnTitle) => `translate(0, 0)`);
-  
-  titleSelection.merge(titleEnter as any).select('rect')
-    .transition().duration(300)
-    .attr('x', (d: ColumnTitle) => d.x - 50)
-    .attr('y', (d: ColumnTitle) => d.y - 15);
-    
-  titleSelection.merge(titleEnter as any).select('text')
-    .transition().duration(300)
+  // 更新现有标题样式和位置
+  titleSelection.merge(titleEnter)
     .attr('x', (d: ColumnTitle) => d.x)
-    .attr('y', (d: ColumnTitle) => d.y + 5);
+    .attr('y', (d: ColumnTitle) => d.y)
+    .attr('text-anchor', (d: ColumnTitle) => d.align)
+    .text((d: ColumnTitle) => d.text)
+    .transition()
+    .duration(300)
+    .style('font-size', '16px')
+    .style('fill', '#2c3e50');
 
-  // 添加提示信息
+  // 添加提示信息（使用title元素）
   titleEnter.append('title')
     .text('点击重置此列视图');
 
@@ -248,13 +229,13 @@ function render() {
       // @ts-ignore
       .nodeWidth(16)
       // @ts-ignore
-      .nodePadding(24)
+      .nodePadding(10)
       // @ts-ignore
       .nodeId((d: any) => d.id)
       // @ts-ignore
       .nodeSort((a: any, b: any) => a.column - b.column)  // 按列排序
       // @ts-ignore
-      .extent([[0, 60], [width, height]]);  // 为标题留出顶部空间
+      .extent([[margin, 60], [width - margin, height]]);  // 左右margin，顶部留空间
 
   const result = graph({
     nodes: props.nodes.map((n) => {
@@ -458,6 +439,24 @@ function render() {
       evt.stopPropagation();
       emit('link-select', { source: d.source.id, target: d.target.id });
     });
+
+  // 在render()里，确保SVG有简约渐变定义（只需添加一次）
+  if (svg.select('defs#sankey-title-defs-minimal').empty()) {
+    const defs = svg.append('defs').attr('id', 'sankey-title-defs-minimal');
+    defs.append('linearGradient')
+      .attr('id', 'sankey-title-gradient-minimal')
+      .attr('x1', '0%').attr('y1', '0%')
+      .attr('x2', '100%').attr('y2', '0%')
+      .selectAll('stop')
+      .data([
+        { offset: '0%', color: '#2c3e50' },
+        { offset: '100%', color: '#7b8fa3' }
+      ])
+      .enter()
+      .append('stop')
+      .attr('offset', d => d.offset)
+      .attr('stop-color', d => d.color);
+  }
 }
 
 // 在接口定义后添加：
@@ -626,6 +625,26 @@ function clearHighlight() {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+/* 在style部分添加这些规则 */
+:deep(.column-title) {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #2c3e50;
+  transition: all 0.3s cubic-bezier(.4,1.4,.6,1);
+  cursor: pointer;
+  filter: drop-shadow(0 0 0px #fff0); /* 初始无发光 */
+}
+
+:deep(.column-title:hover) {
+  /* 简约渐变高亮色 */
+  fill: url(#sankey-title-gradient-minimal);
+  /* 低调淡蓝灰发光 */
+  filter: drop-shadow(0 0 6px #9da3acdd);
+}
+
+:deep(.sankey-container) {
+  overflow: visible; /* 允许标题显示在边界 */
 }
 
 .sankey-svg {

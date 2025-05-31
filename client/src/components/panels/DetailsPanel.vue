@@ -27,7 +27,10 @@
     <div class="paper-cards-container" v-if="!isLoading && allPapers.length > 0">
       <!-- 显示选中内容的标题 -->
       <div v-if="isShowingSelection" class="selection-header">
-        <h3>{{ filteredPapers.length }} 篇选中的论文</h3>
+        <h3>
+          {{ filteredPapers.length }} / {{ selectedPapersCount }} 篇选中的论文
+          <span v-if="searchTerm">（搜索："{{ searchTerm }}"）</span>
+        </h3>
       </div>
       
       <PaperCard
@@ -39,7 +42,7 @@
       <div v-if="filteredPapers.length === 0 && searchTerm" class="no-results-message">
         未找到包含"{{ searchTerm }}"的论文。
       </div>
-      <div v-if="isShowingSelection && filteredPapers.length === 0" class="no-results-message">
+      <div v-if="isShowingSelection && filteredPapers.length === 0 && !searchTerm" class="no-results-message">
         未找到相关的论文数据。
       </div>
     </div>
@@ -64,6 +67,36 @@ const selectedPaperIds = ref([]);
 // 是否正在显示选中的论文
 const isShowingSelection = ref(false);
 
+// 计算选中的论文总数（不考虑搜索过滤）
+const selectedPapersCount = computed(() => {
+  if (!isShowingSelection.value) return 0;
+  
+  return allPapers.value.filter(paper => {
+    // 直接匹配原始ID
+    if (selectedPaperIds.value.includes(paper.id)) {
+      return true;
+    }
+    
+    // 尝试兼容ID格式差异（下划线与连字符）
+    const normalizedPaperId = paper.id.replace(/-/g, '_');
+    if (selectedPaperIds.value.includes(normalizedPaperId)) {
+      return true;
+    }
+    
+    // 尝试提取数字部分进行匹配
+    const paperIdMatch = paper.id.match(/paper[-_](\d+)/);
+    if (paperIdMatch) {
+      const numericId = paperIdMatch[1];
+      // 检查选中ID是否包含这个数字ID部分
+      return selectedPaperIds.value.some(selectedId => {
+        return selectedId.includes(numericId);
+      });
+    }
+    
+    return false;
+  }).length;
+});
+
 // 提供刷新细节面板的方法给其他组件
 provide('refreshDetailsPanel', refreshPanelWithIds);
 
@@ -79,11 +112,6 @@ function refreshPanelWithIds(paperIds) {
   
   // 如果有选中的论文ID，则显示选择模式
   isShowingSelection.value = selectedPaperIds.value.length > 0;
-  
-  // 重置搜索词，以便正确显示
-  if (isShowingSelection.value) {
-    searchTerm.value = '';
-  }
   
   // 调试：检查匹配到的论文数量
   if (isShowingSelection.value) {
@@ -168,6 +196,11 @@ onMounted(async () => {
 });
 
 const filteredPapers = computed(() => {
+  // 获取搜索词
+  const term = searchTerm.value.toLowerCase().trim();
+  
+  let papers = [];
+  
   // 如果在显示选择模式，只显示选中的论文
   if (isShowingSelection.value) {
     if (selectedPaperIds.value.length === 0) {
@@ -176,7 +209,7 @@ const filteredPapers = computed(() => {
     }
     
     // 兼容性处理：尝试多种可能的ID格式进行匹配
-    return allPapers.value.filter(paper => {
+    papers = allPapers.value.filter(paper => {
       // 直接匹配原始ID
       if (selectedPaperIds.value.includes(paper.id)) {
         return true;
@@ -205,20 +238,23 @@ const filteredPapers = computed(() => {
       
       return false;
     });
+  } else {
+    // 不在选择模式下，使用所有论文
+    papers = allPapers.value;
   }
 
-  // 否则应用搜索过滤
-  const term = searchTerm.value.toLowerCase().trim();
+  // 如果搜索词为空，直接返回当前论文集合
   if (!term) {
-    return allPapers.value; // 如果搜索词为空，返回所有论文
+    return papers;
   }
 
+  // 应用搜索过滤
   const awardDisplayTexts = {
     honorary: "荣誉提名", // 将 award_type 映射到显示文本
     best: "最佳论文"
   };
 
-  return allPapers.value.filter(paper => {
+  return papers.filter(paper => {
     // 1. 检查标签是否匹配
     let tagMatch = false;
     if (paper.tags) {
