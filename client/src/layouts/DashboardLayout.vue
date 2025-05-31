@@ -9,12 +9,13 @@
     <div class="column details-column">
       <slot name="details"></slot>
     </div>
+    <FullscreenButton />
   </div>
   <div class="dashboard-bottom-spacer"></div>
 </template>
 
 <script setup>
-// No script needed for this layout component
+import FullscreenButton from '../components/FullscreenButton.vue';
 </script>
 
 <style scoped>

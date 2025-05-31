@@ -10,7 +10,8 @@
         </svg>
         <span class="title-text">细节视图</span>
       </div>
-      <div class="search-bar-container">
+      <div class="search-actions">
+        <!-- 搜索框 -->
         <div class="search-input-wrapper">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -24,6 +25,11 @@
 
     <div v-if="isLoading" class="loading-message">正在加载论文数据...</div>
     <div class="paper-cards-container" v-if="!isLoading && allPapers.length > 0">
+      <!-- 显示选中内容的标题 -->
+      <div v-if="isShowingSelection" class="selection-header">
+        <h3>{{ filteredPapers.length }} 篇选中的论文</h3>
+      </div>
+      
       <PaperCard
         v-for="paper in filteredPapers"
         :key="paper.id"
@@ -33,6 +39,9 @@
       <div v-if="filteredPapers.length === 0 && searchTerm" class="no-results-message">
         未找到包含"{{ searchTerm }}"的论文。
       </div>
+      <div v-if="isShowingSelection && filteredPapers.length === 0" class="no-results-message">
+        未找到相关的论文数据。
+      </div>
     </div>
     <div v-if="!isLoading && allPapers.length === 0" class="no-data-message">
       未能加载论文数据或数据文件为空。
@@ -41,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, provide } from 'vue';
 import PaperCard from '@/components/paper/PaperCard.vue';
 
 const searchTerm = ref('');
@@ -49,6 +58,48 @@ const allPapers = ref([]); // 存储所有论文数据
 const isLoading = ref(true); // 开始时设置为true，直到数据加载完成
 const panelContentRef = ref(null);
 const panelTitleBarRef = ref(null);
+
+// 选中的论文ID列表
+const selectedPaperIds = ref([]);
+// 是否正在显示选中的论文
+const isShowingSelection = ref(false);
+
+// 提供刷新细节面板的方法给其他组件
+provide('refreshDetailsPanel', refreshPanelWithIds);
+
+// 暴露刷新面板方法，使其可以通过ref访问
+defineExpose({ refreshPanelWithIds });
+
+// 刷新面板显示指定ID的论文
+function refreshPanelWithIds(paperIds) {
+  console.log(`细节面板刷新方法被调用，接收到 ${paperIds?.length || 0} 个论文ID`);
+  
+  // 记录所选论文ID
+  selectedPaperIds.value = paperIds || [];
+  
+  // 如果有选中的论文ID，则显示选择模式
+  isShowingSelection.value = selectedPaperIds.value.length > 0;
+  
+  // 重置搜索词，以便正确显示
+  if (isShowingSelection.value) {
+    searchTerm.value = '';
+  }
+  
+  // 调试：检查匹配到的论文数量
+  if (isShowingSelection.value) {
+    const matchedPapers = allPapers.value.filter(paper => selectedPaperIds.value.includes(paper.id));
+    console.log(`匹配到 ${matchedPapers.length} 篇论文`);
+    
+    // 如果没有匹配到论文，检查ID格式是否一致
+    if (matchedPapers.length === 0 && selectedPaperIds.value.length > 0) {
+      console.log(`未匹配到论文，检查ID格式:`);
+      console.log(`选中的ID示例: ${selectedPaperIds.value[0]}`);
+      console.log(`所有论文的ID格式示例: ${allPapers.value.length > 0 ? allPapers.value[0].id : '无'}`);
+    }
+  }
+  
+  console.log(`细节面板更新，显示 ${selectedPaperIds.value.length} 篇论文, 选择模式: ${isShowingSelection.value}`);
+}
 
 // 数据转换函数，将从JSON读取的原始对象转换为PaperCard期望的格式
 const transformPaperData = (rawDataArray) => {
@@ -79,8 +130,10 @@ const transformPaperData = (rawDataArray) => {
       ? item.Authors.split('\n').map(a => a.trim()).filter(a => a)
       : (Array.isArray(item.Authors) ? item.Authors.map(a => String(a).trim()).filter(a => a) : []);
 
+    // 使用原始id字段作为主键，确保与crossLevelConnections中的ID匹配
+    // 注意，使用小写的id字段，不是大写的ID字段
     return {
-      id: item.ID || `paper-json-${index}-${(item.Name || 'untitled').substring(0,10).replace(/\s/g,'-')}`,
+      id: item.id || `paper-json-${index}-${(item.Name || 'untitled').substring(0,10).replace(/\s/g,'-')}`,
       award_type: awardType,
       title: item.Name || 'N/A',
       doi: doiText,
@@ -115,6 +168,46 @@ onMounted(async () => {
 });
 
 const filteredPapers = computed(() => {
+  // 如果在显示选择模式，只显示选中的论文
+  if (isShowingSelection.value) {
+    if (selectedPaperIds.value.length === 0) {
+      // 如果没有选中的论文但处于选择模式，返回空数组
+      return [];
+    }
+    
+    // 兼容性处理：尝试多种可能的ID格式进行匹配
+    return allPapers.value.filter(paper => {
+      // 直接匹配原始ID
+      if (selectedPaperIds.value.includes(paper.id)) {
+        return true;
+      }
+      
+      // 尝试兼容ID格式差异（下划线与连字符）
+      const normalizedPaperId = paper.id.replace(/-/g, '_');
+      if (selectedPaperIds.value.includes(normalizedPaperId)) {
+        console.log(`通过标准化ID匹配到论文: ${paper.id} -> ${normalizedPaperId}`);
+        return true;
+      }
+      
+      // 尝试提取数字部分进行匹配
+      const paperIdMatch = paper.id.match(/paper[-_](\d+)/);
+      if (paperIdMatch) {
+        const numericId = paperIdMatch[1];
+        // 检查选中ID是否包含这个数字ID部分
+        const matched = selectedPaperIds.value.some(selectedId => {
+          return selectedId.includes(numericId);
+        });
+        if (matched) {
+          console.log(`通过数字部分匹配到论文: ${paper.id} -> ${numericId}`);
+          return true;
+        }
+      }
+      
+      return false;
+    });
+  }
+
+  // 否则应用搜索过滤
   const term = searchTerm.value.toLowerCase().trim();
   if (!term) {
     return allPapers.value; // 如果搜索词为空，返回所有论文
@@ -147,7 +240,6 @@ const filteredPapers = computed(() => {
     return tagMatch || awardMatch;
   });
 });
-
 
 </script>
 
@@ -195,6 +287,26 @@ const filteredPapers = computed(() => {
   font-weight: 600; /* 可以让标题文字加粗一些 */
 }
 
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-button {
+  padding: 6px 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #e0e0e0;
+}
+
 .search-input-wrapper {
   position: relative;
   display: flex;
@@ -239,6 +351,21 @@ const filteredPapers = computed(() => {
   appearance: none;
 }
 
+.selection-header {
+  width: 100%;
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.selection-header h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
 .paper-cards-container {
   display: flex;
   flex-direction: column;
@@ -248,5 +375,14 @@ const filteredPapers = computed(() => {
   /* overflow-y: auto; The parent .details-column in DashboardLayout handles scrolling */
   padding-top: 0px;
   box-sizing: border-box;
+}
+
+.loading-message,
+.no-data-message,
+.no-results-message {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-text-secondary, #757575);
 }
 </style>
