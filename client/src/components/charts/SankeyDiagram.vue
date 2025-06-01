@@ -266,7 +266,7 @@ function render() {
 
   const linkEnter = linkSel.enter().append('path')
         .attr('fill','none')
-        .attr('stroke','#999')
+        .attr('stroke', (d: any) => d.source.color || '#999')
         .attr('stroke-opacity',0.2)  // 开始时更透明
         .attr('d', sankeyLinkHorizontal())  // 初始形状
         .attr('stroke-width', 0)  // 开始时宽度为0
@@ -286,12 +286,13 @@ function render() {
         .transition()
         .duration(800)
         .attr('d', sankeyLinkHorizontal())
+        // .attr('stroke', (d: any) => d.source.color || '#999')
         .attr('stroke-width', (d: any) => Math.max(1, d.width))
         .attr('stroke-opacity', 0.3);
 
   // 应用选中连接的样式
   linkLayer.selectAll('path.selected-link')
-        .attr('stroke', '#3498db')  // 选中连接的颜色
+        .attr('stroke', (d: any) => d.source.color || '#999')  // 选中连接的颜色
         .attr('stroke-opacity', 0.8); // 选中连接的不透明度
 
   // 平滑移除不再需要的连接
@@ -426,7 +427,7 @@ function render() {
         // 触发撤销操作
         emit('undo-operation');
       });
-      
+
   // 节点悬停事件
   nodeLayer.selectAll('g.node')
     .on('mouseover', (event, d:any) => highlightNode(d.id, event, d))
