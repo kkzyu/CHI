@@ -88,7 +88,7 @@ const props = defineProps<{
 }>();
 
 const svgRef = ref<SVGSVGElement|null>(null);
-const emit = defineEmits(['node-toggle', 'reset-column', 'node-select', 'link-select', 'undo-operation']);
+const emit = defineEmits(['node-toggle', 'reset-column', 'node-select', 'link-select', 'undo-operation', 'nodeDoubleClickedForPieDrillDown']);
 
 // 节点tooltip状态
 const hoveredNode = ref<NodeData | null>(null);
@@ -112,6 +112,8 @@ function render() {
   const svg = d3.select(svgRef.value)
                 .attr('viewBox',`0 0 ${width} ${height}`)
                 .attr('width','100%').attr('height','100%');
+
+
   
   // 添加右键点击事件到整个SVG
   svg.on('contextmenu', (evt) => {
@@ -391,16 +393,25 @@ function render() {
         .style('opacity', 0)
         .remove();
   
-  // 节点双击展开/折叠事件
   nodeLayer.selectAll('g.node')
-      .on('dblclick', (evt:any, d:any) => {
-        // 阻止浏览器默认的双击选择文本行为
+      .on('dblclick', (evt:any, d:any) => { // d 是被双击的节点数据
         evt.preventDefault();
-        // 阻止事件冒泡
         evt.stopPropagation();
+        
+        // 触发桑基图自身层级更新
         emit('node-toggle', { id:d.id, column:d.column });
-      })
-      // 添加单击事件处理节点选择
+
+        // 新增：触发用于饼图下钻的事件
+        // 我们传递节点的显示名称 (d.name) 和列索引 (d.column)
+        // d.id 是节点的唯一ID，d.name 是其显示名称
+        // d.column 是其在桑基图中的列索引 (0, 1, 或 2)
+        emit('nodeDoubleClickedForPieDrillDown', { 
+          nodeId: d.id, // 可以是原始ID，如果需要更精确的匹配
+          nodeDisplayName: d.name, // 显示名称，可能更适合饼图下钻逻辑
+          columnIndex: d.column 
+        });
+        })
+        // 添加单击事件处理节点选择
       .on('click', (evt:any, d:any) => {
         // 阻止事件冒泡，避免影响其他事件
         evt.stopPropagation();
@@ -415,7 +426,7 @@ function render() {
         // 触发撤销操作
         emit('undo-operation');
       });
-
+      
   // 节点悬停事件
   nodeLayer.selectAll('g.node')
     .on('mouseover', (event, d:any) => highlightNode(d.id, event, d))

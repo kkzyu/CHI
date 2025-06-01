@@ -22,7 +22,8 @@
        @reset-column="handleResetColumn"
        @node-select="handleNodeSelect"
        @link-select="handleLinkSelect"
-       @undo-operation="handleUndo" />
+       @undo-operation="handleUndo" 
+       @node-double-clicked-for-pie-drill-down="handleSankeyNodeDblClickForPie" />
     </div>
   </div>
 </template>
@@ -34,6 +35,8 @@ import { useRelationsStore } from '@/stores/relationsStore';
 import PlatformSwitch from '@/components/PlatformSwitch.vue';
 import { watch, inject, onMounted, ref, computed } from 'vue';
 const relations = useRelationsStore();
+import { useVisualizationStore } from '@/stores/visualizationStore';
+const vizStore = useVisualizationStore();
 
 // 创建一个展示状态，追踪用户交互
 const interactionState = ref({
@@ -78,7 +81,7 @@ onMounted(() => {
 const refreshDetailsPanel = inject('refreshDetailsPanel', null);
 
 // 定义一个emit，用于向父组件发送选择变化事件
-const emit = defineEmits(['selection-change']);
+const emit = defineEmits(['selection-change', 'sankeyNodeDrilledDown']);
 
 // 处理标题点击事件，重置对应列的显示状态
 function handleResetColumn(columnIndex) {
@@ -168,6 +171,19 @@ function handleUndo() {
     console.log('没有可撤销的操作');
   }
 }
+function handleSankeyNodeDblClickForPie({ nodeId, nodeDisplayName, columnIndex }) {
+  let categoryKey = '';
+  switch (columnIndex) {
+    case 0: categoryKey = 'researchPlatform'; break;
+    case 2: categoryKey = 'researchContent'; break;
+    case 1: categoryKey = 'researchMethod'; break;
+    default: return;
+  }
+  if (categoryKey && nodeId) {
+    vizStore.drillDown(categoryKey, nodeId); // 关键：同步饼图下钻
+  }
+}
+
 
 // 监听选择状态变化，更新细节面板
 watch(() => relations.state.selected, (newSelection) => {
