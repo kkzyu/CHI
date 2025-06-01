@@ -1,3 +1,5 @@
+import { buildConnections } from '../connectionBuilders/connectionBuilder';
+
 export function buildMethodNodes(dataStore: any, state: any): any[] {
     const nodes: any[] = [];
     
@@ -6,6 +8,23 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
     
     // 处理所有连接类型
     const connectionsByType = dataStore.crossLevelConnections?.connections ?? {};
+    
+    // 辅助函数：获取节点的论文数量（只统计完整标题）
+    function getNodePaperCountStrict(nodeId: string): number {
+        let paperIds = new Set<string>();
+        Object.entries(connectionsByType).forEach(([connectionType, connections]: [string, any]) => {
+            if (connectionType.includes('研究方法')) {
+                Object.entries(connections).forEach(([connectionKey, connectionInfo]: [string, any]) => {
+                    const [source, target] = connectionKey.split('__');
+                    // 只统计source或target完整等于nodeId的连接
+                    if (source === nodeId || target === nodeId) {
+                        (connectionInfo.paperIds || []).forEach((pid: string) => paperIds.add(pid));
+                    }
+                });
+            }
+        });
+        return paperIds.size;
+    }
     
     // 收集所有相关的论文ID
     Object.entries(connectionsByType).forEach(([connectionType, connections]: [string, any]) => {
@@ -28,9 +47,21 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
         }
     });
     
-    // 辅助函数：获取节点的论文数量
-    const getNodePaperCount = (nodeId: string): number => {
-        return nodePaperIds[nodeId]?.size || 0;
+    // 新增：获取当前所有links（buildConnections的结果）
+    let currentLinks = [];
+    try {
+      currentLinks = buildConnections(dataStore, state, nodes);
+    } catch (e) {
+      // ignore for SSR or circular
+    }
+    // 辅助函数：判断节点是否有连接
+    const nodeHasLink = (nodeId: string, column: number) => {
+      if (!currentLinks.length) return true; // fallback: 全部显示
+      if (column === 1) {
+        // 方法列，判断是否作为source或target出现在links中
+        return currentLinks.some(l => l.source === nodeId || l.target === nodeId);
+      }
+      return true;
     };
 
     if (state.columnLevels[1] === 'L1') {
@@ -41,7 +72,7 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                 const hasChildren = dataStore.hierarchyMapping?.['研究方法']?.l1_to_l2?.[n.displayName]?.length > 0;
                 
                 // 使用去重后的论文数量
-                const paperCount = getNodePaperCount(n.displayName);
+                const paperCount = getNodePaperCountStrict(n.displayName);
                 
                 return {
                     id: n.displayName,
@@ -73,8 +104,10 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                     const nodeId = childMeta.displayName;
                     
                     // 使用去重后的论文数量
-                    const paperCount = getNodePaperCount(nodeId);
+                    const paperCount = getNodePaperCountStrict(nodeId);
                     
+                    // 新增：只push有连接的节点
+                    if (!nodeHasLink(nodeId, 1)) return;
                     const newNode = {
                         id: nodeId,
                         name: nodeId,
@@ -132,14 +165,16 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                     l3Children.forEach(l3ChildId => {
                         console.log(`创建L3方法节点: ${l3ChildId}`);
                         
-                        // 使用去重后的论文数量
-                        const paperCount = getNodePaperCount(l3ChildId);
+                        // 使用严格匹配后的论文数量
+                        const paperCount = getNodePaperCountStrict(l3ChildId);
                         
+                        // 新增：只push有连接的节点
+                        if (!nodeHasLink(l3ChildId, 1)) return;
                         const newNode = {
                             id: l3ChildId,
                             name: l3ChildId,
                             column: 1,
-                            color: '#97a7aa',
+                            color: '#6cbd7b',
                             value: paperCount || 1, // 至少为1，确保节点可见
                             level: 'L3',
                             parentId: expandedL2NodeId,
@@ -160,14 +195,16 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                 l3Children.forEach(l3ChildId => {
                     console.log(`创建L3方法节点: ${l3ChildId}`);
                     
-                    // 使用去重后的论文数量
-                    const paperCount = getNodePaperCount(l3ChildId);
+                    // 使用严格匹配后的论文数量
+                    const paperCount = getNodePaperCountStrict(l3ChildId);
                     
+                    // 新增：只push有连接的节点
+                    if (!nodeHasLink(l3ChildId, 1)) return;
                     const newNode = {
                         id: l3ChildId,
                         name: l3ChildId,
                         column: 1,
-                        color: '#97a7aa',
+                        color: '#6cbd7b',
                         value: paperCount || 1, // 至少为1，确保节点可见
                         level: 'L3',
                         parentId: expandedL2NodeId,

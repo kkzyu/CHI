@@ -1,8 +1,15 @@
+import { buildConnections } from '../connectionBuilders/connectionBuilder';
+
 export function buildPlatformNodes(dataStore: any, state: any): any[] {
     const nodes: any[] = [];
     
     // 计算每个节点的论文数量(去重)
     const nodePaperIds: Record<string, Set<string>> = {};
+    
+    // 辅助函数：获取节点的论文数量
+    function getNodePaperCount(nodeId: string): number {
+        return nodePaperIds[nodeId]?.size || 0;
+    }
     
     // 处理所有连接类型
     const connectionsByType = dataStore.crossLevelConnections?.connections ?? {};
@@ -28,9 +35,21 @@ export function buildPlatformNodes(dataStore: any, state: any): any[] {
         }
     });
     
-    // 辅助函数：获取节点的论文数量
-    const getNodePaperCount = (nodeId: string): number => {
-        return nodePaperIds[nodeId]?.size || 0;
+    // 新增：获取当前所有links（buildConnections的结果）
+    let currentLinks = [];
+    try {
+      currentLinks = buildConnections(dataStore, state, nodes);
+    } catch (e) {
+      // ignore for SSR or circular
+    }
+    // 辅助函数：判断节点是否有连接
+    const nodeHasLink = (nodeId: string, column: number) => {
+      if (!currentLinks.length) return true; // fallback: 全部显示
+      if (column === 0) {
+        // 平台列，判断是否作为source或target出现在links中
+        return currentLinks.some(l => l.source === nodeId || l.target === nodeId);
+      }
+      return true;
     };
 
     if (state.columnLevels[0] === 'L1') {
@@ -71,7 +90,8 @@ export function buildPlatformNodes(dataStore: any, state: any): any[] {
             l2Children.forEach(childId => {
                 // 使用去重后的论文数量
                 const paperCount = getNodePaperCount(childId);
-                
+                // 新增：只push有连接的节点
+                if (!nodeHasLink(childId, 0)) return;
                 const newNode = {
                     id: childId,
                     name: childId,

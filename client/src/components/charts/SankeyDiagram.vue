@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, watch, ref, computed } from 'vue';
 import * as d3 from 'd3';
 // 直接使用any类型
 import { sankey as d3Sankey, sankeyLinkHorizontal } from 'd3-sankey';
@@ -105,9 +105,24 @@ let linkLayer: any;
 let nodeLayer: any;
 let labelLayer: any;
 
+// 新增：只显示有连接的节点
+const filteredNodes = computed<NodeData[]>(() => {
+  const nodes: NodeData[] = Array.isArray(props.nodes) ? props.nodes : [];
+  const links = Array.isArray(props.links) ? props.links : [];
+  if (!nodes.length || !links.length) return [];
+  const nodeSet = new Set<string>();
+  links.forEach(l => {
+    if (typeof l.source === 'string') nodeSet.add(l.source);
+    if (typeof l.target === 'string') nodeSet.add(l.target);
+    if (typeof l.source === 'object' && l.source && 'id' in l.source) nodeSet.add((l.source as any).id);
+    if (typeof l.target === 'object' && l.target && 'id' in l.target) nodeSet.add((l.target as any).id);
+  });
+  return nodes.filter(n => typeof n.id === 'string' && nodeSet.has(n.id));
+});
+
 function render() {
   if(!svgRef.value) return;
-  const width = 900, height = 700;
+  const width = 900, height = 750;
   const margin = 20; // 新增左右margin
   const svg = d3.select(svgRef.value)
                 .attr('viewBox',`0 0 ${width} ${height}`)
@@ -139,9 +154,9 @@ function render() {
 
   // 添加三栏标题 - 确保与桑基图中的列顺序匹配
   const columnTitles: ColumnTitle[] = [
-    { text: '研究平台', x: 0, y: 40, align: 'start' },       // 左侧margin
-    { text: '研究内容', x: width / 2, y: 40, align: 'middle' }, // 居中
-    { text: '研究方法', x: width , y: 40, align: 'end' }    // 右侧margin
+    { text: '研究平台', x: 0, y: 40, align: 'start' },           // 左侧 (column=0)
+    { text: '研究内容', x: width / 2, y: 40, align: 'middle' },   // 中间 (column=2)
+    { text: '研究方法', x: width, y: 40, align: 'end' }           // 右侧 (column=1)
   ];
 
   // 更新标题
@@ -227,32 +242,42 @@ function render() {
   // @ts-ignore - d3-sankey类型问题
   const graph = d3Sankey()
       // @ts-ignore
-      .nodeWidth(16)
+      .nodeWidth(15)
       // @ts-ignore
-      .nodePadding(10)
+      .nodePadding(5)
       // @ts-ignore
       .nodeId((d: any) => d.id)
       // @ts-ignore
       .nodeSort((a: any, b: any) => a.column - b.column)  // 按列排序
       // @ts-ignore
+      .nodeAlign((node: any) => {
+        // 将column值映射到正确的视觉位置
+        // column=0(平台)映射到0，column=2(内容)映射到1，column=1(方法)映射到2
+        const columnMapping = {0: 0, 2: 1, 1: 2};
+        return columnMapping[node.column] !== undefined ? columnMapping[node.column] : node.column;
+      }) // 关键：强制每个节点在映射后的列位置
+      // @ts-ignore
       .extent([[margin, 60], [width - margin, height]]);  // 左右margin，顶部留空间
 
+  const minValue = 3;
+  // 在节点数据传递给d3Sankey前，按column排序，确保视觉顺序为0(平台)-2(内容)-1(方法)
+  const sortedNodes = filteredNodes.value.slice().sort((a, b) => {
+    // 使用与nodeAlign相同的映射
+    const columnMapping = {0: 0, 2: 1, 1: 2};
+    const aPos = columnMapping[a.column] !== undefined ? columnMapping[a.column] : a.column;
+    const bPos = columnMapping[b.column] !== undefined ? columnMapping[b.column] : b.column;
+    return aPos - bPos;
+  });
+
   const result = graph({
-    nodes: props.nodes.map((n) => {
+    nodes: sortedNodes.map((n) => {
       // 复制节点并保存原始值
-      const node = { ...n, originalValue: n.value };
-      
-      // 🔥关键修复：确保节点的column属性正确
-      if (node.level === 'L3') {
-        // 根据节点所属类别修正column值
-        if (node.contentCategory === '研究内容') {
-          node.column = 1; // 研究内容在中间列（列索引1）
-        } else if (node.contentCategory === '研究方法') {
-          node.column = 2; // 研究方法在右侧列（列索引2）
-        }
-        // 如果是平台，则保持column=0
-      }
-      
+      const node = { 
+        ...n, 
+        originalValue: n.value ,
+        value: Math.max(minValue, n.value)
+      };
+      // 不再在这里调整column，column已在store层严格设置
       return node;
     }) as any[],
     links: props.links.map((l) => ({ ...l })) as any[],
@@ -333,8 +358,8 @@ function render() {
         .attr('x', (d: any) => {
           // 根据节点所在列确定文本位置
           if (d.column === 0) return (d.x1 - d.x0) + 6; // 研究平台在左侧，文本在右侧
-          if (d.column === 2) return -6; // 研究方法在右侧，文本在左侧
-          if (d.column === 1) return -6; // 研究内容在中间，文本在左侧
+          if (d.column === 2) return -6; // 研究内容在中间，文本在左侧
+          if (d.column === 1) return -6; // 研究方法在右侧，文本在左侧
           // 默认情况
           return d.column < 1 ? (d.x1 - d.x0) + 6 : -6;
         })
@@ -343,8 +368,8 @@ function render() {
         .attr('text-anchor', (d: any) => {
           // 根据节点所在列确定文本对齐方式
           if (d.column === 0) return 'start'; // 研究平台在左侧，文本左对齐
-          if (d.column === 2) return 'end'; // 研究方法在右侧，文本右对齐
-          if (d.column === 1) return 'end'; // 研究内容在中间，文本右对齐
+          if (d.column === 2) return 'end'; // 研究内容在中间，文本右对齐
+          if (d.column === 1) return 'end'; // 研究方法在右侧，文本右对齐
           // 默认情况
           return d.column < 1 ? 'start' : 'end';
         })

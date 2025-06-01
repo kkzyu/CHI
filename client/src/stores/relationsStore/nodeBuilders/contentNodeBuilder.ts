@@ -1,8 +1,14 @@
+import { buildConnections } from '../connectionBuilders/connectionBuilder';
+
 export function buildContentNodes(dataStore: any, state: any): any[] {
     const nodes: any[] = [];
     
     // 计算每个节点的论文数量(去重)
     const nodePaperIds: Record<string, Set<string>> = {};
+
+    function getNodePaperCount(nodeId: string): number {
+        return nodePaperIds[nodeId]?.size || 0;
+    }
     
     // 处理所有连接类型
     const connectionsByType = dataStore.crossLevelConnections?.connections ?? {};
@@ -28,9 +34,21 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
         }
     });
     
-    // 辅助函数：获取节点的论文数量
-    const getNodePaperCount = (nodeId: string): number => {
-        return nodePaperIds[nodeId]?.size || 0;
+    // 新增：获取当前所有links（buildConnections的结果）
+    let currentLinks = [];
+    try {
+      currentLinks = buildConnections(dataStore, state, nodes);
+    } catch (e) {
+      // ignore for SSR or circular
+    }
+    // 辅助函数：判断节点是否有连接
+    const nodeHasLink = (nodeId: string, column: number) => {
+      if (!currentLinks.length) return true; // fallback: 全部显示
+      if (column === 2) {
+        // 内容列，判断是否作为source或target出现在links中
+        return currentLinks.some(l => l.source === nodeId || l.target === nodeId);
+      }
+      return true;
     };
 
     if (state.columnLevels[2] === 'L1') {
@@ -45,11 +63,12 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                 return {
                     id: n.displayName,
                     name: n.displayName,
-                    column: 2,
+                    column: 2, // 内容列强制为2
                     color: n.color || '#dc6866',
                     value: paperCount || 1, // 至少为1，确保节点可见
                     level: 'L1',
                     hasChildren,
+                    contentCategory: '研究内容',
                 };
             });
         nodes.push(...contentNodes);
@@ -72,16 +91,19 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     // 使用去重后的论文数量
                     const paperCount = getNodePaperCount(nodeId);
                     
+                    // 新增：只push有连接的节点
+                    if (!nodeHasLink(nodeId, 2)) return;
                     const newNode = {
                         id: nodeId,
                         name: nodeId,
-                        column: 2,
+                        column: 2, // 内容列强制为2
                         color: childMeta.color || '#dc6866',
                         value: paperCount || 1, // 至少为1，确保节点可见
                         level: 'L2',
                         parentId,
                         hasChildren,
                         originalId: childId,
+                        contentCategory: '研究内容',
                     };
                     console.log(`添加L2子节点:`, newNode);
                     nodes.push(newNode);
@@ -132,11 +154,14 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                         // 使用去重后的论文数量
                         const paperCount = getNodePaperCount(l3ChildId);
                         
+                        // 新增：只push有连接的节点
+                        if (!nodeHasLink(l3ChildId, 2)) return;
+                        
                         // 🔥 关键修复：确保column属性始终为2（研究内容列）
                         const newNode = {
                             id: l3ChildId,
                             name: l3ChildId,
-                            column: 2, // 强制设置为内容列
+                            column: 2, // 内容列强制为2
                             color: '#dc6866',
                             value: paperCount || 1, // 至少为1，确保节点可见
                             level: 'L3',
@@ -161,11 +186,14 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     // 使用去重后的论文数量
                     const paperCount = getNodePaperCount(l3ChildId);
                     
+                    // 新增：只push有连接的节点
+                    if (!nodeHasLink(l3ChildId, 2)) return;
+                    
                     // 🔥 关键修复：确保column属性始终为2（研究内容列）
                     const newNode = {
                         id: l3ChildId,
                         name: l3ChildId,
-                        column: 2, // 强制设置为内容列
+                        column: 2, // 内容列强制为2
                         color: '#dc6866',
                         value: paperCount || 1, // 至少为1，确保节点可见
                         level: 'L3',

@@ -37,8 +37,8 @@ const relations = useRelationsStore();
 
 // 创建一个展示状态，追踪用户交互
 const interactionState = ref({
-  hasInteracted: false,
-  isTransitioning: false
+  hasInteracted: true,
+  isTransitioning: true
 });
 
 // 处理节点和连接的计算属性，确保过渡流畅
