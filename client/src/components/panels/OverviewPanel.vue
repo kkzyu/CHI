@@ -169,16 +169,16 @@ const getParentLabel = (categoryKey) => {
 
 // --- CONDITIONAL RENDERING LOGIC ---
 const shouldShowPieSection = (targetCategoryKey) => {
-  // Check if any category is in a drilled-down state (L2 or deeper)
-  const anyCategoryDrilledDown = Object.values(vizStore.currentDisplayState).some(
-    (state) => state.parentTrail.length > 0
-  );
+  // // Check if any category is in a drilled-down state (L2 or deeper)
+  // const anyCategoryDrilledDown = Object.values(vizStore.currentDisplayState).some(
+  //   (state) => state.parentTrail.length > 0
+  // );
 
-  if (anyCategoryDrilledDown) {
-    // If drilled down, only show the pie chart section that is currently active (its parentTrail is not empty)
-    return vizStore.currentDisplayState[targetCategoryKey].parentTrail.length > 0;
-  }
-  // If no category is drilled down, show all pie chart sections
+  // if (anyCategoryDrilledDown) {
+  //   // If drilled down, only show the pie chart section that is currently active (its parentTrail is not empty)
+  //   return vizStore.currentDisplayState[targetCategoryKey].parentTrail.length > 0;
+  // }
+  // // If no category is drilled down, show all pie chart sections
   return true;
 };
 

@@ -1,6 +1,19 @@
+import { useVisualizationStore } from '../../visualizationStore'; // 💡 调整正确的路径
+
+function getHashFallback(id: string, defaultColor: string): string {
+    if (!id) return defaultColor;
+    const colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'];
+    let hash = 0;
+    for (let i = 0; i < String(id).length; i++) {
+        hash = String(id).charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+}
+
 export function buildContentNodes(dataStore: any, state: any): any[] {
     const nodes: any[] = [];
-    
+    const vizStore = useVisualizationStore(); // 💡 获取 visualizationStore 实例
+
     // 计算每个节点的论文数量(去重)
     const nodePaperIds: Record<string, Set<string>> = {};
     
@@ -38,7 +51,26 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
             .filter((n) => n.level === 2)
             .map((n) => {
                 const hasChildren = dataStore.hierarchyMapping?.['研究内容']?.l1_to_l2?.[n.displayName]?.length > 0;
-                
+                let color = n.color || '#dc6866';
+                const pieItem = vizStore.researchContentPieDataSource.find(p => p.id === n.displayName || p.name === n.displayName);
+                if (pieItem && pieItem.itemStyle?.color) {
+                    color = pieItem.itemStyle.color;
+                } else {
+                    // 备用逻辑：如果扇形图当前未显示此节点，或扇形图本身对此节点使用了备用色
+                    // 1. 再次检查节点自身元数据中的颜色
+                    if (n.color && n.color !== '#PLACEHOLDER') {
+                        color = n.color;
+                    } else {
+                        // 2. 尝试获取父级（即“研究内容”根节点）在元数据中的颜色
+                        const rootContentNodeMeta = dataStore.nodeMetadata?.['研究内容']?.['研究内容'];
+                        if (rootContentNodeMeta?.color && rootContentNodeMeta.color !== '#PLACEHOLDER') {
+                            color = rootContentNodeMeta.color;
+                        } else {
+                           // 3. 最后使用哈希颜色或硬编码默认色
+                           color = getHashFallback(n.displayName, '#dc6866');
+                        }
+                    }
+                }
                 // 使用去重后的论文数量
                 const paperCount = getNodePaperCount(n.displayName);
                 
@@ -46,7 +78,7 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     id: n.displayName,
                     name: n.displayName,
                     column: 2,
-                    color: n.color || '#dc6866',
+                    color: color,
                     value: paperCount || 1, // 至少为1，确保节点可见
                     level: 'L1',
                     hasChildren,
@@ -68,7 +100,28 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                 if (childMeta) {
                     const hasChildren = dataStore.hierarchyMapping?.['研究内容']?.l2_to_l3?.[childId]?.length > 0;
                     const nodeId = childMeta.displayName;
-                    
+                    let color = childMeta.color || '#dc6866'; //
+
+                    // 💡 尝试从扇形图数据获取颜色
+                    //    此时扇形图应已下钻到 parentId，其 dataSource 包含这些二级节点
+                    const pieItem = vizStore.researchContentPieDataSource.find(p => p.id === nodeId || p.name === nodeId);
+                    if (pieItem && pieItem.itemStyle?.color) {
+                        color = pieItem.itemStyle.color;
+                    } else {
+                        // 备用逻辑 (L2节点)
+                        if (childMeta.color && childMeta.color !== '#PLACEHOLDER') {
+                            color = childMeta.color;
+                        } else {
+                            // 尝试父级 L1 节点的元数据颜色
+                            // parentId 就是 L1 节点的 displayName/ID
+                            const parentL1Meta = allContentMeta[parentId]; // 假设 parentId 可以在 allContentMeta 中直接找到 L1 元数据
+                            if (parentL1Meta?.color && parentL1Meta.color !== '#PLACEHOLDER') {
+                                color = parentL1Meta.color;
+                            } else {
+                                color = getHashFallback(nodeId, '#dc6866');
+                            }
+                        }
+                    }
                     // 使用去重后的论文数量
                     const paperCount = getNodePaperCount(nodeId);
                     
@@ -76,7 +129,7 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                         id: nodeId,
                         name: nodeId,
                         column: 2,
-                        color: childMeta.color || '#dc6866',
+                        color: color ,
                         value: paperCount || 1, // 至少为1，确保节点可见
                         level: 'L2',
                         parentId,

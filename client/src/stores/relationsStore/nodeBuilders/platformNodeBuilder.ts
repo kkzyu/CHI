@@ -1,5 +1,7 @@
+import { useVisualizationStore } from '../../visualizationStore'; // 💡 调整正确的路径
 export function buildPlatformNodes(dataStore: any, state: any): any[] {
     const nodes: any[] = [];
+    const vizStore = useVisualizationStore(); // 💡 获取 visualizationStore 实例
     
     // 计算每个节点的论文数量(去重)
     const nodePaperIds: Record<string, Set<string>> = {};
