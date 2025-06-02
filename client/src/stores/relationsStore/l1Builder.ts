@@ -9,6 +9,18 @@ export function buildL1Snapshot(dataStore: any, state: any) {
     
     // 处理crossLevelConnections中的数据
     const connectionsByType = dataStore.crossLevelConnections?.connections ?? {};
+    const selectedYear = state.selectedYear ? String(state.selectedYear) : null;
+
+    // 辅助函数：判断 paperIds 是否属于当前年份
+    function filterPaperIdsByYear(paperIds: string[]) {
+        if (!selectedYear) return paperIds;
+        const filtered = paperIds.filter(pid => String(dataStore.paperIdToYear?.[pid]) === String(selectedYear));
+        if (filtered.length === 0 && paperIds.length > 0) {
+            console.warn('Year filter mismatch:', {paperIds, selectedYear, mapped: paperIds.map(pid => dataStore.paperIdToYear?.[pid])});
+        }
+        return filtered;
+    }
+
     
     // 遍历所有连接类型
     Object.entries(connectionsByType).forEach(([connectionType, connections]: [string, any]) => {
@@ -21,8 +33,8 @@ export function buildL1Snapshot(dataStore: any, state: any) {
             if (!nodePaperIds[target]) nodePaperIds[target] = new Set();
             
             // 将论文ID添加到对应节点的集合中(自动去重)
-            const paperIds = connectionInfo.paperIds || [];
-            paperIds.forEach((paperId: string) => {
+            const filteredPaperIds = filterPaperIdsByYear(connectionInfo.paperIds || []);
+            filteredPaperIds.forEach((paperId: string) => {
                 nodePaperIds[source].add(paperId);
                 nodePaperIds[target].add(paperId);
             });
@@ -111,11 +123,13 @@ export function buildL1Snapshot(dataStore: any, state: any) {
         if (!Object.prototype.hasOwnProperty.call(rawPlatformContent, key)) continue;
         const [platform, content] = key.split('__');
         const info = rawPlatformContent[key];
+        const filteredPaperIds = filterPaperIdsByYear(info.paperIds || []);
+        if (filteredPaperIds.length === 0) continue;
         links.push({
             source: platform,
             target: content,
-            value: info.paperCount ?? 1,
-            paperIds: info.paperIds ?? [],
+            value: filteredPaperIds.length,
+            paperIds: filteredPaperIds,
         });
     }
 
@@ -125,13 +139,30 @@ export function buildL1Snapshot(dataStore: any, state: any) {
         if (!Object.prototype.hasOwnProperty.call(rawContentMethod, key)) continue;
         const [content, method] = key.split('__');
         const info = rawContentMethod[key];
+        // 关键：加上年份过滤
+        const filteredPaperIds = filterPaperIdsByYear(info.paperIds || []);
+        if (filteredPaperIds.length === 0) continue;
         links.push({
             source: content,
             target: method,
-            value: info.paperCount ?? 1,
-            paperIds: info.paperIds ?? [],
+            value: filteredPaperIds.length,
+            paperIds: filteredPaperIds,
         });
     }
+    console.log('Sankey nodes', nodes);
+    console.log('Sankey links', links);
+    console.log('selectedYear', selectedYear);
+    console.log('crossLevelConnections', dataStore.crossLevelConnections?.connections);
 
+    for (const key in rawPlatformContent) {
+    const info = rawPlatformContent[key];
+    const filteredPaperIds = filterPaperIdsByYear(info.paperIds || []);
+    if (filteredPaperIds.length === 0) {
+        console.log(`[No link] ${key} - paperIds:`, info.paperIds, 'filtered:', filteredPaperIds);
+    }
+    }
+
+    // console.log('paperIdToYear keys sample:', Object.keys(dataStore.paperIdToYear).slice(0, 10));
+    // console.log('sample paperIds in crossLevelConnections:', Object.values(connectionsByType)[0] && Object.values(Object.values(connectionsByType)[0])[0]?.paperIds);
     return { nodes, links };
 }

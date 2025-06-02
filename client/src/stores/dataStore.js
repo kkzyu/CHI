@@ -15,6 +15,7 @@ export const useDataStore = defineStore('data', {
         // 统计与视图层
         precomputedStats: null,
         sankeyLayoutConfig: null, 
+        paperIdToYear: {},
 
         // 加载状态和错误信息
         isLoading: false,
@@ -43,6 +44,7 @@ export const useDataStore = defineStore('data', {
                     interactionStatesRes,
                     precomputedStatsRes,
                     sankeyLayoutConfigRes,
+                    rawPapersForYearMappingRes,
                 ] = await Promise.all([
                     fetch(`${base}data/main/processedPapers.json`),
                     fetch(`${base}data/main/hierarchyMapping.json`),
@@ -52,6 +54,7 @@ export const useDataStore = defineStore('data', {
                     fetch(`${base}data/interaction/interactionStates.json`),
                     fetch(`${base}data/layout/precomputedStats.json`),
                     fetch(`${base}data/layout/sankeyLayoutConfig.json`),
+                    fetch(`${base}data/raw/papers.json`),
                 ]);
 
                 // 检查所有响应是否成功
@@ -64,6 +67,7 @@ export const useDataStore = defineStore('data', {
                     { name: 'interactionStates', res: interactionStatesRes },
                     { name: 'precomputedStats', res: precomputedStatsRes },
                     { name: 'sankeyLayoutConfig', res: sankeyLayoutConfigRes },
+                    { name: 'rawPapersForYearMapping', res: rawPapersForYearMappingRes },
                 ];
 
                 for (const item of responses) {
@@ -82,12 +86,28 @@ export const useDataStore = defineStore('data', {
                 this.interactionStates = await interactionStatesRes.json();
                 this.precomputedStats = await precomputedStatsRes.json();
                 this.sankeyLayoutConfig = await sankeyLayoutConfigRes.json();
+                const rawPapersData = await rawPapersForYearMappingRes.json();
+                const tempPaperIdToYear = {};
+                for (const paper of rawPapersData) {
+                    if (paper.id && paper.Year) {
+                        tempPaperIdToYear[paper.id] = String(paper.Year);
+                    }
+                }
+                this.paperIdToYear = tempPaperIdToYear;
+                console.log("[DataStore] paperIdToYear 映射已填充。条目数:", Object.keys(this.paperIdToYear).length);
+                console.log("[DataStore] paperIdToYear 示例内容 (前5条):", JSON.stringify(Object.entries(this.paperIdToYear).slice(0, 5)));
+                if (this.paperIdToYear['paper_117']) {
+                    console.log("[DataStore] paper_117 的年份是:", this.paperIdToYear['paper_117']);
+                } else {
+                    console.log("[DataStore] 在 paperIdToYear 映射中未找到 paper_117。");
+                }
 
                 console.log("All core JSON data parsed and stored.");
 
             } catch (err) {
                 this.error = err.message;
                 console.error("Error loading data in dataStore:", err);
+                this.paperIdToYear = {};
             } finally {
                 this.isLoading = false;
                 console.log("fetchAllData finished. isLoading:", this.isLoading);

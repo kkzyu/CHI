@@ -126,18 +126,7 @@ const initChart = () => {
       })),
     });
     myChart.on('click', (params) => {
-      if (params.componentType === 'series' && params.seriesType === 'bar') {
-        const clickedYear = params.name; // params.name 对应 x 轴的类目名，即年份
-        
-        if (currentSelectedYear.value === clickedYear) {
-          // 如果再次点击已选中的年份，则取消选择（显示总体数据）
-          currentSelectedYear.value = null;
-          emit('bar-click', null); // 发出 null 表示重置
-        } else {
-          currentSelectedYear.value = clickedYear;
-          emit('bar-click', clickedYear); // 发出被点击的年份
-        }
-      }
+      emit('bar-click', params.name); //
     });
   }
 };
@@ -163,6 +152,15 @@ onBeforeUnmount(() => {
   }
   // 如果添加了全局的 resize listener，也在这里移除
 });
+
+function handleBarClick(year) {
+  const vizStore = useVisualizationStore();
+  const relStore = useRelationsStore();
+
+  vizStore.selectYear(year); // 更新饼图等
+  relStore.setSelectedYear(year); // 更新桑基图数据
+  // 详情面板可通过 store 或 props 响应
+}
 
 // Optional: Resize listener
 // onBeforeUnmount(() => {
