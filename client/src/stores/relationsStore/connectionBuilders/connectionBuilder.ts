@@ -99,13 +99,13 @@ function buildPlatformToContentConnections(dataStore: any, state: any, nodes: an
             
             // 只有在有论文的情况下才创建连接
             if (filteredPaperIds.length > 0) {
-                links.push({
-                    source: platformId,
-                    target: contentId,
+            links.push({
+                source: platformId,
+                target: contentId,
                     value: filteredPaperIds.length, // 使用过滤后的论文数量
                     paperIds: filteredPaperIds, // 使用过滤后的论文ID列表
-                    connectionStrength: connectionInfo.connectionStrength
-                });
+                connectionStrength: connectionInfo.connectionStrength
+            });
                 console.log(`✅ 创建平台→内容连接: ${platformId} → ${contentId} (${filteredPaperIds.length})`);
             } else {
                 console.log(`⚠️ 平台→内容连接在当前年份筛选下没有论文: ${platformId} → ${contentId}`);
@@ -181,13 +181,13 @@ function buildContentToMethodConnections(dataStore: any, state: any, nodes: any[
                 
                 // 只有在有论文的情况下才创建连接
                 if (filteredPaperIds.length > 0) {
-                    links.push({
-                        source: contentId,
-                        target: methodId,
+                links.push({
+                    source: contentId,
+                    target: methodId,
                         value: filteredPaperIds.length, // 使用过滤后的论文数量
                         paperIds: filteredPaperIds, // 使用过滤后的论文ID列表
-                        connectionStrength: connectionInfo.connectionStrength
-                    });
+                    connectionStrength: connectionInfo.connectionStrength
+                });
                     console.log(`✅ 创建L3内容→L1方法连接: ${contentId} → ${methodId} (${filteredPaperIds.length})`);
                 } else {
                     console.log(`⚠️ 内容→方法连接在当前年份筛选下没有论文: ${contentId} → ${methodId}`);
@@ -236,13 +236,13 @@ function buildContentToMethodConnections(dataStore: any, state: any, nodes: any[
                 
                 // 只有在有论文的情况下才创建连接
                 if (filteredPaperIds.length > 0) {
-                    links.push({
-                        source: contentNode.id,
-                        target: methodNode.id,
+                links.push({
+                    source: contentNode.id,
+                    target: methodNode.id,
                         value: filteredPaperIds.length, // 使用过滤后的论文数量
                         paperIds: filteredPaperIds, // 使用过滤后的论文ID列表
-                        connectionStrength: connectionInfo.connectionStrength
-                    });
+                    connectionStrength: connectionInfo.connectionStrength
+                });
                     console.log(`✅ 创建内容→方法连接: ${contentNode.id} → ${methodNode.id} (${filteredPaperIds.length})`);
                 } else {
                     console.log(`⚠️ 内容→方法连接在当前年份筛选下没有论文: ${contentId} → ${methodId}`);

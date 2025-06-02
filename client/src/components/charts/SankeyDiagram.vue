@@ -581,7 +581,7 @@ function highlightNode(nodeId:string, event:MouseEvent, nodeData:any) {
     relationsStore.selectNode(nodeId);
     const paperIds = relationsStore.getSelectedPaperIds();
     const paperCount = paperIds.length;
-    
+            
     // 恢复之前的选择状态
     relationsStore.state.selected = prevSelection;
     

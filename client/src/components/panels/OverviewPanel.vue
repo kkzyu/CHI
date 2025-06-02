@@ -16,6 +16,7 @@
           chart-height="120px" 
           :chart-data="vizStore.barChartDataSource"
           @bar-click="handleBarChartClick" 
+          :selected-year="vizStore.selectedYear"
           v-if="dataStoresInitialized && barChartData.years && barChartData.years.length > 0"
         />
         <div v-else class="loading-placeholder" :style="{ height: '120px' }">论文数量加载中...</div>
@@ -167,11 +168,11 @@ const handlePieDrillUp = (categoryKey) => {
   else if (categoryKey === 'researchPlatform') { columnIndex = 0; /* relationsCategoryName = '研究平台';*/ } // 平台通常只到L2
   else return;
 
-  // 定义扇形图的根节点ID，这些节点本身不能被“折叠”其子项（因为它们是顶级）
+  // 定义扇形图的根节点ID，这些节点本身不能被"折叠"其子项（因为它们是顶级）
   const rootIds = ['研究内容', '研究方法', '研究平台'];
   if (rootIds.includes(conceptualParentNodeIdFromPie)) {
     // 如果 conceptualParentNodeIdFromPie 是根ID，意味着之前扇形图在显示L1层级项目。
-    // 从L1层级“上钻”通常是通过面包屑或其他方式重置视图到根。
+    // 从L1层级"上钻"通常是通过面包屑或其他方式重置视图到根。
     // 对应桑基图也应重置该列到L1。
     relationsStore.resetColumn(columnIndex);
     return;
@@ -226,7 +227,7 @@ const getParentLabel = (categoryKey) => {
   const currentState = vizStore.currentDisplayState[categoryKey];
   // showBackButton 对应的条件通常是 parentTrail.length > 0
   if (currentState && currentState.parentTrail.length > 0) {
-    // activeNodeId 是当前“文件夹”的ID，我们显示的是它的子项
+    // activeNodeId 是当前"文件夹"的ID，我们显示的是它的子项
     // 所以，标签应该是 activeNodeId 的名称
     const activeNodeInfo = vizStore.getNodeInfo(currentState.activeNodeId, categoryKey);
     return activeNodeInfo?.displayName || currentState.activeNodeId;

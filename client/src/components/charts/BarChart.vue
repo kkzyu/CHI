@@ -18,6 +18,7 @@ import {
   LegendComponent,
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useVisualizationStore } from '@/stores/visualizationStore';
 
 echarts.use([
   TitleComponent,
@@ -41,13 +42,17 @@ const props = defineProps({
     type: Object, // Expected: { years: [], series: [{ name: '', data: [], color: '' }, ...] }
     required: true,
   },
+  selectedYear: {
+    type: [String, Number, null],
+    default: null
+  }
 });
 
 const emit = defineEmits(['bar-click']);
 
 const chartRef = ref(null);
 let myChart = null;
-const currentSelectedYear = ref(null); // Track the currently selected year for bar click events
+const vizStore = useVisualizationStore();
 
 const initChart = () => {
   if (myChart) {
@@ -55,6 +60,50 @@ const initChart = () => {
   }
   if (chartRef.value && props.chartData && props.chartData.years && props.chartData.series) {
     myChart = echarts.init(chartRef.value);
+    
+    // 根据选中年份设置每个柱子的透明度
+    const seriesData = props.chartData.series.map((s, index) => {
+      return {
+        name: s.name,
+        type: 'bar',
+        stack: 'total', // 堆叠柱状图
+        label: {
+          show: index === props.chartData.series.length - 1, // 仅在最后一个堆叠部分显示标签
+          position: 'top', // 数据标签显示在柱子顶部
+          formatter: (params) => {
+            const total = props.chartData.series.reduce((sum, series) => {
+              return sum + series.data[params.dataIndex];
+            }, 0); // 计算堆叠总值
+            return total;
+          },
+        },
+        emphasis: {
+          focus: 'series',
+        },
+        data: s.data.map((value, idx) => {
+          // 如果有选中的年份且当前不是选中的年份，则降低透明度
+          const isSelected = props.selectedYear === props.chartData.years[idx];
+          const opacity = props.selectedYear && !isSelected ? 0.3 : 1;
+          
+          return {
+            value: value,
+            itemStyle: {
+              color: s.color,
+              opacity: opacity
+            }
+          };
+        }),
+        itemStyle: {
+          borderRadius: 
+            index === 0
+              ? [0, 0, 5, 5] // 底部堆叠部分：左下和右下为圆角
+              : index === props.chartData.series.length - 1
+              ? [5, 5, 0, 0] // 顶部堆叠部分：左上和右上为圆角
+              : [0, 0, 0, 0], // 中间堆叠部分：无圆角
+        },
+      };
+    });
+    
     myChart.setOption({
       title: {
         // Title is handled by the component's own title prop
@@ -72,7 +121,12 @@ const initChart = () => {
         orient: 'vertical',
         right: '1%',
         top: 0,
-        data: ['最佳论文', '荣誉提名'],
+        data: props.chartData.series.map(s => ({
+          name: s.name,
+          itemStyle: {
+            color: s.color
+          }
+        })),
       },
       grid: {
         left: '3%',
@@ -96,37 +150,11 @@ const initChart = () => {
         axisLabel: { show: false }, // 隐藏 Y 轴标签
         splitLine: { show: false }, // 隐藏网格线
       },
-      series: props.chartData.series.map((s, index) => ({
-        name: s.name,
-        type: 'bar',
-        stack: 'total', // 堆叠柱状图
-        label: {
-          show: index === props.chartData.series.length - 1, // 仅在最后一个堆叠部分显示标签
-          position: 'top', // 数据标签显示在柱子顶部
-          formatter: (params) => {
-            const total = props.chartData.series.reduce((sum, series) => {
-              return sum + series.data[params.dataIndex];
-            }, 0); // 计算堆叠总值
-            return total;
-          },
-        },
-        emphasis: {
-          focus: 'series',
-        },
-        data: s.data,
-        itemStyle: {
-          color: s.color, // 自定义柱子颜色
-          borderRadius: 
-            index === 0
-              ? [0, 0, 5, 5] // 底部堆叠部分：左下和右下为圆角
-              : index === props.chartData.series.length - 1
-              ? [5, 5, 0, 0] // 顶部堆叠部分：左上和右上为圆角
-              : [0, 0, 0, 0], // 中间堆叠部分：无圆角
-        },
-      })),
+      series: seriesData,
     });
+    
     myChart.on('click', (params) => {
-      emit('bar-click', params.name); //
+      emit('bar-click', params.name);
     });
   }
 };
@@ -137,44 +165,29 @@ onMounted(() => {
   });
 });
 
+// 监听图表数据变化
 watch(() => props.chartData, (newData) => {
   if (newData) {
-    currentSelectedYear.value = null; // 重置内部跟踪的选中年份
     nextTick(() => {
-        initChart();
+      initChart();
     });
   }
 }, { deep: true });
+
+// 监听选中年份变化
+watch(() => props.selectedYear, (newYear) => {
+  if (myChart) {
+    nextTick(() => {
+      initChart();
+    });
+  }
+});
 
 onBeforeUnmount(() => {
   if (myChart) {
     myChart.dispose();
   }
-  // 如果添加了全局的 resize listener，也在这里移除
 });
-
-function handleBarClick(year) {
-  const vizStore = useVisualizationStore();
-  const relStore = useRelationsStore();
-
-  vizStore.selectYear(year); // 更新饼图等
-  relStore.setSelectedYear(year); // 更新桑基图数据
-  // 详情面板可通过 store 或 props 响应
-}
-
-// Optional: Resize listener
-// onBeforeUnmount(() => {
-//   if (myChart) {
-//     myChart.dispose();
-//   }
-//   window.removeEventListener('resize', resizeChart);
-// });
-// const resizeChart = () => {
-//   myChart?.resize();
-// };
-// onMounted(() => {
-//   window.addEventListener('resize', resizeChart);
-// });
 </script>
 
 <style scoped>
