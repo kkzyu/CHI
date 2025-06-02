@@ -182,12 +182,13 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     l3Children.forEach(l3ChildId => {
                         const allContentMeta = dataStore.nodeMetadata?.['研究内容'] ?? {};
                         console.log(`创建L3节点: ${l3ChildId}`);
+                        
                         let parentColor = '#dc6866';
                         // expandedL2NodeId 是当前 L2 父节点的 id
                         const l2ParentMeta = allContentMeta[expandedL2NodeId];
-                        if (l2ParentMeta?.color && l2ParentMeta.color !== '#PLACEHOLDER') {
-                            parentColor = l2ParentMeta.color;
-                        }
+                        // if (l2ParentMeta?.color && l2ParentMeta.color !== '#PLACEHOLDER') {
+                        //     parentColor = l2ParentMeta.color;
+                        // }
                         // 也可以尝试从 PieChart 数据源获取
                         const pieItem = vizStore.researchContentPieDataSource.find(
                             p => p.id === expandedL2NodeId || p.name === expandedL2NodeId
@@ -232,7 +233,34 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     
                     // 使用去重后的论文数量
                     const paperCount = getNodePaperCount(l3ChildId);
-                    
+                    const allContentMeta = dataStore.nodeMetadata?.['研究内容'] ?? {}; // 获取所有研究内容的元数据
+                    let parentColor = '#dc6866'; // 默认颜色
+                    const pieItem = vizStore.researchContentPieDataSource.find(
+                        p => p.id === expandedL2NodeId || p.name === expandedL2NodeId
+                    );
+                    if (pieItem && pieItem.itemStyle?.color) {
+                            parentColor = pieItem.itemStyle.color;
+                        } else {
+                            // 如果饼图没有颜色，尝试回退到L2父节点的元数据颜色
+                            // 这里需要一种可靠的方式来获取l2ParentMeta
+                            // 假设我们能够正确获取 l2ParentMeta:
+                            // const l2ParentMeta = /* 正确获取L2父节点的元数据 */;
+                            // if (l2ParentMeta?.color && l2ParentMeta.color !== '#PLACEHOLDER') {
+                            //    parentColor = l2ParentMeta.color;
+                            // } else {
+                            //    // 如果L2元数据也没有颜色，可以考虑L1父级的颜色或哈希颜色
+                            //    parentColor = getHashFallback(expandedL2NodeId, '#dc6866'); // 使用L2节点的ID生成哈希色作为最终备用
+                            // }
+                            // 在您提供的代码中，如果pieItem没有颜色，会尝试l2ParentMeta，如果还没有，则parentColor维持默认。
+                            // 您的代码实际逻辑更接近下面这样:
+                            const l2ParentMetaAttempt = allContentMeta[expandedL2NodeId]; // 再次尝试，但此查找可能仍有问题
+                            if (l2ParentMetaAttempt?.color && l2ParentMetaAttempt.color !== '#PLACEHOLDER') {
+                                parentColor = l2ParentMetaAttempt.color;
+                            } else {
+                                // 如果 pieItem 和 l2ParentMetaAttempt 都没有提供有效颜色，parentColor 会是初始的 '#dc6866'
+                            }
+                        }
+
                     // 🔥 关键修复：确保column属性始终为2（研究内容列）
                     const newNode = {
                         id: l3ChildId,

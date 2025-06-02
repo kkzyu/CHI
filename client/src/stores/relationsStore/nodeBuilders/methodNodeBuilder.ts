@@ -62,9 +62,9 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                         color = n.color;
                     } else {
                         // 2. 尝试获取父级（即“研究方法”根节点）在元数据中的颜色
-                        const rootContentNodeMeta = dataStore.nodeMetadata?.['研究方法']?.['研究方法'];
-                        if (rootContentNodeMeta?.color && rootContentNodeMeta.color !== '#PLACEHOLDER') {
-                            color = rootContentNodeMeta.color;
+                        const rootMethodNodeMeta = dataStore.nodeMetadata?.['研究方法']?.['研究方法'];
+                        if (rootMethodNodeMeta?.color && rootMethodNodeMeta.color !== '#PLACEHOLDER') {
+                            color = rootMethodNodeMeta.color;
                         } else {
                            // 3. 最后使用哈希颜色或硬编码默认色
                            color = getHashFallback(n.displayName, '#dc6866');
@@ -116,7 +116,7 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                         } else {
                             // 尝试父级 L1 节点的元数据颜色
                             // parentId 就是 L1 节点的 displayName/ID
-                            const parentL1Meta = allMethodMeta[parentId]; // 假设 parentId 可以在 allContentMeta 中直接找到 L1 元数据
+                            const parentL1Meta = allMethodMeta[parentId]; // 假设 parentId 可以在 allMethodMeta 中直接找到 L1 元数据
                             if (parentL1Meta?.color && parentL1Meta.color !== '#PLACEHOLDER') {
                                 color = parentL1Meta.color;
                             } else {
@@ -197,7 +197,7 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
                             parentId: expandedL2NodeId,
                             hasChildren: false,
                             originalL2Parent: matchedKey,
-                            contentCategory: '研究方法', // 添加明确的类别标记
+                            methodCategory: '研究方法', // 添加明确的类别标记
                         };
                         console.log(`✅ 添加L3方法节点:`, newNode);
                         nodes.push(newNode);

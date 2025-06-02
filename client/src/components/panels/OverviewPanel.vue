@@ -32,6 +32,8 @@
       :show-selector="false" 
       :showBackButton="vizStore.currentDisplayState.researchContent.parentTrail.length > 0"
       :parentLabel="getParentLabel('researchContent')"
+      :parentTrail="vizStore.currentDisplayState.researchContent.parentTrail"
+      :activeNodeDisplayName="vizStore.getNodeInfo(vizStore.currentDisplayState.researchContent.activeNodeId, 'researchContent')?.displayName || vizStore.currentDisplayState.researchContent.activeNodeId"
       @drillUp="handlePieDrillUp('researchContent')" v-if="dataStoresInitialized"
     />
     <div v-else class="loading-placeholder" :style="{ height: '180px' }">研究内容数据加载中...</div>
@@ -49,6 +51,8 @@
           :show-selector="false"
           :showBackButton="vizStore.currentDisplayState.researchMethod.parentTrail.length > 0"
           :parentLabel="getParentLabel('researchMethod')"
+          :parentTrail="vizStore.currentDisplayState.researchMethod.parentTrail"
+          :activeNodeDisplayName="vizStore.getNodeInfo(vizStore.currentDisplayState.researchMethod.activeNodeId, 'researchMethod')?.displayName || vizStore.currentDisplayState.researchMethod.activeNodeId"
           @drillUp="handlePieDrillUp"
           v-if="dataStoresInitialized"
         />
@@ -68,7 +72,9 @@
           :classification-options="researchPlatformClassificationOptions"
           :showBackButton="vizStore.currentDisplayState.researchPlatform.parentTrail.length > 0"
           :parentLabel="getParentLabel('researchPlatform')"
+          :parentTrail="vizStore.currentDisplayState.researchPlatform.parentTrail"
           @classification-change="handlePlatformClassificationChange"
+          :activeNodeDisplayName="vizStore.getNodeInfo(vizStore.currentDisplayState.researchPlatform.activeNodeId, 'researchPlatform')?.displayName || vizStore.currentDisplayState.researchPlatform.activeNodeId"
           @drillUp="handlePieDrillUp"
           v-if="dataStoresInitialized"
         />
@@ -186,6 +192,7 @@ const handlePieDrillUp = (categoryKey) => {
     // 由于L2->L3展开时，expandedNodes通常只包含一个被展开的L2节点的ID：
     if (currentSankeyExpandedNodes && currentSankeyExpandedNodes.length === 1) {
       idToUseForSankeyCollapse = currentSankeyExpandedNodes[0];
+      relationsStore.collapseNode(columnIndex, idToUseForSankeyCollapse);
       // 我们假设 currentSankeyExpandedNodes[0] 就是 conceptualParentNodeIdFromPie 对应的、
       // 在 relationsStore 中存储的那个ID。这个ID才是 collapseNode 需要的。
     } else {
@@ -411,16 +418,16 @@ onMounted(() => {
   font-weight: 600;
 }
 .charts-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs, 8px); /* Reduced gap slightly */
-  padding: var(--space-sm, 8px) var(--space-md, 12px); /* Reduced padding slightly */
-  flex-grow: 1;
-  overflow-y: auto;
+  padding-left: 0;
+  padding-right: 0;
   /* background-color: #f0f2f5; */ /* Optional background for the scrollable area */
+}
+.chart-wrapper:not(:last-child) {
+  margin-bottom: 18px;
 }
 .chart-wrapper {
   background-color: #ffffff; 
+  width: 100%;
   /* border-radius: var(--border-radius-md, 6px); */
   /* box-shadow: 0 1px 3px rgba(0,0,0,0.05); */ /* Softer shadow */
   /* padding-bottom: var(--space-xs, 8px); */ /* Add some space below each chart if needed */

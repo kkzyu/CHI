@@ -327,31 +327,43 @@ if (categoryKey === 'researchPlatform') {
    * @param {string} categoryKey - 'researchContent', 'researchMethod', 'researchPlatform'
    * @param {string} nodeIdToDrill - 要钻取到的节点ID (它将成为新的父节点)
    */
-  function drillDown(categoryKey, nodeIdToDrill) {
-  console.log(`[VS] drillDown: categoryKey: ${categoryKey}, nodeIdToDrill: ${nodeIdToDrill}`);
-  const stateForCategory = currentDisplayState[categoryKey]; // 获取对应类别的状态对象
-  const nodeInfo = getNodeInfo(nodeIdToDrill, categoryKey);
+    function drillDown(categoryKey, nodeIdToDrill) {
+        const stateForCategory = currentDisplayState[categoryKey];
+        const nodeInfo = getNodeInfo(nodeIdToDrill, categoryKey);
 
-  // nodeMetadata.json 的 children 属性是一个ID数组
-  if (nodeInfo && nodeInfo.children && nodeInfo.children.length > 0) { 
-    const currentActiveNodeDisplayName = getNodeInfo(stateForCategory.activeNodeId, categoryKey)?.displayName || stateForCategory.activeNodeId;
-    stateForCategory.parentTrail.push({ id: stateForCategory.activeNodeId, name: currentActiveNodeDisplayName });
-    stateForCategory.activeNodeId = nodeIdToDrill; // nodeIdToDrill 应该是新父节点的完整ID
-    updatePieDisplayInfo(categoryKey, nodeInfo.displayName || nodeInfo.name, stateForCategory.parentTrail);
-  } else {
-    console.warn(`Node ${nodeIdToDrill} has no children to drill down into for category ${categoryKey}. NodeInfo:`, nodeInfo);
-  }
-}
+        // 修改后的条件：只要 nodeInfo 存在，就允许进行状态更新。
+        // 面包屑和激活节点应该反映用户的点击，即使该节点是叶子节点。
+        if (nodeInfo) { // <--- 修改点：移除了对 nodeInfo.children.length > 0 的检查
 
-function drillUp(categoryKey) {
-  const stateForCategory = currentDisplayState[categoryKey]; // 获取对应类别的状态对象
-  if (stateForCategory.parentTrail.length > 0) {
-    const parent = stateForCategory.parentTrail.pop();
-    stateForCategory.activeNodeId = parent.id;
-    const activeNodeInfo = getNodeInfo(stateForCategory.activeNodeId, categoryKey);
-    updatePieDisplayInfo(categoryKey, activeNodeInfo?.displayName || stateForCategory.activeNodeId, stateForCategory.parentTrail);
-  }
-}
+            // 这部分是您上次采纳的修复，用于正确处理 parentTrail
+            if (stateForCategory.activeNodeId !== nodeIdToDrill) {
+                const currentActiveNodeDisplayName = getNodeInfo(stateForCategory.activeNodeId, categoryKey)?.displayName || stateForCategory.activeNodeId;
+                stateForCategory.parentTrail.push({ id: stateForCategory.activeNodeId, name: currentActiveNodeDisplayName });
+            }
+
+            stateForCategory.activeNodeId = nodeIdToDrill;
+            updatePieDisplayInfo(categoryKey, nodeInfo.displayName || nodeInfo.name, stateForCategory.parentTrail);
+
+            // （可选）如果新激活的节点没有子项供饼图显示，可以打印一个日志。
+            // 饼图的渲染逻辑（通过 getPieDataForCategory）应能处理这种情况并显示空状态。
+            if (!nodeInfo.children || nodeInfo.children.length === 0) {
+                console.log(`[VS drillDown] Node ${nodeIdToDrill} is now active but has no children to display in the pie chart for category ${categoryKey}. NodeInfo:`, nodeInfo);
+            }
+
+        } else {
+            console.warn(`[VS drillDown] Node info not found for ${nodeIdToDrill} in category ${categoryKey}. Cannot drill down.`);
+        }
+    }
+
+    function drillUp(categoryKey) {
+    const stateForCategory = currentDisplayState[categoryKey]; // 获取对应类别的状态对象
+    if (stateForCategory.parentTrail.length > 0) {
+        const parent = stateForCategory.parentTrail.pop();
+        stateForCategory.activeNodeId = parent.id;
+        const activeNodeInfo = getNodeInfo(stateForCategory.activeNodeId, categoryKey);
+        updatePieDisplayInfo(categoryKey, activeNodeInfo?.displayName || stateForCategory.activeNodeId, stateForCategory.parentTrail);
+    }
+    }
   
   /**
    * 重置特定饼图的钻取状态到顶层

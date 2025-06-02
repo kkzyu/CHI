@@ -141,7 +141,7 @@ const initChart = () => {
         data: props.chartData.map(item => item.name),
         selectedMode: false, // 禁止图例点击交互
         formatter: function (name) { // 图例文字过长时截断
-            return echarts.format.truncateText(name, 80, '12px Microsoft Yahei', '…');
+            return name;
         },
         tooltip: { // 图例的 tooltip，显示完整名称
             show: true
@@ -152,7 +152,7 @@ const initChart = () => {
           name: props.showBackButton ? props.parentLabel : props.title, // 系列名称可以动态
           type: 'pie',
           radius: ['0%', '75%'], 
-          center: ['25%', '50%'],
+          center: ['20%', '50%'],
           avoidLabelOverlap: true,
            itemStyle: {
             borderRadius: 0,
@@ -286,12 +286,16 @@ onBeforeUnmount(() => {
 }
 
 .pie-hierarchical-back-nav {
-  /* 关键：将此容器定位到图表区域的右半部分 */
-  margin-left: 50%;     /* 从父容器（通常是.chart-container）宽度的50%处开始 */
-  width: 50%;           /* 此容器占据父容器宽度的右边50% */
-  box-sizing: border-box; /* 确保 padding 和 border 不会增加额外的宽度 */
-  margin-bottom: 10px;    /* 与下方 ECharts 画布的间距 */
-  padding-right: 10px;    /* 给右侧留一些空间，防止内容溢出接触边缘 (可选) */
+  position: absolute;
+  top: 0;
+  left: 40%; /* 距离右侧24px，可根据需要调整 */
+  z-index: 2;
+  background: rgba(255,255,255,0.92); /* 可选，防止遮挡 */
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 0; /* 去除原有 margin */
+  width: auto; /* 让内容自适应宽度 */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04); /* 可选阴影 */
 }
 
 .hierarchical-back-item {
@@ -320,8 +324,7 @@ onBeforeUnmount(() => {
 .indicator-label {
   font-weight: 600;     /* 标签文字加粗，与图片中样式一致 */
   white-space: nowrap;  /* 防止标签文字换行 */
-  overflow: hidden;     /* 隐藏超出部分的文字 */
-  text-overflow: ellipsis; /* 对超出的文字显示省略号 */
+  overflow: visible;      /*不隐藏超出部分的文字 */
   /* 标签将占据 .hierarchical-back-item 中的剩余空间 */
   /* 例如，可以给一个最大宽度以防止在极端缩进情况下完全不显示 */
   max-width: calc(100% - 20px); /* 减去三角形和一些间距的估算值 */
