@@ -106,7 +106,7 @@ export const useRelationsStore = defineStore('relations', () => {
             }
             // 如果一个 L1 平台节点被展开 (在桑基图中显示L2节点) 然后被折叠,
             // 上述条件会通过重置饼图到 L1 概览来处理它。
-            // 平台桑基图的层级是 L1->L2，没有特定的“上钻”到L2父节点的逻辑。
+            // 平台桑基图的层级是 L1->L2，没有特定的"上钻"到L2父节点的逻辑。
         } else if (c === 1) { // 研究方法列 [新增]
             if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
                 vizStore.resetPieChartDrillDown('researchMethod');
@@ -171,6 +171,30 @@ export const useRelationsStore = defineStore('relations', () => {
         if (!state.selected.type) return [];
         
         console.log(`getSelectedPaperIds: 选择类型=${state.selected.type}, 选择IDs=${state.selected.ids.join(',')}`);
+        
+        // 辅助函数：根据年份筛选论文ID
+        function filterPaperIdsByYear(paperIds: string[]): string[] {
+            if (!state.selectedYear) return paperIds;
+            
+            // 检查paperIdToYear映射是否存在且非空
+            if (!dataStore.paperIdToYear || Object.keys(dataStore.paperIdToYear).length === 0) {
+                console.warn('paperIdToYear映射不存在或为空，无法进行年份筛选，返回所有论文');
+                return paperIds;
+            }
+            
+            // 使用更健壮的筛选逻辑
+            const filtered = paperIds.filter(pid => {
+                const paperYear = dataStore.paperIdToYear?.[pid];
+                // 如果找不到年份，保留该论文（宁可多显示也不要漏显示）
+                if (paperYear === undefined) {
+                    return true;
+                }
+                return String(paperYear) === String(state.selectedYear);
+            });
+            
+            console.log(`年份筛选: 原始论文数量 ${paperIds.length}, 筛选后数量 ${filtered.length}`);
+            return filtered;
+        }
         
         if (state.selected.type === 'node') {
             const nodeId = state.selected.ids[0];
@@ -249,9 +273,12 @@ export const useRelationsStore = defineStore('relations', () => {
                 });
             });
             
-            const result = Array.from(paperIds);
-            console.log(`节点 ${nodeId} 共有 ${connectionCount} 个相关连接, 涉及 ${result.length} 篇不重复论文`);
-            return result;
+            const allPaperIds = Array.from(paperIds);
+            // 应用年份筛选
+            const filteredPaperIds = filterPaperIdsByYear(allPaperIds);
+            
+            console.log(`节点 ${nodeId} 共有 ${connectionCount} 个相关连接, 涉及 ${allPaperIds.length} 篇不重复论文, 年份筛选后 ${filteredPaperIds.length} 篇`);
+            return filteredPaperIds;
         } 
         else if (state.selected.type === 'link') {
             const [sourceId, targetId] = state.selected.ids;
@@ -279,9 +306,12 @@ export const useRelationsStore = defineStore('relations', () => {
                 }
             }
             
-            const result = Array.from(paperIds);
-            console.log(`连接 ${sourceId} -> ${targetId} 共有 ${result.length} 篇不重复论文`);
-            return result;
+            const allPaperIds = Array.from(paperIds);
+            // 应用年份筛选
+            const filteredPaperIds = filterPaperIdsByYear(allPaperIds);
+            
+            console.log(`连接 ${sourceId} -> ${targetId} 共有 ${allPaperIds.length} 篇不重复论文, 年份筛选后 ${filteredPaperIds.length} 篇`);
+            return filteredPaperIds;
         }
         
         return [];

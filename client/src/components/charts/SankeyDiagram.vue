@@ -576,77 +576,14 @@ function highlightNode(nodeId:string, event:MouseEvent, nodeData:any) {
   
   // 确保有必要的字段，避免空值导致问题
   if (nodeData && typeof nodeData === 'object') {
-    // 计算当前节点的实际连接数量
-    let connectedPaperCount = 0;
+    // 临时选择该节点，获取与细节视图一致的论文ID数量
+    const prevSelection = { ...relationsStore.state.selected };
+    relationsStore.selectNode(nodeId);
+    const paperIds = relationsStore.getSelectedPaperIds();
+    const paperCount = paperIds.length;
     
-    // 创建一个Set来存储论文ID，确保去重
-    const paperIds = new Set<string>();
-    
-    // 从当前可见的连接中计算与该节点相关的论文数量
-    try {
-      // 获取所有连接类型
-      const connections = dataStore.crossLevelConnections?.connections || {};
-      
-      // 获取当前可见的连接
-      const visibleLinks = props.links;
-      
-      // 创建一个映射表，用于快速查找可见连接
-      const visibleLinkMap = new Map();
-      visibleLinks.forEach((link: any) => {
-        // 安全地提取source和target
-        let sourceId = '';
-        let targetId = '';
-        
-        try {
-          // 尝试安全地获取source ID
-          if (link.source && typeof link.source === 'object') {
-            sourceId = link.source.id || '';
-          } else if (typeof link.source === 'string') {
-            sourceId = link.source;
-          }
-          
-          // 尝试安全地获取target ID
-          if (link.target && typeof link.target === 'object') {
-            targetId = link.target.id || '';
-          } else if (typeof link.target === 'string') {
-            targetId = link.target;
-          }
-          
-          if (sourceId && targetId) {
-            const key = `${sourceId}__${targetId}`;
-            visibleLinkMap.set(key, true);
-          }
-        } catch (e) {
-          console.warn('处理连接时出错:', e);
-        }
-      });
-      
-      // 遍历所有连接类型
-      Object.values(connections).forEach((connectionGroup: any) => {
-        // 遍历该类型下的所有连接
-        Object.entries(connectionGroup).forEach(([connectionKey, connectionInfo]: [string, any]) => {
-          const [source, target] = connectionKey.split('__');
-          
-          // 如果连接包含选中的节点
-          if (source === nodeId || target === nodeId) {
-            // 检查这个连接是否在当前可见的连接中
-            const isVisible = visibleLinkMap.has(connectionKey) || 
-                              visibleLinkMap.has(`${target}__${source}`);
-            
-            // 如果是L1界面或者连接可见，则添加论文ID
-            if (relationsStore.state.columnLevels.every(level => level === 'L1') || isVisible) {
-              const ids = connectionInfo.paperIds || [];
-              ids.forEach((id: string) => paperIds.add(id));
-            }
-          }
-        });
-      });
-      
-      // 设置连接论文数量为去重后的数量
-      connectedPaperCount = paperIds.size;
-    } catch (e) {
-      console.error('计算节点连接论文数量时出错:', e);
-    }
+    // 恢复之前的选择状态
+    relationsStore.state.selected = prevSelection;
     
     // 创建一个干净的对象传递给tooltip，避免d3内部属性干扰
     hoveredNode.value = {
@@ -654,8 +591,8 @@ function highlightNode(nodeId:string, event:MouseEvent, nodeData:any) {
       name: nodeData.name,
       column: nodeData.column,
       level: nodeData.level,
-      value: connectedPaperCount || nodeData.value,  // 优先使用计算的连接论文数量
-      originalValue: connectedPaperCount || nodeData.originalValue  // 同样更新originalValue
+      value: paperCount,  // 使用与细节视图一致的论文数量
+      originalValue: paperCount  // 同样更新originalValue
     };
   } else {
     console.warn('悬停节点数据无效:', nodeData);
@@ -688,42 +625,21 @@ function highlightLink(event:MouseEvent, linkData:any) {
     const sourceId = linkData.source.id;
     const targetId = linkData.target.id;
     
-    // 创建一个Set来存储论文ID，确保去重
-    const paperIds = new Set<string>();
+    // 临时选择该连接，获取与细节视图一致的论文ID数量
+    const prevSelection = { ...relationsStore.state.selected };
+    relationsStore.selectLink(sourceId, targetId);
+    const paperIds = relationsStore.getSelectedPaperIds();
+    const paperCount = paperIds.length;
     
-    try {
-      // 获取所有连接类型
-      const connections = dataStore.crossLevelConnections?.connections || {};
-      
-      // 尝试以两种顺序查找连接
-      const key1 = `${sourceId}__${targetId}`;
-      const key2 = `${targetId}__${sourceId}`;
-      
-      // 遍历所有连接类型
-      for (const connectionGroup of Object.values(connections)) {
-        // 检查两种可能的连接键
-        if (connectionGroup[key1]) {
-          const ids = connectionGroup[key1].paperIds || [];
-          ids.forEach((id: string) => paperIds.add(id));
-        }
-        if (connectionGroup[key2]) {
-          const ids = connectionGroup[key2].paperIds || [];
-          ids.forEach((id: string) => paperIds.add(id));
-        }
-      }
-    } catch (e) {
-      console.error('计算连接论文数量时出错:', e);
-    }
-    
-    // 设置连接论文数量为去重后的数量
-    const paperCount = paperIds.size;
+    // 恢复之前的选择状态
+    relationsStore.state.selected = prevSelection;
     
     hoveredLink.value = {
       sourceId: linkData.source.id,
       targetId: linkData.target.id,
       sourceName: linkData.source.name,
       targetName: linkData.target.name,
-      value: paperCount || linkData.value,  // 使用计算的论文数量
+      value: paperCount,  // 使用与细节视图一致的论文数量
       source: {
         id: linkData.source.id,
         name: linkData.source.name,

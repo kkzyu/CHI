@@ -234,6 +234,25 @@ watch(() => relations.state.selected, (newSelection) => {
   }
 }, { deep: true });
 
+// 监听年份变化，更新选中的论文ID
+watch(() => vizStore.selectedYear, (newYear) => {
+  console.log(`RelationsPanel: 年份变化为 ${newYear}`);
+  
+  // 如果当前有选中的节点或连接，需要刷新选中的论文ID
+  if (relations.state.selected.type) {
+    const paperIds = relations.getSelectedPaperIds();
+    console.log(`年份变化后，选中的论文数量: ${paperIds.length}`);
+    
+    // 发射选择变化事件
+    emit('selection-change', paperIds);
+    
+    // 如果提供了刷新细节面板的方法，调用它
+    if (refreshDetailsPanel) {
+      refreshDetailsPanel(paperIds);
+    }
+  }
+}, { immediate: false }); // 不立即执行，等待年份真正变化时才触发
+
 const yearDisplay = computed(() => {
   if (vizStore.selectedYear) {
     return vizStore.selectedYear;

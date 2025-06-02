@@ -28,8 +28,7 @@
       <!-- 显示选中内容的标题 -->
       <div v-if="isShowingSelection" class="selection-header">
         <h3>
-          {{ filteredPapers.length }} / {{ selectedPapersCount }} 篇选中的论文
-          <span v-if="searchTerm">（搜索："{{ searchTerm }}"）</span>
+          {{ selectionTitle }}
         </h3>
       </div>
       
@@ -63,7 +62,9 @@
 <script setup>
 import { ref, computed, onMounted, provide, watch, onUnmounted } from 'vue';
 import PaperCard from '@/components/paper/PaperCard.vue';
+import { useVisualizationStore } from '@/stores/visualizationStore'; // 导入visualizationStore
 
+const vizStore = useVisualizationStore(); // 使用visualizationStore
 const searchTerm = ref('');
 const allPapers = ref([]); // 存储所有论文数据
 const isLoading = ref(true); // 开始时设置为true，直到数据加载完成
@@ -241,6 +242,15 @@ watch(searchTerm, () => {
   scrollToTop();
 });
 
+// 监听selectedYear变化，更新论文显示
+watch(() => vizStore.selectedYear, (newYear) => {
+  console.log(`年份变化: ${newYear}`);
+  if (isShowingSelection.value && selectedPaperIds.value.length > 0) {
+    // 如果当前正在显示选中的论文，刷新筛选结果
+    refreshPanelWithIds(selectedPaperIds.value);
+  }
+}, { immediate: true });
+
 const filteredPapers = computed(() => {
   // 获取搜索词
   const term = searchTerm.value.toLowerCase().trim();
@@ -289,6 +299,15 @@ const filteredPapers = computed(() => {
     papers = allPapers.value;
   }
 
+  // 应用年份筛选
+  if (vizStore.selectedYear) {
+    const selectedYear = String(vizStore.selectedYear);
+    papers = papers.filter(paper => {
+      return paper.year && String(paper.year) === selectedYear;
+    });
+    console.log(`年份筛选 ${selectedYear}，筛选后论文数量: ${papers.length}`);
+  }
+
   // 如果搜索词为空，直接返回当前论文集合
   if (!term) {
     return papers;
@@ -321,6 +340,21 @@ const filteredPapers = computed(() => {
     // 如果标签匹配 OR 奖项文本匹配，则返回 true
     return tagMatch || awardMatch;
   });
+});
+
+// 修改选择标题显示，添加年份信息
+const selectionTitle = computed(() => {
+  let title = `${filteredPapers.value.length} / ${selectedPapersCount.value} 篇选中的论文`;
+  
+  if (vizStore.selectedYear) {
+    title += ` (${vizStore.selectedYear}年)`;
+  }
+  
+  if (searchTerm.value) {
+    title += `（搜索："${searchTerm.value}"）`;
+  }
+  
+  return title;
 });
 
 </script>
