@@ -10,6 +10,7 @@
         <span class="title-text">关系视图</span>
       </div>
     </div>
+    <div class="year-indicator">年份: {{ yearDisplay }}</div>
     <div class="chart-container-full">
       <SankeyDiagram
        :nodes="filteredNodes"
@@ -232,6 +233,14 @@ watch(() => relations.state.selected, (newSelection) => {
     }
   }
 }, { deep: true });
+
+const yearDisplay = computed(() => {
+  if (vizStore.selectedYear) {
+    return vizStore.selectedYear;
+  } else {
+    return '2020-2025';
+  }
+});
 </script>
 
 <style scoped>
@@ -247,7 +256,7 @@ watch(() => relations.state.selected, (newSelection) => {
   margin-bottom: var(--space-md);
   flex-shrink: 0;
   background-color: white;
-  padding: 5px 8px 12px 1px;
+  padding: 5px 8px 12px 3px;
   width: 100%;
   box-sizing: border-box;
   border-bottom: none;
@@ -265,6 +274,16 @@ watch(() => relations.state.selected, (newSelection) => {
 }
 .title-text {
   font-weight: 600;
+}
+.year-indicator {
+  font-size: 1.15em;
+  color: #212121;
+  font-weight: 600;
+  padding: 0px 1px 4px 1px;
+  margin-bottom: 0px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 0;
 }
 .chart-container-full {
   flex-grow: 1; /* Chart takes all available vertical space */
