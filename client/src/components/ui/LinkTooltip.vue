@@ -70,8 +70,8 @@ const getColumnName = (nodeId) => {
     // 根据列索引确定类型
     switch(props.link.source.column) {
       case 0: return '研究平台';
-      case 1: return '研究内容';
-      case 2: return '研究方法';
+      case 1: return '研究方法';
+      case 2: return '研究内容';
       default: return '未知类型';
     }
   }
@@ -80,8 +80,8 @@ const getColumnName = (nodeId) => {
     // 根据列索引确定类型
     switch(props.link.target.column) {
       case 0: return '研究平台';
-      case 1: return '研究内容';
-      case 2: return '研究方法';
+      case 1: return '研究方法';
+      case 2: return '研究内容';
       default: return '未知类型';
     }
   }

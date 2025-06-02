@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, watch, ref, computed } from 'vue';
 import * as d3 from 'd3';
 // 直接使用any类型
 import { sankey as d3Sankey, sankeyLinkHorizontal } from 'd3-sankey';
@@ -88,7 +88,7 @@ const props = defineProps<{
 }>();
 
 const svgRef = ref<SVGSVGElement|null>(null);
-const emit = defineEmits(['node-toggle', 'reset-column', 'node-select', 'link-select', 'undo-operation']);
+const emit = defineEmits(['node-toggle', 'reset-column', 'node-select', 'link-select', 'undo-operation', 'nodeDoubleClickedForPieDrillDown']);
 
 // 节点tooltip状态
 const hoveredNode = ref<NodeData | null>(null);
@@ -105,12 +105,30 @@ let linkLayer: any;
 let nodeLayer: any;
 let labelLayer: any;
 
+// 新增：只显示有连接的节点
+const filteredNodes = computed<NodeData[]>(() => {
+  const nodes: NodeData[] = Array.isArray(props.nodes) ? props.nodes : [];
+  const links = Array.isArray(props.links) ? props.links : [];
+  if (!nodes.length || !links.length) return [];
+  const nodeSet = new Set<string>();
+  links.forEach(l => {
+    if (typeof l.source === 'string') nodeSet.add(l.source);
+    if (typeof l.target === 'string') nodeSet.add(l.target);
+    if (typeof l.source === 'object' && l.source && 'id' in l.source) nodeSet.add((l.source as any).id);
+    if (typeof l.target === 'object' && l.target && 'id' in l.target) nodeSet.add((l.target as any).id);
+  });
+  return nodes.filter(n => typeof n.id === 'string' && nodeSet.has(n.id));
+});
+
 function render() {
   if(!svgRef.value) return;
-  const width = 900, height = 600;
+  const width = 900, height = 750;
+  const margin = 20; // 新增左右margin
   const svg = d3.select(svgRef.value)
                 .attr('viewBox',`0 0 ${width} ${height}`)
                 .attr('width','100%').attr('height','100%');
+
+
   
   // 添加右键点击事件到整个SVG
   svg.on('contextmenu', (evt) => {
@@ -138,87 +156,67 @@ function render() {
 
   // 添加三栏标题 - 确保与桑基图中的列顺序匹配
   const columnTitles: ColumnTitle[] = [
-    { text: '研究平台', x: width * 0.16, y: 30, align: 'middle' }, // 对应第0列，调整为节点中央上方
-    { text: '研究内容', x: width * 0.5, y: 30, align: 'middle' }, // 对应第1列，保持在中央
-    { text: '研究方法', x: width * 0.84, y: 30, align: 'middle' }  // 对应第2列，调整为节点中央上方
+    { text: '研究平台', x: 0, y: 40, align: 'start' },           // 左侧 (column=0)
+    { text: '研究内容', x: width / 2, y: 40, align: 'middle' },   // 中间 (column=2)
+    { text: '研究方法', x: width, y: 40, align: 'end' }           // 右侧 (column=1)
   ];
 
   // 更新标题
-  const titleSelection = labelLayer.selectAll('g.column-title')
+  const titleSelection = labelLayer.selectAll('text.column-title')
     .data(columnTitles, (d: ColumnTitle) => d.text);
-  
+    
   // 删除不再需要的标题
   titleSelection.exit().remove();
-  
-  // 添加新标题
+    
+  // 进入/更新逻辑
   const titleEnter = titleSelection.enter()
-    .append('g')
+    .append('text')
     .attr('class', 'column-title')
+    .attr('x', (d: ColumnTitle) => d.x)
+    .attr('y', (d: ColumnTitle) => d.y)
+    .attr('text-anchor', (d: ColumnTitle) => d.align)
+    .text((d: ColumnTitle) => d.text)
+    .style('font-size', '16px')
+    .style('font-weight', '600')
+    .style('fill', '#2c3e50')
     .style('cursor', 'pointer')
     .on('click', function(event, d: ColumnTitle) {
-      // 直接映射到桑基图中的列索引
+      // 点击处理逻辑
       let columnIndex;
       if (d.text === '研究平台') columnIndex = 0;
-      else if (d.text === '研究内容') columnIndex = 1;
-      else if (d.text === '研究方法') columnIndex = 2;
-      
+      else if (d.text === '研究内容') columnIndex = 2;
+      else if (d.text === '研究方法') columnIndex = 1;
       if (columnIndex !== undefined) {
         emit('reset-column', columnIndex);
       }
     })
     .on('mouseover', function() {
-      d3.select(this).select('rect')
-        .transition().duration(200)
-        .attr('fill', '#f5f5f5'); // 浅灰色高亮
+      d3.select(this)
+        .style('font-size', '17px');
     })
     .on('mouseout', function() {
-      d3.select(this).select('rect')
-        .transition().duration(200)
-        .attr('fill', '#f9f9f9'); // 更浅的灰色
+      d3.select(this)
+        .style('font-size', '16px');
     });
 
-  // 添加背景矩形
-  titleEnter.append('rect')
-    .attr('x', (d: ColumnTitle) => d.x - 50) // 固定宽度100px，所以x坐标向左偏移50px使其居中
-    .attr('y', (d: ColumnTitle) => d.y - 15)
-    .attr('width', 100) // 统一宽度
-    .attr('height', 28)
-    .attr('fill', '#f9f9f9') // 非常浅的灰色
-    .attr('rx', 3)
-    .attr('ry', 3)
-    .attr('stroke', '#e0e0e0')
-    .attr('stroke-width', 1);
 
-  // 添加文本
-  titleEnter.append('text')
-    .attr('x', (d: ColumnTitle) => d.x) // 文本位置与标题中心对齐
-    .attr('y', (d: ColumnTitle) => d.y + 5) // 微调垂直位置
-    .attr('text-anchor', 'middle') // 所有标题都居中对齐
-    .attr('font-size', '14px')
-    .attr('font-weight', '500')
-    .attr('fill', '#333333')
-    .text((d: ColumnTitle) => d.text);
-
-  // 更新标题位置
-  titleSelection.merge(titleEnter as any)
-    .attr('transform', (d: ColumnTitle) => `translate(0, 0)`);
-  
-  titleSelection.merge(titleEnter as any).select('rect')
-    .transition().duration(300)
-    .attr('x', (d: ColumnTitle) => d.x - 50)
-    .attr('y', (d: ColumnTitle) => d.y - 15);
-    
-  titleSelection.merge(titleEnter as any).select('text')
-    .transition().duration(300)
+  // 更新现有标题样式和位置
+  titleSelection.merge(titleEnter)
     .attr('x', (d: ColumnTitle) => d.x)
-    .attr('y', (d: ColumnTitle) => d.y + 5);
+    .attr('y', (d: ColumnTitle) => d.y)
+    .attr('text-anchor', (d: ColumnTitle) => d.align)
+    .text((d: ColumnTitle) => d.text)
+    .transition()
+    .duration(300)
+    .style('font-size', '16px')
+    .style('fill', '#2c3e50');
 
-  // 添加提示信息
+  // 添加提示信息（使用title元素）
   titleEnter.append('title')
     .text('点击重置此列视图');
 
   // 如果没有节点数据或节点为空，显示空状态提示而不是完全不渲染
-  if (!props.nodes || props.nodes.length === 0) {
+  if (!filteredNodes.value || filteredNodes.value.length === 0) {
     // 清除旧的节点和连接
     nodeLayer.selectAll('g').remove();
     linkLayer.selectAll('path').remove();
@@ -246,32 +244,42 @@ function render() {
   // @ts-ignore - d3-sankey类型问题
   const graph = d3Sankey()
       // @ts-ignore
-      .nodeWidth(16)
+      .nodeWidth(15)
       // @ts-ignore
-      .nodePadding(24)
+      .nodePadding(10)
       // @ts-ignore
       .nodeId((d: any) => d.id)
       // @ts-ignore
       .nodeSort((a: any, b: any) => a.column - b.column)  // 按列排序
       // @ts-ignore
-      .extent([[0, 60], [width, height]]);  // 为标题留出顶部空间
+      .nodeAlign((node: any) => {
+        // 将column值映射到正确的视觉位置
+        // column=0(平台)映射到0，column=2(内容)映射到1，column=1(方法)映射到2
+        const columnMapping = {0: 0, 2: 1, 1: 2};
+        return columnMapping[node.column] !== undefined ? columnMapping[node.column] : node.column;
+      }) // 关键：强制每个节点在映射后的列位置
+      // @ts-ignore
+      .extent([[margin, 60], [width - margin, height]]);  // 左右margin，顶部留空间
+
+  const minValue = 3;
+  // 在节点数据传递给d3Sankey前，按column排序，确保视觉顺序为0(平台)-2(内容)-1(方法)
+  const sortedNodes = filteredNodes.value.slice().sort((a, b) => {
+    // 使用与nodeAlign相同的映射
+    const columnMapping = {0: 0, 2: 1, 1: 2};
+    const aPos = columnMapping[a.column] !== undefined ? columnMapping[a.column] : a.column;
+    const bPos = columnMapping[b.column] !== undefined ? columnMapping[b.column] : b.column;
+    return aPos - bPos;
+  });
 
   const result = graph({
-    nodes: props.nodes.map((n) => {
+    nodes: sortedNodes.map((n) => {
       // 复制节点并保存原始值
-      const node = { ...n, originalValue: n.value };
-      
-      // 🔥关键修复：确保节点的column属性正确
-      if (node.level === 'L3') {
-        // 根据节点所属类别修正column值
-        if (node.contentCategory === '研究内容') {
-          node.column = 1; // 研究内容在中间列（列索引1）
-        } else if (node.contentCategory === '研究方法') {
-          node.column = 2; // 研究方法在右侧列（列索引2）
-        }
-        // 如果是平台，则保持column=0
-      }
-      
+      const node = { 
+        ...n, 
+        originalValue: n.value ,
+        value: Math.max(minValue, n.value)
+      };
+      // 不再在这里调整column，column已在store层严格设置
       return node;
     }) as any[],
     links: props.links.map((l) => ({ ...l })) as any[],
@@ -283,7 +291,7 @@ function render() {
 
   const linkEnter = linkSel.enter().append('path')
         .attr('fill','none')
-        .attr('stroke','#999')
+        .attr('stroke', (d: any) => d.source.color || '#999')
         .attr('stroke-opacity',0.2)  // 开始时更透明
         .attr('d', sankeyLinkHorizontal())  // 初始形状
         .attr('stroke-width', 0)  // 开始时宽度为0
@@ -303,12 +311,13 @@ function render() {
         .transition()
         .duration(800)
         .attr('d', sankeyLinkHorizontal())
+        // .attr('stroke', (d: any) => d.source.color || '#999')
         .attr('stroke-width', (d: any) => Math.max(1, d.width))
         .attr('stroke-opacity', 0.3);
 
   // 应用选中连接的样式
   linkLayer.selectAll('path.selected-link')
-        .attr('stroke', '#3498db')  // 选中连接的颜色
+        .attr('stroke', (d: any) => d.source.color || '#999')  // 选中连接的颜色
         .attr('stroke-opacity', 0.8); // 选中连接的不透明度
 
   // 平滑移除不再需要的连接
@@ -351,25 +360,47 @@ function render() {
   nodeEnter.append('text')
         .attr('x', (d: any) => {
           // 根据节点所在列确定文本位置
-          if (d.column === 0) return (d.x1 - d.x0) + 6; // 研究平台在左侧，文本在右侧
-          if (d.column === 2) return -6; // 研究方法在右侧，文本在左侧
-          if (d.column === 1) return -6; // 研究内容在中间，文本在左侧
+          const padding = Math.min(20, Math.max(15, (d.x1 - d.x0) * 0.5)); // 增加间距
+          if (d.column === 0) return (d.x1 - d.x0) + padding; // 研究平台在左侧，文本在右侧
+          if (d.column === 2) return -padding; // 研究内容在中间，文本在左侧
+          if (d.column === 1) return -padding; // 研究方法在右侧，文本在左侧
           // 默认情况
-          return d.column < 1 ? (d.x1 - d.x0) + 6 : -6;
+          return d.column < 1 ? (d.x1 - d.x0) + padding : -padding;
         })
-        .attr('y', (d: any) => (d.y1 - d.y0) / 2)
+        .attr('y', (d: any) => {
+          // 垂直居中，但为较高的节点稍微调整位置
+          const height = d.y1 - d.y0;
+          return height / 2 + (height > 30 ? -2 : 0); // 高节点稍微上移
+        })
         .attr('dy', '0.35em')
         .attr('text-anchor', (d: any) => {
           // 根据节点所在列确定文本对齐方式
           if (d.column === 0) return 'start'; // 研究平台在左侧，文本左对齐
-          if (d.column === 2) return 'end'; // 研究方法在右侧，文本右对齐
-          if (d.column === 1) return 'end'; // 研究内容在中间，文本右对齐
+          if (d.column === 2) return 'end'; // 研究内容在中间，文本右对齐
+          if (d.column === 1) return 'end'; // 研究方法在右侧，文本右对齐
           // 默认情况
           return d.column < 1 ? 'start' : 'end';
         })
-        .style('font-size', '10px')
+        .style('font-size', (d: any) => {
+          // 根据节点高度动态调整字体大小
+          const height = d.y1 - d.y0;
+          if (height < 15) return '9px';
+          if (height < 20) return '10px';
+          return '11px';
+        })
+        .style('font-weight', '500') // 增加字重
         .style('opacity', 0)  // 开始时文本透明
-        .text((d: any) => d.name);
+        .style('fill', '#333') // 文本颜色
+        .style('pointer-events', 'none') // 防止文本干扰鼠标事件
+        .style('text-shadow', '0 0 3px rgba(255,255,255,0.7), 0 0 2px rgba(255,255,255,0.8)') // 增强文本阴影
+        .text((d: any) => {
+          // 对长文本进行处理，根据节点高度动态调整显示长度
+          const name = d.name || '';
+          const height = d.y1 - d.y0;
+          // 较小节点显示更短的文本
+          const maxLength = height < 15 ? 10 : (height < 20 ? 15 : 20);
+          return name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+        });
 
   // --- Enter 过渡 ---
   nodeEnter.transition()
@@ -410,16 +441,25 @@ function render() {
         .style('opacity', 0)
         .remove();
   
-  // 节点双击展开/折叠事件
   nodeLayer.selectAll('g.node')
-      .on('dblclick', (evt:any, d:any) => {
-        // 阻止浏览器默认的双击选择文本行为
+      .on('dblclick', (evt:any, d:any) => { // d 是被双击的节点数据
         evt.preventDefault();
-        // 阻止事件冒泡
         evt.stopPropagation();
+        
+        // 触发桑基图自身层级更新
         emit('node-toggle', { id:d.id, column:d.column });
-      })
-      // 添加单击事件处理节点选择
+
+        // 新增：触发用于饼图下钻的事件
+        // 我们传递节点的显示名称 (d.name) 和列索引 (d.column)
+        // d.id 是节点的唯一ID，d.name 是其显示名称
+        // d.column 是其在桑基图中的列索引 (0, 1, 或 2)
+        emit('nodeDoubleClickedForPieDrillDown', { 
+          nodeId: d.id, // 可以是原始ID，如果需要更精确的匹配
+          nodeDisplayName: d.name, // 显示名称，可能更适合饼图下钻逻辑
+          columnIndex: d.column 
+        });
+        })
+        // 添加单击事件处理节点选择
       .on('click', (evt:any, d:any) => {
         // 阻止事件冒泡，避免影响其他事件
         evt.stopPropagation();
@@ -458,6 +498,24 @@ function render() {
       evt.stopPropagation();
       emit('link-select', { source: d.source.id, target: d.target.id });
     });
+
+  // 在render()里，确保SVG有简约渐变定义（只需添加一次）
+  if (svg.select('defs#sankey-title-defs-minimal').empty()) {
+    const defs = svg.append('defs').attr('id', 'sankey-title-defs-minimal');
+    defs.append('linearGradient')
+      .attr('id', 'sankey-title-gradient-minimal')
+      .attr('x1', '0%').attr('y1', '0%')
+      .attr('x2', '100%').attr('y2', '0%')
+      .selectAll('stop')
+      .data([
+        { offset: '0%', color: '#2c3e50' },
+        { offset: '100%', color: '#7b8fa3' }
+      ])
+      .enter()
+      .append('stop')
+      .attr('offset', d => d.offset)
+      .attr('stop-color', d => d.color);
+  }
 }
 
 // 在接口定义后添加：
@@ -518,14 +576,86 @@ function highlightNode(nodeId:string, event:MouseEvent, nodeData:any) {
   
   // 确保有必要的字段，避免空值导致问题
   if (nodeData && typeof nodeData === 'object') {
+    // 计算当前节点的实际连接数量
+    let connectedPaperCount = 0;
+    
+    // 创建一个Set来存储论文ID，确保去重
+    const paperIds = new Set<string>();
+    
+    // 从当前可见的连接中计算与该节点相关的论文数量
+    try {
+      // 获取所有连接类型
+      const connections = dataStore.crossLevelConnections?.connections || {};
+      
+      // 获取当前可见的连接
+      const visibleLinks = props.links;
+      
+      // 创建一个映射表，用于快速查找可见连接
+      const visibleLinkMap = new Map();
+      visibleLinks.forEach((link: any) => {
+        // 安全地提取source和target
+        let sourceId = '';
+        let targetId = '';
+        
+        try {
+          // 尝试安全地获取source ID
+          if (link.source && typeof link.source === 'object') {
+            sourceId = link.source.id || '';
+          } else if (typeof link.source === 'string') {
+            sourceId = link.source;
+          }
+          
+          // 尝试安全地获取target ID
+          if (link.target && typeof link.target === 'object') {
+            targetId = link.target.id || '';
+          } else if (typeof link.target === 'string') {
+            targetId = link.target;
+          }
+          
+          if (sourceId && targetId) {
+            const key = `${sourceId}__${targetId}`;
+            visibleLinkMap.set(key, true);
+          }
+        } catch (e) {
+          console.warn('处理连接时出错:', e);
+        }
+      });
+      
+      // 遍历所有连接类型
+      Object.values(connections).forEach((connectionGroup: any) => {
+        // 遍历该类型下的所有连接
+        Object.entries(connectionGroup).forEach(([connectionKey, connectionInfo]: [string, any]) => {
+          const [source, target] = connectionKey.split('__');
+          
+          // 如果连接包含选中的节点
+          if (source === nodeId || target === nodeId) {
+            // 检查这个连接是否在当前可见的连接中
+            const isVisible = visibleLinkMap.has(connectionKey) || 
+                              visibleLinkMap.has(`${target}__${source}`);
+            
+            // 如果是L1界面或者连接可见，则添加论文ID
+            if (relationsStore.state.columnLevels.every(level => level === 'L1') || isVisible) {
+              const ids = connectionInfo.paperIds || [];
+              ids.forEach((id: string) => paperIds.add(id));
+            }
+          }
+        });
+      });
+      
+      // 设置连接论文数量为去重后的数量
+      connectedPaperCount = paperIds.size;
+    } catch (e) {
+      console.error('计算节点连接论文数量时出错:', e);
+    }
+    
     // 创建一个干净的对象传递给tooltip，避免d3内部属性干扰
     hoveredNode.value = {
       id: nodeData.id,
       name: nodeData.name,
       column: nodeData.column,
       level: nodeData.level,
-      value: nodeData.value,
-      originalValue: nodeData.originalValue
+      value: connectedPaperCount || nodeData.value,  // 优先使用计算的连接论文数量
+      originalValue: connectedPaperCount || nodeData.originalValue  // 同样更新originalValue
     };
   } else {
     console.warn('悬停节点数据无效:', nodeData);
@@ -554,13 +684,46 @@ function highlightLink(event:MouseEvent, linkData:any) {
   
   // 准备连接tooltip数据
   if (linkData && typeof linkData === 'object') {
+    // 获取源节点和目标节点ID
+    const sourceId = linkData.source.id;
+    const targetId = linkData.target.id;
+    
+    // 创建一个Set来存储论文ID，确保去重
+    const paperIds = new Set<string>();
+    
+    try {
+      // 获取所有连接类型
+      const connections = dataStore.crossLevelConnections?.connections || {};
+      
+      // 尝试以两种顺序查找连接
+      const key1 = `${sourceId}__${targetId}`;
+      const key2 = `${targetId}__${sourceId}`;
+      
+      // 遍历所有连接类型
+      for (const connectionGroup of Object.values(connections)) {
+        // 检查两种可能的连接键
+        if (connectionGroup[key1]) {
+          const ids = connectionGroup[key1].paperIds || [];
+          ids.forEach((id: string) => paperIds.add(id));
+        }
+        if (connectionGroup[key2]) {
+          const ids = connectionGroup[key2].paperIds || [];
+          ids.forEach((id: string) => paperIds.add(id));
+        }
+      }
+    } catch (e) {
+      console.error('计算连接论文数量时出错:', e);
+    }
+    
+    // 设置连接论文数量为去重后的数量
+    const paperCount = paperIds.size;
+    
     hoveredLink.value = {
       sourceId: linkData.source.id,
       targetId: linkData.target.id,
       sourceName: linkData.source.name,
       targetName: linkData.target.name,
-      value: linkData.value,
-      // 传递完整的节点对象，以便获取column信息
+      value: paperCount || linkData.value,  // 使用计算的论文数量
       source: {
         id: linkData.source.id,
         name: linkData.source.name,
@@ -627,6 +790,26 @@ function clearHighlight() {
   -moz-user-select: none;
   -ms-user-select: none;
 }
+/* 在style部分添加这些规则 */
+:deep(.column-title) {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #2c3e50;
+  transition: all 0.3s cubic-bezier(.4,1.4,.6,1);
+  cursor: pointer;
+  filter: drop-shadow(0 0 0px #fff0); /* 初始无发光 */
+}
+
+:deep(.column-title:hover) {
+  /* 简约渐变高亮色 */
+  fill: url(#sankey-title-gradient-minimal);
+  /* 低调淡蓝灰发光 */
+  filter: drop-shadow(0 0 6px #9da3acdd);
+}
+
+:deep(.sankey-container) {
+  overflow: visible; /* 允许标题显示在边界 */
+}
 
 .sankey-svg {
   width: 100%;
@@ -673,5 +856,41 @@ function clearHighlight() {
   100% {
     stroke-width: 3px;
   }
+}
+
+/* 在style部分添加节点文本样式 */
+:deep(.node text) {
+  transition: all 0.3s ease;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+:deep(.node:hover text) {
+  font-weight: 600;
+  fill: #000;
+  text-shadow: 0 0 4px rgba(255,255,255,0.9);
+  letter-spacing: 0.03em;
+  opacity: 1;
+  transform: translateX(0.5px); /* 悬停时轻微位移效果 */
+}
+
+/* 为不同列的节点文本添加不同颜色 */
+:deep(.node[transform*="translate(0,"]) text {
+  fill: #2c3e50; /* 左侧列文本颜色 */
+}
+
+:deep(.node:not([transform*="translate(0,"])) text {
+  fill: #34495e; /* 其他列文本颜色 */
+}
+
+/* 选中节点的文本样式 */
+:deep(.selected-node text) {
+  font-weight: 600;
+  fill: #2ecc71;
+  text-shadow: 0 0 5px rgba(255,255,255,1);
 }
 </style>

@@ -4,13 +4,17 @@ import { useDataStore } from './dataStore';
 import { buildL1Snapshot } from './relationsStore/l1Builder';
 import { buildMixedLevelSnapshot } from './relationsStore/mixedLevelBuilder';
 import { expandNode, collapseNode } from './relationsStore/nodeOperations';
+import { useVisualizationStore } from './visualizationStore'; // 确保导入
 
 export const useRelationsStore = defineStore('relations', () => {
     // ───────────────────── 原始数据依赖 ─────────────────────
     const dataStore = useDataStore();
+    const vizStore = useVisualizationStore();
+
 
     // ───────────────────── 交互状态 ─────────────────────
     const state = reactive({
+        selectedYear: null as number | null,
         currentPlatformType: '内容形式' as '内容形式' | '平台属性',
         columnLevels: ['L1', 'L1', 'L1'] as ('L1' | 'L2' | 'L3')[],
         expandedNodes: { 0: [] as string[], 1: [] as string[], 2: [] as string[] } as Record<number, string[]>,
@@ -70,15 +74,77 @@ export const useRelationsStore = defineStore('relations', () => {
         // 然后保存历史
         pushHistory();
         console.log('历史记录保存完成, 当前历史记录长度:', state.history.length);
-        
-        if (state.expandedNodes[c].includes(nodeId)) {
-            console.log(`正在折叠节点 ${nodeId}...`);
-            collapseNode(dataStore, state, c, nodeId);
+
+         // 保存当前节点位置，用于平滑过渡
+        state.prevNodes = visibleNodes.value.map(n => ({ id: n.id, x0: n.x0, y0: n.y0 }));
+        const nodeBeingToggled = visibleNodes.value.find(n => n.id === nodeId && n.column === c);
+
+        if (state.expandedNodes[c].includes(nodeId)) { // 准备折叠
+        console.log(`正在折叠节点 ${nodeId}...`);
+        collapseNode(dataStore, state, c, nodeId);
+
+        // collapseNode 调用后, state.columnLevels[c] 和 state.expandedNodes[c] 已更新。
+        if (c === 2) { // 研究内容列
+            if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
+                vizStore.resetPieChartDrillDown('researchContent');
+            } else if (state.columnLevels[c] === 'L2' && state.expandedNodes[c].length > 0) {
+                const currentL1ParentId = state.expandedNodes[c].find(id => {
+                    const l1Node = Object.values<any>(dataStore.nodeMetadata?.['研究内容'] ?? {}).find(n => n.displayName === id && n.level === 2); //
+                    return !!l1Node;
+                });
+                if (currentL1ParentId) {
+                    vizStore.drillDown('researchContent', currentL1ParentId); //
+                } else {
+                     vizStore.drillUp('researchContent'); //
+                }
+            } else if (state.columnLevels[c] === 'L1') {
+                vizStore.resetPieChartDrillDown('researchContent'); //
+            }
+        } else if (c === 0) { // 研究平台列 [已修改]
+            if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
+                vizStore.resetPieChartDrillDown('researchPlatform');
+            }
+            // 如果一个 L1 平台节点被展开 (在桑基图中显示L2节点) 然后被折叠,
+            // 上述条件会通过重置饼图到 L1 概览来处理它。
+            // 平台桑基图的层级是 L1->L2，没有特定的“上钻”到L2父节点的逻辑。
+        } else if (c === 1) { // 研究方法列 [新增]
+            if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
+                vizStore.resetPieChartDrillDown('researchMethod');
+            } else if (state.columnLevels[c] === 'L2' && state.expandedNodes[c].length > 0) {
+                const currentL1ParentId = state.expandedNodes[c].find(id => {
+                    // 使用 vizStore.getNodeInfo 是因为它已经为此设置好了
+                    const nodeInfo = vizStore.getNodeInfo(id, 'researchMethod'); //
+                    // 在 nodeMetadata 中, L1 分类通常是 level 2。 //
+                    return nodeInfo && nodeInfo.level === 2;
+                });
+                if (currentL1ParentId) {
+                    vizStore.drillDown('researchMethod', currentL1ParentId);
+                } else {
+                     vizStore.drillUp('researchMethod');
+                }
+            } else if (state.columnLevels[c] === 'L1') {
+                 vizStore.resetPieChartDrillDown('researchMethod');
+            }
+        }
+    } else { // 准备展开
+        console.log(`正在展开节点 ${nodeId}...`);
+        if (nodeBeingToggled && nodeBeingToggled.hasChildren) { //
+            expandNode(dataStore, state, visibleNodes, c, nodeId); //
+            // expandNode 调用后, nodeId 是被展开的节点。
+            // 相应的饼图应该下钻到这个节点。
+            if (c === 2) { // 研究内容列
+                vizStore.drillDown('researchContent', nodeId); //
+            } else if (c === 0) { // 研究平台列 [已修改]
+                vizStore.drillDown('researchPlatform', nodeId);
+            } else if (c === 1) { // 研究方法列 [新增]
+                vizStore.drillDown('researchMethod', nodeId);
+            }
         } else {
-            console.log(`正在展开节点 ${nodeId}...`);
-            expandNode(dataStore, state, visibleNodes, c, nodeId);
+            console.log(`节点 ${nodeId} 没有子节点或未找到，无法展开`); //
         }
     }
+}
+
 
     // 选择节点，获取相关论文
     function selectNode(nodeId: string) {
@@ -115,18 +181,70 @@ export const useRelationsStore = defineStore('relations', () => {
             console.log(`查找节点 ${nodeId} 的相关论文`);
             let connectionCount = 0;
             
+            // 获取当前可见的节点和连接
+            const currentVisibleNodes = visibleNodes.value;
+            const currentVisibleLinks = visibleLinks.value;
+            
+            // 创建当前可见节点的ID集合，用于快速查询
+            const visibleNodeIds = new Set(currentVisibleNodes.map(n => n.id));
+            
+            // 创建当前可见连接的映射，用于快速查询
+            const visibleLinkMap = new Map();
+            currentVisibleLinks.forEach(link => {
+                // 安全地提取source和target
+                let sourceId = '';
+                let targetId = '';
+                
+                try {
+                    if (typeof link.source === 'object' && link.source) {
+                        sourceId = link.source.id || '';
+                    } else if (typeof link.source === 'string') {
+                        sourceId = link.source;
+                    }
+                    
+                    if (typeof link.target === 'object' && link.target) {
+                        targetId = link.target.id || '';
+                    } else if (typeof link.target === 'string') {
+                        targetId = link.target;
+                    }
+                    
+                    if (sourceId && targetId) {
+                        const key = `${sourceId}__${targetId}`;
+                        visibleLinkMap.set(key, true);
+                        // 同时存储反向连接键
+                        const reverseKey = `${targetId}__${sourceId}`;
+                        visibleLinkMap.set(reverseKey, true);
+                    }
+                } catch (e) {
+                    console.warn('处理连接时出错:', e);
+                }
+            });
+            
             // 遍历所有连接类型
             Object.values(connections).forEach((connectionGroup: any) => {
                 // 遍历该类型下的所有连接
                 Object.entries(connectionGroup).forEach(([connectionKey, connectionInfo]: [string, any]) => {
                     const [source, target] = connectionKey.split('__');
+                    
                     // 如果连接包含选中的节点
                     if (source === nodeId || target === nodeId) {
-                        // 添加连接相关的论文ID
-                        const ids = connectionInfo.paperIds || [];
-                        connectionCount++;
-                        console.log(`找到相关连接: ${connectionKey}, 包含 ${ids.length} 篇论文`);
-                        ids.forEach((id: string) => paperIds.add(id));
+                        // 确定另一端节点ID
+                        const otherNodeId = source === nodeId ? target : source;
+                        
+                        // 检查是否应该包含这个连接的论文
+                        const shouldInclude = 
+                            // 如果是L1界面，包含所有连接
+                            state.columnLevels.every(level => level === 'L1') ||
+                            // 或者另一端节点在可见节点中且这个连接在可见连接中
+                            (visibleNodeIds.has(otherNodeId) && visibleLinkMap.has(connectionKey));
+                        
+                        if (shouldInclude) {
+                            // 添加连接相关的论文ID
+                            const ids = connectionInfo.paperIds || [];
+                            connectionCount++;
+                            console.log(`找到相关连接: ${connectionKey}, 包含 ${ids.length} 篇论文`);
+                            ids.forEach((id: string) => paperIds.add(id));
+                        }
                     }
                 });
             });
@@ -142,6 +260,9 @@ export const useRelationsStore = defineStore('relations', () => {
             
             console.log(`查找连接 ${sourceId} -> ${targetId} 的相关论文`);
             
+            // 创建一个Set来存储论文ID，确保去重
+            const paperIds = new Set<string>();
+            
             // 遍历所有连接类型
             for (const connectionGroup of Object.values(connections)) {
                 // 尝试以两种顺序查找连接
@@ -149,18 +270,18 @@ export const useRelationsStore = defineStore('relations', () => {
                 const key2 = `${targetId}__${sourceId}`;
                 
                 if (connectionGroup[key1]) {
-                    const result = connectionGroup[key1].paperIds || [];
-                    console.log(`找到连接 ${key1}, 包含 ${result.length} 篇论文`);
-                    return result;
+                    const ids = connectionGroup[key1].paperIds || [];
+                    ids.forEach((id: string) => paperIds.add(id));
                 }
                 if (connectionGroup[key2]) {
-                    const result = connectionGroup[key2].paperIds || [];
-                    console.log(`找到连接 ${key2}, 包含 ${result.length} 篇论文`);
-                    return result;
+                    const ids = connectionGroup[key2].paperIds || [];
+                    ids.forEach((id: string) => paperIds.add(id));
                 }
             }
             
-            console.log(`未找到连接 ${sourceId} -> ${targetId} 的相关论文`);
+            const result = Array.from(paperIds);
+            console.log(`连接 ${sourceId} -> ${targetId} 共有 ${result.length} 篇不重复论文`);
+            return result;
         }
         
         return [];
@@ -178,6 +299,9 @@ export const useRelationsStore = defineStore('relations', () => {
         const c = colIdx as 0 | 1 | 2;
         state.columnLevels[c] = 'L1';
         state.expandedNodes[c] = [];
+        if (c === 2) { // 如果是研究内容列
+            vizStore.resetPieChartDrillDown('researchContent');
+        }
     }
 
     function applyFilters() {/* TODO */ }
@@ -247,6 +371,13 @@ export const useRelationsStore = defineStore('relations', () => {
         return null;
     }
 
+    function setSelectedYear(year: number | null) {
+    pushHistory(); // 或者决定年份更改是否应成为独立的历史事件
+    state.prevNodes = visibleNodes.value.map(n => ({ id: n.id, x0: n.x0, y0: n.y0 }));
+    state.selectedYear = year;
+    // 这将触发 visibleNodes 和 visibleLinks 的重新计算
+}
+
     return {
         state,
         visibleNodes,
@@ -266,5 +397,7 @@ export const useRelationsStore = defineStore('relations', () => {
         popHistory,
         canUndo,
         mapOldIdToNew,
+        setSelectedYear, 
     };
+
 });
