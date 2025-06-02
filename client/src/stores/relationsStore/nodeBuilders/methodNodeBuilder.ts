@@ -15,10 +15,13 @@ export function buildMethodNodes(dataStore: any, state: any): any[] {
         Object.entries(connectionsByType).forEach(([connectionType, connections]: [string, any]) => {
             if (connectionType.includes('研究方法')) {
                 Object.entries(connections).forEach(([connectionKey, connectionInfo]: [string, any]) => {
-                    const [source, target] = connectionKey.split('__');
-                    // 只统计source或target完整等于nodeId的连接
-                    if (source === nodeId || target === nodeId) {
-                        (connectionInfo.paperIds || []).forEach((pid: string) => paperIds.add(pid));
+                    const parts = connectionKey.split('__');
+                    if (parts.length === 2) {
+                        const [source, target] = parts;
+                        // 只统计source或target完整等于nodeId的连接
+                        if (source === nodeId || target === nodeId) {
+                            (connectionInfo.paperIds || []).forEach((pid: string) => paperIds.add(pid));
+                        }
                     }
                 });
             }

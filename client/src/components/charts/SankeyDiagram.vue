@@ -214,7 +214,7 @@ function render() {
     .text('点击重置此列视图');
 
   // 如果没有节点数据或节点为空，显示空状态提示而不是完全不渲染
-  if (!props.nodes || props.nodes.length === 0) {
+  if (!filteredNodes.value || filteredNodes.value.length === 0) {
     // 清除旧的节点和连接
     nodeLayer.selectAll('g').remove();
     linkLayer.selectAll('path').remove();
@@ -357,13 +357,18 @@ function render() {
   nodeEnter.append('text')
         .attr('x', (d: any) => {
           // 根据节点所在列确定文本位置
-          if (d.column === 0) return (d.x1 - d.x0) + 6; // 研究平台在左侧，文本在右侧
-          if (d.column === 2) return -6; // 研究内容在中间，文本在左侧
-          if (d.column === 1) return -6; // 研究方法在右侧，文本在左侧
+          const padding = Math.min(15, Math.max(10, (d.x1 - d.x0) * 0.4)); // 动态计算间距
+          if (d.column === 0) return (d.x1 - d.x0) + padding; // 研究平台在左侧，文本在右侧
+          if (d.column === 2) return -padding; // 研究内容在中间，文本在左侧
+          if (d.column === 1) return -padding; // 研究方法在右侧，文本在左侧
           // 默认情况
-          return d.column < 1 ? (d.x1 - d.x0) + 6 : -6;
+          return d.column < 1 ? (d.x1 - d.x0) + padding : -padding;
         })
-        .attr('y', (d: any) => (d.y1 - d.y0) / 2)
+        .attr('y', (d: any) => {
+          // 垂直居中，但为较高的节点稍微调整位置
+          const height = d.y1 - d.y0;
+          return height / 2 + (height > 30 ? -2 : 0); // 高节点稍微上移
+        })
         .attr('dy', '0.35em')
         .attr('text-anchor', (d: any) => {
           // 根据节点所在列确定文本对齐方式
@@ -373,9 +378,22 @@ function render() {
           // 默认情况
           return d.column < 1 ? 'start' : 'end';
         })
-        .style('font-size', '10px')
+        .style('font-size', (d: any) => {
+          // 根据节点高度动态调整字体大小
+          const height = d.y1 - d.y0;
+          return height < 20 ? '10px' : '11px';
+        })
+        .style('font-weight', '500') // 增加字重
         .style('opacity', 0)  // 开始时文本透明
-        .text((d: any) => d.name);
+        .style('fill', '#333') // 文本颜色
+        .style('pointer-events', 'none') // 防止文本干扰鼠标事件
+        .style('text-shadow', '0 0 3px rgba(255,255,255,0.7)') // 添加文本阴影增加可读性
+        .text((d: any) => {
+          // 对长文本进行处理
+          const name = d.name || '';
+          const maxLength = 20; // 最大显示字符数
+          return name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+        });
 
   // --- Enter 过渡 ---
   nodeEnter.transition()
@@ -542,14 +560,86 @@ function highlightNode(nodeId:string, event:MouseEvent, nodeData:any) {
   
   // 确保有必要的字段，避免空值导致问题
   if (nodeData && typeof nodeData === 'object') {
+    // 计算当前节点的实际连接数量
+    let connectedPaperCount = 0;
+    
+    // 创建一个Set来存储论文ID，确保去重
+    const paperIds = new Set<string>();
+    
+    // 从当前可见的连接中计算与该节点相关的论文数量
+    try {
+      // 获取所有连接类型
+      const connections = dataStore.crossLevelConnections?.connections || {};
+      
+      // 获取当前可见的连接
+      const visibleLinks = props.links;
+      
+      // 创建一个映射表，用于快速查找可见连接
+      const visibleLinkMap = new Map();
+      visibleLinks.forEach((link: any) => {
+        // 安全地提取source和target
+        let sourceId = '';
+        let targetId = '';
+        
+        try {
+          // 尝试安全地获取source ID
+          if (link.source && typeof link.source === 'object') {
+            sourceId = link.source.id || '';
+          } else if (typeof link.source === 'string') {
+            sourceId = link.source;
+          }
+          
+          // 尝试安全地获取target ID
+          if (link.target && typeof link.target === 'object') {
+            targetId = link.target.id || '';
+          } else if (typeof link.target === 'string') {
+            targetId = link.target;
+          }
+          
+          if (sourceId && targetId) {
+            const key = `${sourceId}__${targetId}`;
+            visibleLinkMap.set(key, true);
+          }
+        } catch (e) {
+          console.warn('处理连接时出错:', e);
+        }
+      });
+      
+      // 遍历所有连接类型
+      Object.values(connections).forEach((connectionGroup: any) => {
+        // 遍历该类型下的所有连接
+        Object.entries(connectionGroup).forEach(([connectionKey, connectionInfo]: [string, any]) => {
+          const [source, target] = connectionKey.split('__');
+          
+          // 如果连接包含选中的节点
+          if (source === nodeId || target === nodeId) {
+            // 检查这个连接是否在当前可见的连接中
+            const isVisible = visibleLinkMap.has(connectionKey) || 
+                              visibleLinkMap.has(`${target}__${source}`);
+            
+            // 如果是L1界面或者连接可见，则添加论文ID
+            if (relationsStore.state.columnLevels.every(level => level === 'L1') || isVisible) {
+              const ids = connectionInfo.paperIds || [];
+              ids.forEach((id: string) => paperIds.add(id));
+            }
+          }
+        });
+      });
+      
+      // 设置连接论文数量为去重后的数量
+      connectedPaperCount = paperIds.size;
+    } catch (e) {
+      console.error('计算节点连接论文数量时出错:', e);
+    }
+    
     // 创建一个干净的对象传递给tooltip，避免d3内部属性干扰
     hoveredNode.value = {
       id: nodeData.id,
       name: nodeData.name,
       column: nodeData.column,
       level: nodeData.level,
-      value: nodeData.value,
-      originalValue: nodeData.originalValue
+      value: connectedPaperCount || nodeData.value,  // 优先使用计算的连接论文数量
+      originalValue: connectedPaperCount || nodeData.originalValue  // 同样更新originalValue
     };
   } else {
     console.warn('悬停节点数据无效:', nodeData);
@@ -578,13 +668,46 @@ function highlightLink(event:MouseEvent, linkData:any) {
   
   // 准备连接tooltip数据
   if (linkData && typeof linkData === 'object') {
+    // 获取源节点和目标节点ID
+    const sourceId = linkData.source.id;
+    const targetId = linkData.target.id;
+    
+    // 创建一个Set来存储论文ID，确保去重
+    const paperIds = new Set<string>();
+    
+    try {
+      // 获取所有连接类型
+      const connections = dataStore.crossLevelConnections?.connections || {};
+      
+      // 尝试以两种顺序查找连接
+      const key1 = `${sourceId}__${targetId}`;
+      const key2 = `${targetId}__${sourceId}`;
+      
+      // 遍历所有连接类型
+      for (const connectionGroup of Object.values(connections)) {
+        // 检查两种可能的连接键
+        if (connectionGroup[key1]) {
+          const ids = connectionGroup[key1].paperIds || [];
+          ids.forEach((id: string) => paperIds.add(id));
+        }
+        if (connectionGroup[key2]) {
+          const ids = connectionGroup[key2].paperIds || [];
+          ids.forEach((id: string) => paperIds.add(id));
+        }
+      }
+    } catch (e) {
+      console.error('计算连接论文数量时出错:', e);
+    }
+    
+    // 设置连接论文数量为去重后的数量
+    const paperCount = paperIds.size;
+    
     hoveredLink.value = {
       sourceId: linkData.source.id,
       targetId: linkData.target.id,
       sourceName: linkData.source.name,
       targetName: linkData.target.name,
-      value: linkData.value,
-      // 传递完整的节点对象，以便获取column信息
+      value: paperCount || linkData.value,  // 使用计算的论文数量
       source: {
         id: linkData.source.id,
         name: linkData.source.name,
@@ -717,5 +840,41 @@ function clearHighlight() {
   100% {
     stroke-width: 3px;
   }
+}
+
+/* 在style部分添加节点文本样式 */
+:deep(.node text) {
+  transition: all 0.3s ease;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+:deep(.node:hover text) {
+  font-weight: 600;
+  fill: #000;
+  text-shadow: 0 0 4px rgba(255,255,255,0.9);
+  letter-spacing: 0.03em;
+  opacity: 1;
+  transform: translateX(0.5px); /* 悬停时轻微位移效果 */
+}
+
+/* 为不同列的节点文本添加不同颜色 */
+:deep(.node[transform*="translate(0,"]) text {
+  fill: #2c3e50; /* 左侧列文本颜色 */
+}
+
+:deep(.node:not([transform*="translate(0,"])) text {
+  fill: #34495e; /* 其他列文本颜色 */
+}
+
+/* 选中节点的文本样式 */
+:deep(.selected-node text) {
+  font-weight: 600;
+  fill: #2ecc71;
+  text-shadow: 0 0 5px rgba(255,255,255,1);
 }
 </style>

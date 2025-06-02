@@ -115,18 +115,70 @@ export const useRelationsStore = defineStore('relations', () => {
             console.log(`查找节点 ${nodeId} 的相关论文`);
             let connectionCount = 0;
             
+            // 获取当前可见的节点和连接
+            const currentVisibleNodes = visibleNodes.value;
+            const currentVisibleLinks = visibleLinks.value;
+            
+            // 创建当前可见节点的ID集合，用于快速查询
+            const visibleNodeIds = new Set(currentVisibleNodes.map(n => n.id));
+            
+            // 创建当前可见连接的映射，用于快速查询
+            const visibleLinkMap = new Map();
+            currentVisibleLinks.forEach(link => {
+                // 安全地提取source和target
+                let sourceId = '';
+                let targetId = '';
+                
+                try {
+                    if (typeof link.source === 'object' && link.source) {
+                        sourceId = link.source.id || '';
+                    } else if (typeof link.source === 'string') {
+                        sourceId = link.source;
+                    }
+                    
+                    if (typeof link.target === 'object' && link.target) {
+                        targetId = link.target.id || '';
+                    } else if (typeof link.target === 'string') {
+                        targetId = link.target;
+                    }
+                    
+                    if (sourceId && targetId) {
+                        const key = `${sourceId}__${targetId}`;
+                        visibleLinkMap.set(key, true);
+                        // 同时存储反向连接键
+                        const reverseKey = `${targetId}__${sourceId}`;
+                        visibleLinkMap.set(reverseKey, true);
+                    }
+                } catch (e) {
+                    console.warn('处理连接时出错:', e);
+                }
+            });
+            
             // 遍历所有连接类型
             Object.values(connections).forEach((connectionGroup: any) => {
                 // 遍历该类型下的所有连接
                 Object.entries(connectionGroup).forEach(([connectionKey, connectionInfo]: [string, any]) => {
                     const [source, target] = connectionKey.split('__');
+                    
                     // 如果连接包含选中的节点
                     if (source === nodeId || target === nodeId) {
-                        // 添加连接相关的论文ID
-                        const ids = connectionInfo.paperIds || [];
-                        connectionCount++;
-                        console.log(`找到相关连接: ${connectionKey}, 包含 ${ids.length} 篇论文`);
-                        ids.forEach((id: string) => paperIds.add(id));
+                        // 确定另一端节点ID
+                        const otherNodeId = source === nodeId ? target : source;
+                        
+                        // 检查是否应该包含这个连接的论文
+                        const shouldInclude = 
+                            // 如果是L1界面，包含所有连接
+                            state.columnLevels.every(level => level === 'L1') ||
+                            // 或者另一端节点在可见节点中且这个连接在可见连接中
+                            (visibleNodeIds.has(otherNodeId) && visibleLinkMap.has(connectionKey));
+                        
+                        if (shouldInclude) {
+                            // 添加连接相关的论文ID
+                            const ids = connectionInfo.paperIds || [];
+                            connectionCount++;
+                            console.log(`找到相关连接: ${connectionKey}, 包含 ${ids.length} 篇论文`);
+                            ids.forEach((id: string) => paperIds.add(id));
+                        }
                     }
                 });
             });
@@ -142,6 +194,9 @@ export const useRelationsStore = defineStore('relations', () => {
             
             console.log(`查找连接 ${sourceId} -> ${targetId} 的相关论文`);
             
+            // 创建一个Set来存储论文ID，确保去重
+            const paperIds = new Set<string>();
+            
             // 遍历所有连接类型
             for (const connectionGroup of Object.values(connections)) {
                 // 尝试以两种顺序查找连接
@@ -149,18 +204,18 @@ export const useRelationsStore = defineStore('relations', () => {
                 const key2 = `${targetId}__${sourceId}`;
                 
                 if (connectionGroup[key1]) {
-                    const result = connectionGroup[key1].paperIds || [];
-                    console.log(`找到连接 ${key1}, 包含 ${result.length} 篇论文`);
-                    return result;
+                    const ids = connectionGroup[key1].paperIds || [];
+                    ids.forEach((id: string) => paperIds.add(id));
                 }
                 if (connectionGroup[key2]) {
-                    const result = connectionGroup[key2].paperIds || [];
-                    console.log(`找到连接 ${key2}, 包含 ${result.length} 篇论文`);
-                    return result;
+                    const ids = connectionGroup[key2].paperIds || [];
+                    ids.forEach((id: string) => paperIds.add(id));
                 }
             }
             
-            console.log(`未找到连接 ${sourceId} -> ${targetId} 的相关论文`);
+            const result = Array.from(paperIds);
+            console.log(`连接 ${sourceId} -> ${targetId} 共有 ${result.length} 篇不重复论文`);
+            return result;
         }
         
         return [];

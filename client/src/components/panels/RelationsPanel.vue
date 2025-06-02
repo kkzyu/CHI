@@ -13,8 +13,8 @@
     <PlatformSwitch />
     <div class="chart-container-full">
       <SankeyDiagram
-       :nodes="processedNodes"
-       :links="processedLinks"
+       :nodes="filteredNodes"
+       :links="filteredLinks"
        :prev-nodes="relations.state.prevNodes"
        :selected-node="relations.state.selected.type === 'node' ? relations.state.selected.ids[0] : null"
        :selected-link="relations.state.selected.type === 'link' ? {source: relations.state.selected.ids[0], target: relations.state.selected.ids[1]} : null"
@@ -60,6 +60,38 @@ const processedLinks = computed(() => {
   
   // 返回实际数据
   return relations.visibleLinks;
+});
+
+// 新增：过滤节点，只保留有连接的节点
+const filteredNodes = computed(() => {
+  const nodes = processedNodes.value;
+  const links = processedLinks.value;
+  
+  if (!nodes.length || !links.length) return [];
+  
+  // 收集所有在links中出现的节点ID
+  const nodeSet = new Set();
+  links.forEach(link => {
+    if (typeof link.source === 'string') nodeSet.add(link.source);
+    if (typeof link.target === 'string') nodeSet.add(link.target);
+    if (typeof link.source === 'object' && link.source && 'id' in link.source) nodeSet.add(link.source.id);
+    if (typeof link.target === 'object' && link.target && 'id' in link.target) nodeSet.add(link.target.id);
+  });
+  
+  // 只保留在连接中出现的节点
+  return nodes.filter(node => nodeSet.has(node.id));
+});
+
+// 过滤后的连接，确保连接的两端都在过滤后的节点中
+const filteredLinks = computed(() => {
+  const links = processedLinks.value;
+  const nodeIds = new Set(filteredNodes.value.map(n => n.id));
+  
+  return links.filter(link => {
+    const sourceId = typeof link.source === 'string' ? link.source : link.source?.id;
+    const targetId = typeof link.target === 'string' ? link.target : link.target?.id;
+    return nodeIds.has(sourceId) && nodeIds.has(targetId);
+  });
 });
 
 // 在组件挂载时输出调试信息
