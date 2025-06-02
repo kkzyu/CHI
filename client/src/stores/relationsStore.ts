@@ -67,7 +67,9 @@ export const useRelationsStore = defineStore('relations', () => {
         
         // 保存当前状态以便稍后撤销
         console.log('保存历史记录...');
-    
+        
+        // 保存当前节点位置，用于平滑过渡
+        state.prevNodes = visibleNodes.value.map(n => ({ id: n.id, x0: n.x0, y0: n.y0 }));
         
         // 然后保存历史
         pushHistory();
