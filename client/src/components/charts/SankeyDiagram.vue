@@ -244,7 +244,7 @@ function render() {
       // @ts-ignore
       .nodeWidth(15)
       // @ts-ignore
-      .nodePadding(5)
+      .nodePadding(10)
       // @ts-ignore
       .nodeId((d: any) => d.id)
       // @ts-ignore
@@ -357,7 +357,7 @@ function render() {
   nodeEnter.append('text')
         .attr('x', (d: any) => {
           // 根据节点所在列确定文本位置
-          const padding = Math.min(15, Math.max(10, (d.x1 - d.x0) * 0.4)); // 动态计算间距
+          const padding = Math.min(20, Math.max(15, (d.x1 - d.x0) * 0.5)); // 增加间距
           if (d.column === 0) return (d.x1 - d.x0) + padding; // 研究平台在左侧，文本在右侧
           if (d.column === 2) return -padding; // 研究内容在中间，文本在左侧
           if (d.column === 1) return -padding; // 研究方法在右侧，文本在左侧
@@ -381,17 +381,21 @@ function render() {
         .style('font-size', (d: any) => {
           // 根据节点高度动态调整字体大小
           const height = d.y1 - d.y0;
-          return height < 20 ? '10px' : '11px';
+          if (height < 15) return '9px';
+          if (height < 20) return '10px';
+          return '11px';
         })
         .style('font-weight', '500') // 增加字重
         .style('opacity', 0)  // 开始时文本透明
         .style('fill', '#333') // 文本颜色
         .style('pointer-events', 'none') // 防止文本干扰鼠标事件
-        .style('text-shadow', '0 0 3px rgba(255,255,255,0.7)') // 添加文本阴影增加可读性
+        .style('text-shadow', '0 0 3px rgba(255,255,255,0.7), 0 0 2px rgba(255,255,255,0.8)') // 增强文本阴影
         .text((d: any) => {
-          // 对长文本进行处理
+          // 对长文本进行处理，根据节点高度动态调整显示长度
           const name = d.name || '';
-          const maxLength = 20; // 最大显示字符数
+          const height = d.y1 - d.y0;
+          // 较小节点显示更短的文本
+          const maxLength = height < 15 ? 10 : (height < 20 ? 15 : 20);
           return name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
         });
 

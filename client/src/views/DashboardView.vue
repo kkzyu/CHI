@@ -55,8 +55,8 @@ provide('refreshDetailsPanel', (paperIds) => {
   padding-bottom: 40px;
 }
 .dashboard-header {
-  width: 100%;
-  max-width: 2872px;
+  width: calc(var(--overview-panel-width) + var(--relations-panel-width) + var(--details-panel-width) + 2 * var(--column-gap-sm));
+  max-width: 100%;
   margin-bottom: 12px;
 }
 </style>

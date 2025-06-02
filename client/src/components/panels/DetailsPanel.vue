@@ -49,11 +49,19 @@
     <div v-if="!isLoading && allPapers.length === 0" class="no-data-message">
       未能加载论文数据或数据文件为空。
     </div>
+    
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top-button" v-show="showBackToTop" @click="scrollToTop">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, provide } from 'vue';
+import { ref, computed, onMounted, provide, watch, onUnmounted } from 'vue';
 import PaperCard from '@/components/paper/PaperCard.vue';
 
 const searchTerm = ref('');
@@ -61,6 +69,7 @@ const allPapers = ref([]); // 存储所有论文数据
 const isLoading = ref(true); // 开始时设置为true，直到数据加载完成
 const panelContentRef = ref(null);
 const panelTitleBarRef = ref(null);
+const showBackToTop = ref(false); // 控制回到顶部按钮的显示
 
 // 选中的论文ID列表
 const selectedPaperIds = ref([]);
@@ -103,6 +112,23 @@ provide('refreshDetailsPanel', refreshPanelWithIds);
 // 暴露刷新面板方法，使其可以通过ref访问
 defineExpose({ refreshPanelWithIds });
 
+// 滚动到顶部方法
+function scrollToTop() {
+  if (panelContentRef.value) {
+    panelContentRef.value.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+}
+
+// 监听滚动事件，控制回到顶部按钮的显示
+function handleScroll() {
+  if (panelContentRef.value) {
+    showBackToTop.value = panelContentRef.value.scrollTop > 300;
+  }
+}
+
 // 刷新面板显示指定ID的论文
 function refreshPanelWithIds(paperIds) {
   console.log(`细节面板刷新方法被调用，接收到 ${paperIds?.length || 0} 个论文ID`);
@@ -127,6 +153,9 @@ function refreshPanelWithIds(paperIds) {
   }
   
   console.log(`细节面板更新，显示 ${selectedPaperIds.value.length} 篇论文, 选择模式: ${isShowingSelection.value}`);
+  
+  // 刷新内容后自动滚动到顶部
+  scrollToTop();
 }
 
 // 数据转换函数，将从JSON读取的原始对象转换为PaperCard期望的格式
@@ -193,6 +222,23 @@ onMounted(async () => {
   } finally {
     isLoading.value = false;
   }
+  
+  // 添加滚动事件监听
+  if (panelContentRef.value) {
+    panelContentRef.value.addEventListener('scroll', handleScroll);
+  }
+});
+
+// 当组件卸载时移除事件监听
+onUnmounted(() => {
+  if (panelContentRef.value) {
+    panelContentRef.value.removeEventListener('scroll', handleScroll);
+  }
+});
+
+// 监听搜索词变化，自动滚动到顶部
+watch(searchTerm, () => {
+  scrollToTop();
 });
 
 const filteredPapers = computed(() => {
@@ -286,6 +332,7 @@ const filteredPapers = computed(() => {
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  position: relative; /* 为回到顶部按钮提供相对定位基准 */
 }
 
 .panel-title-bar {
@@ -420,5 +467,29 @@ const filteredPapers = computed(() => {
   text-align: center;
   font-size: 1rem;
   color: var(--color-text-secondary, #757575);
+}
+
+/* 回到顶部按钮样式 */
+.back-to-top-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.back-to-top-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: translateY(-3px);
 }
 </style>

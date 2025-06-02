@@ -16,7 +16,8 @@
 
 <style scoped>
 .app-header {
-  width: 100%;
+  width: calc(var(--overview-panel-width) + var(--relations-panel-width) + var(--details-panel-width) + 2 * var(--column-gap-sm));
+  max-width: 100%;
   height: var(--header-height);
   background-color: #E6EAEE;
   border-bottom: none;
@@ -24,7 +25,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 10px var(--space-lg) 0 8px;
+  padding: 10px 0 0 0;
+  margin: 0;
   flex-shrink: 0;
 }
 
@@ -39,7 +41,7 @@
   letter-spacing: 0;
   position: relative;
   top: 2px;
-  left: 25px;
+  left: 17px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
