@@ -78,47 +78,70 @@ export const useRelationsStore = defineStore('relations', () => {
         const nodeBeingToggled = visibleNodes.value.find(n => n.id === nodeId && n.column === c);
 
         if (state.expandedNodes[c].includes(nodeId)) { // 准备折叠
-            console.log(`正在折叠节点 ${nodeId}...`);
-            collapseNode(dataStore, state, c, nodeId);
+        console.log(`正在折叠节点 ${nodeId}...`);
+        collapseNode(dataStore, state, c, nodeId);
 
-            if (c === 2) { // 研究内容列
-                if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
-                    // 完全折叠回 L1 根视图
-                    vizStore.resetPieChartDrillDown('researchContent');
-                } else if (state.columnLevels[c] === 'L2' && state.expandedNodes[c].length > 0) {
-                    // 折叠了某个 L2 节点，现在显示的是 L1 节点下的 L2 节点们
-                    // 找到当前展开的 L1 节点 (它应该是 state.expandedNodes[c] 中的某一个)
-                    // 这个逻辑比较复杂，因为 collapseNode(nodeId) 移除的是 nodeId，
-                    // state.expandedNodes[c] 中剩下的可能是其他同级或父级。
-                    // 一个简单策略：如果 columnLevels[2] 还是 'L2'，说明还有L1父节点被展开。
-                    // 找到这个父节点并让扇形图 drillDown 到它。
-                    // 假设 state.expandedNodes[c] 在折叠部分L2节点后，仍然包含一个L1父节点ID
-                    const currentL1ParentId = state.expandedNodes[c].find(id => {
-                        const l1Node = Object.values<any>(dataStore.nodeMetadata?.['研究内容'] ?? {}).find(n => n.displayName === id && n.level === 2);
-                        return !!l1Node;
-                    });
-                    if (currentL1ParentId) {
-                        vizStore.drillDown('researchContent', currentL1ParentId);
-                    } else {
-                         vizStore.drillUp('researchContent'); // 更通用的上卷
-                    }
-                } else if (state.columnLevels[c] === 'L1') { // 如果已经退回到L1层
-                    vizStore.resetPieChartDrillDown('researchContent');
+        // collapseNode 调用后, state.columnLevels[c] 和 state.expandedNodes[c] 已更新。
+        if (c === 2) { // 研究内容列
+            if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
+                vizStore.resetPieChartDrillDown('researchContent');
+            } else if (state.columnLevels[c] === 'L2' && state.expandedNodes[c].length > 0) {
+                const currentL1ParentId = state.expandedNodes[c].find(id => {
+                    const l1Node = Object.values<any>(dataStore.nodeMetadata?.['研究内容'] ?? {}).find(n => n.displayName === id && n.level === 2); //
+                    return !!l1Node;
+                });
+                if (currentL1ParentId) {
+                    vizStore.drillDown('researchContent', currentL1ParentId); //
+                } else {
+                     vizStore.drillUp('researchContent'); //
                 }
+            } else if (state.columnLevels[c] === 'L1') {
+                vizStore.resetPieChartDrillDown('researchContent'); //
             }
-        } else { // 准备展开
-            console.log(`正在展开节点 ${nodeId}...`);
-            if (nodeBeingToggled && nodeBeingToggled.hasChildren) {
-                expandNode(dataStore, state, visibleNodes, c, nodeId);
-                if (c === 2) { // 研究内容列
-                    vizStore.drillDown('researchContent', nodeId); // nodeId 是被展开的节点，它成为扇形图新的父级
+        } else if (c === 0) { // 研究平台列 [已修改]
+            if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
+                vizStore.resetPieChartDrillDown('researchPlatform');
+            }
+            // 如果一个 L1 平台节点被展开 (在桑基图中显示L2节点) 然后被折叠,
+            // 上述条件会通过重置饼图到 L1 概览来处理它。
+            // 平台桑基图的层级是 L1->L2，没有特定的“上钻”到L2父节点的逻辑。
+        } else if (c === 1) { // 研究方法列 [新增]
+            if (state.columnLevels[c] === 'L1' && state.expandedNodes[c].length === 0) {
+                vizStore.resetPieChartDrillDown('researchMethod');
+            } else if (state.columnLevels[c] === 'L2' && state.expandedNodes[c].length > 0) {
+                const currentL1ParentId = state.expandedNodes[c].find(id => {
+                    // 使用 vizStore.getNodeInfo 是因为它已经为此设置好了
+                    const nodeInfo = vizStore.getNodeInfo(id, 'researchMethod'); //
+                    // 在 nodeMetadata 中, L1 分类通常是 level 2。 //
+                    return nodeInfo && nodeInfo.level === 2;
+                });
+                if (currentL1ParentId) {
+                    vizStore.drillDown('researchMethod', currentL1ParentId);
+                } else {
+                     vizStore.drillUp('researchMethod');
                 }
-            } else {
-                console.log(`节点 ${nodeId} 没有子节点或未找到，无法展开`);
+            } else if (state.columnLevels[c] === 'L1') {
+                 vizStore.resetPieChartDrillDown('researchMethod');
             }
         }
+    } else { // 准备展开
+        console.log(`正在展开节点 ${nodeId}...`);
+        if (nodeBeingToggled && nodeBeingToggled.hasChildren) { //
+            expandNode(dataStore, state, visibleNodes, c, nodeId); //
+            // expandNode 调用后, nodeId 是被展开的节点。
+            // 相应的饼图应该下钻到这个节点。
+            if (c === 2) { // 研究内容列
+                vizStore.drillDown('researchContent', nodeId); //
+            } else if (c === 0) { // 研究平台列 [已修改]
+                vizStore.drillDown('researchPlatform', nodeId);
+            } else if (c === 1) { // 研究方法列 [新增]
+                vizStore.drillDown('researchMethod', nodeId);
+            }
+        } else {
+            console.log(`节点 ${nodeId} 没有子节点或未找到，无法展开`); //
+        }
     }
-
+}
 
 
     // 选择节点，获取相关论文

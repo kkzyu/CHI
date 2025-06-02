@@ -180,24 +180,43 @@ export function buildContentNodes(dataStore: any, state: any): any[] {
                     
                     // 🔥 重要：记录匹配的完整键，供后续使用
                     l3Children.forEach(l3ChildId => {
+                        const allContentMeta = dataStore.nodeMetadata?.['研究内容'] ?? {};
                         console.log(`创建L3节点: ${l3ChildId}`);
+                        let parentColor = '#dc6866';
+                        // expandedL2NodeId 是当前 L2 父节点的 id
+                        const l2ParentMeta = allContentMeta[expandedL2NodeId];
+                        if (l2ParentMeta?.color && l2ParentMeta.color !== '#PLACEHOLDER') {
+                            parentColor = l2ParentMeta.color;
+                        }
+                        // 也可以尝试从 PieChart 数据源获取
+                        const pieItem = vizStore.researchContentPieDataSource.find(
+                            p => p.id === expandedL2NodeId || p.name === expandedL2NodeId
+                        );
+                        
+
                         
                         // 使用去重后的论文数量
                         const paperCount = getNodePaperCount(l3ChildId);
                         
                         // 🔥 关键修复：确保column属性始终为2（研究内容列）
+                        if (pieItem && pieItem.itemStyle?.color) {
+                            parentColor = pieItem.itemStyle.color;
+                        } else if (l2ParentMeta?.color && l2ParentMeta.color !== '#PLACEHOLDER') {
+                            parentColor = l2ParentMeta.color;
+                        }
                         const newNode = {
                             id: l3ChildId,
                             name: l3ChildId,
-                            column: 2, // 强制设置为内容列
-                            color: '#dc6866',
-                            value: paperCount || 1, // 至少为1，确保节点可见
+                            column: 2,
+                            color: parentColor,
+                            value: paperCount || 1,
                             level: 'L3',
                             parentId: expandedL2NodeId,
                             hasChildren: false,
-                            originalL2Parent: matchedKey, // 记录原始的L2父节点完整ID
-                            contentCategory: '研究内容', // 添加明确的类别标记
+                            originalL2Parent: matchedKey,
+                            contentCategory: '研究内容',
                         };
+
                         console.log(`✅ 添加L3节点:`, newNode);
                         nodes.push(newNode);
                     });

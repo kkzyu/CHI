@@ -1,22 +1,39 @@
 <template>
   <div class="chart-container">
     <div class="chart-header">
-      <div v-if="showBackButton" class="back-button-container" @click="handleDrillUp">
-        <span class="back-icon">◀</span> <span class="parent-label-text">{{ parentLabel }}</span>
+      <h3 class="chart-title">{{ title }}</h3>
+      <div class="header-actions">
+        <select v-if="showSelector" v-model="selectedClassification" @change="onClassificationChange" class="classification-selector">
+          <option v-for="option in classificationOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
       </div>
-      <h3 v-if="!showBackButton" class="chart-title">{{ title }}</h3>
-      <select v-if="showSelector" v-model="selectedClassification" @change="onClassificationChange" class="classification-selector">
-        <option v-for="option in classificationOptions" :key="option.value" :value="option.value">
-          {{ option.label }}
-        </option>
-      </select>
     </div>
+
+    <div v-if="showBackButton" class="pie-hierarchical-back-nav">
+      <div v-for="(trailItem, index) in parentTrail" :key="trailItem.id"
+           class="hierarchical-back-item"
+           :style="{ 'padding-left': index * 20 + 'px' }" @click="handleHierarchicalDrillUp(index)"
+           :title="'返回 ' + trailItem.name">
+        <span class="indicator-triangle">▼</span>
+        <span class="indicator-label">{{ trailItem.name }}</span>
+      </div>
+
+      <div class="hierarchical-back-item current-active-parent"
+           :style="{ 'padding-left': parentTrail.length * 20 + 'px' }"
+           @click="handleSingleDrillUp" :title="'返回 ' + activeNodeDisplayName">
+        <span class="indicator-triangle">▼</span>
+        <span class="indicator-label">{{ activeNodeDisplayName }}</span>
+      </div>
+    </div>
+
     <div ref="chartRef" :style="{ height: chartHeight }"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick, onBeforeUnmount, computed } from 'vue'; // 引入 computed
+import { ref, onMounted, watch, nextTick, onBeforeUnmount, computed,toRaw } from 'vue'; // 引入 computed
 import * as echarts from 'echarts/core';
 import { PieChart } from 'echarts/charts';
 import {
@@ -68,12 +85,24 @@ const props = defineProps({
   parentLabel: { // 父级标签的名称，用于返回按钮中显示
     type: String,
     default: '',
-  }
+  },
+  parentTrail: { type: Array, default: () => [] }, // 从 vizStore 传入
+  activeNodeDisplayName: { type: String, default: '' } // 从 vizStore 传入
 });
 
 // emit drillUp 事件，并传递 categoryKey
 const emit = defineEmits(['classificationChange', 'drillUp']);
+// 原有的单步上钻处理函数
+const handleSingleDrillUp = () => {
+  emit('drillUp', props.categoryKey);
+};
 
+// 新的层级上钻处理函数
+const handleHierarchicalDrillUp = (trailIndex) => {
+  // trailIndex 是点击的 parentTrail 中的项目索引
+  // 我们需要告诉父组件要回到哪一级
+  emit('hierarchicalDrillUp', { categoryKey: props.categoryKey, targetTrailIndex: trailIndex });
+};
 const chartRef = ref(null);
 const selectedClassification = ref(
   props.classificationOptions.length > 0 ? props.classificationOptions[0].value : null
@@ -237,60 +266,76 @@ onBeforeUnmount(() => {
 .chart-container {
   display: flex;
   flex-direction: column;
-  position: relative; /* 确保子元素定位正确 */
+  position: relative;
 }
+
 .chart-header {
   display: flex;
-  justify-content: space-between; /* 使标题和选择器分布在两侧 */
+  justify-content: space-between; /* 让标题和 header-actions 分布在两侧 */
   align-items: center;
   margin-bottom: var(--space-sm, 8px);
-  min-height: 30px; 
-  position: relative; /* 用于返回按钮的潜在绝对定位（如果需要） */
-}
-
-/* 返回按钮容器样式 */
-.back-button-container {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 4px 8px; /* 内边距 */
-  border: 1px solid var(--color-border, #ccc); /* 边框形成方框 */
-  border-radius: 4px; /* 轻微圆角 */
-  background-color: var(--color-background-soft, #f9f9f9);
-  /* flex-grow: 1;  如果希望它占据更多空间 */
-  margin-right: 10px; /* 与右侧元素（如选择器）的间距 */
-}
-
-.back-button-container:hover {
-  background-color: var(--color-background-mute, #f0f0f0);
-}
-
-.back-icon {
-  margin-right: 6px; /* 图标和文字之间的距离 */
-  font-size: 0.9em; /* 图标大小 */
-  color: var(--color-text-accent, #007bff);
-}
-
-.parent-label-text {
-  font-size: var(--font-size-medium, 0.9em); /* 父标签文字大小 */
-  color: var(--color-text-secondary, #333);
-  font-weight: 500;
+  min-height: 30px;
 }
 
 .chart-title {
-  font-size: var(--font-size-large, 1.0em);
-  color: var(--color-text-secondary, #333);
+  font-size: var(--font-size-large, 1.0em); /* 与之前一致 */
+  color: var(--color-text-secondary, #333); /* 与之前一致 */
   margin-bottom: 0px; /* header 已有 margin-bottom */
-  /* 如果返回按钮显示，标题可以不占据空间或隐藏 */
-  /* flex-grow: 1; */ /* 移除，让返回按钮和选择器决定空间 */
+  margin-right: var(--space-sm, 8px); /* 与右侧元素的间距 */
+  white-space: nowrap;
+}
+
+.pie-hierarchical-back-nav {
+  /* 关键：将此容器定位到图表区域的右半部分 */
+  margin-left: 50%;     /* 从父容器（通常是.chart-container）宽度的50%处开始 */
+  width: 50%;           /* 此容器占据父容器宽度的右边50% */
+  box-sizing: border-box; /* 确保 padding 和 border 不会增加额外的宽度 */
+  margin-bottom: 10px;    /* 与下方 ECharts 画布的间距 */
+  padding-right: 10px;    /* 给右侧留一些空间，防止内容溢出接触边缘 (可选) */
+}
+
+.hierarchical-back-item {
+  display: flex;        /* 使用 flex 布局来对齐三角形和标签 */
+  align-items: center;  /* 垂直居中对齐 */
+  cursor: pointer;
+  margin-bottom: 4px;     /* 层级项之间的垂直间距 */
+  font-size: 13px;        /* 统一字体大小，应与图例项协调 */
+  color: #333;           /* 文字颜色 */
+  /* 动态的 padding-left (内联样式 :style="{ 'padding-left': index * 20 + 'px' }") 用于实现层级缩进 */
+  /* 这个 padding-left 是相对于 .hierarchical-back-item 自身的，而不是 .pie-hierarchical-back-nav 的 50% margin */
+}
+
+.hierarchical-back-item:hover .indicator-label {
+  text-decoration: underline; /* 鼠标悬停时标签加下划线 */
+}
+
+.indicator-triangle {
+  margin-right: 6px;  /* 三角形与标签之间的间距 */
+  font-size: 10px;    /* 三角形图标的大小 */
+  color: #555;       /* 三角形的颜色 (与图片中颜色接近) */
+  line-height: 1;     /* 确保三角形在行内垂直对齐良好 */
+  flex-shrink: 0;     /* 防止三角形在空间不足时被压缩 */
+}
+
+.indicator-label {
+  font-weight: 600;     /* 标签文字加粗，与图片中样式一致 */
+  white-space: nowrap;  /* 防止标签文字换行 */
+  overflow: hidden;     /* 隐藏超出部分的文字 */
+  text-overflow: ellipsis; /* 对超出的文字显示省略号 */
+  /* 标签将占据 .hierarchical-back-item 中的剩余空间 */
+  /* 例如，可以给一个最大宽度以防止在极端缩进情况下完全不显示 */
+  max-width: calc(100% - 20px); /* 减去三角形和一些间距的估算值 */
+}
+
+.current-active-parent .indicator-label {
+  /* 当前活动父级标签的特殊样式（如果需要）*/
+  /* font-weight: bold; */ /* 已在 .indicator-label 中通过 font-weight: 600 设置 */
 }
 .classification-selector {
-  /* margin-right: 8px; */ /* 如果返回按钮在左，选择器在右，可以不需要左边距 */
   padding: 4px 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 0.85em;
-  max-width: 150px;
-  /* flex-shrink: 0; 防止选择器被压缩 */
+  max-width: 150px; /* 已有样式 */
 }
 </style>

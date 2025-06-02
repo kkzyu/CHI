@@ -506,31 +506,31 @@ function getPieDataForCategory(categoryKey) {
 
     // D. 判断显示层级并提取数据
   if (displayConf.parentTrail.length === 0) { // 正在显示L1层 (饼图的顶层)
-    if (categoryKey === 'researchPlatform') {
-      // activeNodeInfo 此时应该是代表当前 displayType 的元节点，例如 nodeMetadata["研究涉及平台-内容形式"]["研究涉及平台-内容形式"]
-      // 其 children 属性 (如果按元数据定义) 应该是 L1 平台类型名，如 "图文为主"
-      // 但我们通常从 platformConfig 获取 L1 结构，从 precomputedStats 获取计数
+    // if (categoryKey === 'researchPlatform') {
+    //   // activeNodeInfo 此时应该是代表当前 displayType 的元节点，例如 nodeMetadata["研究涉及平台-内容形式"]["研究涉及平台-内容形式"]
+    //   // 其 children 属性 (如果按元数据定义) 应该是 L1 平台类型名，如 "图文为主"
+    //   // 但我们通常从 platformConfig 获取 L1 结构，从 precomputedStats 获取计数
 
-      const platformTypeConfig = platformConfig.value.platformTypes[displayConf.displayType];
-      if (!platformTypeConfig?.hierarchy?.l1) { /* ... return [] */ }
+    //   const platformTypeConfig = platformConfig.value.platformTypes[displayConf.displayType];
+    //   if (!platformTypeConfig?.hierarchy?.l1) { /* ... return [] */ }
 
-      // 正确的路径来获取L1平台类型的统计数据容器
-      const l1PlatformStatsContainer = currentYearStats.value.byCategory?.['研究平台']?.[displayConf.displayType]?.subCategory;
+    //   // 正确的路径来获取L1平台类型的统计数据容器
+    //   const l1PlatformStatsContainer = currentYearStats.value.byCategory?.['研究平台']?.[displayConf.displayType]?.subCategory;
 
-      if (!l1PlatformStatsContainer) {
-        console.warn(`[VS - ${categoryKey}] PieData L1: Stats container for L1 platforms not found at 'currentYearStats.byCategory.研究平台.${displayConf.displayType}.subCategory'.`);
-      }
+    //   if (!l1PlatformStatsContainer) {
+    //     console.warn(`[VS - ${categoryKey}] PieData L1: Stats container for L1 platforms not found at 'currentYearStats.byCategory.研究平台.${displayConf.displayType}.subCategory'.`);
+    //   }
 
-      itemsToShowDetails = platformTypeConfig.hierarchy.l1.map(l1NodeFromConfig => { // "图文为主", etc.
-        const count = l1PlatformStatsContainer?.[l1NodeFromConfig.name]?.total || 0;
-        return { 
-          id: l1NodeFromConfig.id,    
-          name: l1NodeFromConfig.name, 
-          value: count, 
-          color: l1NodeFromConfig.color 
-        };
-      });
-    } else { // 研究内容 或 研究方法 顶层
+    //   itemsToShowDetails = platformTypeConfig.hierarchy.l1.map(l1NodeFromConfig => { // "图文为主", etc.
+    //     const count = l1PlatformStatsContainer?.[l1NodeFromConfig.name]?.total || 0;
+    //     return { 
+    //       id: l1NodeFromConfig.id,    
+    //       name: l1NodeFromConfig.name, 
+    //       value: count, 
+    //       color: l1NodeFromConfig.color 
+    //     };
+    //   });
+    // } else { // 研究内容 或 研究方法 顶层
       // activeNodeInfo 是 "研究内容" 或 "研究方法" 的根节点 (例如 nodeMetadata['研究内容']['研究内容'])
       // activeNodeInfo.children 是 L2 节点 ID (全名，如 "用户群体与个体特征")
       const childrenNodeIDsFromMetadata = activeNodeInfo.children || []; 
@@ -552,30 +552,41 @@ function getPieDataForCategory(categoryKey) {
   };
 }).filter(item => item !== null);
     }
-  } else { // 正在显示下钻后的层级 (L2 或 L3 pie display)
+   else { // 正在显示下钻后的层级 (L2 或 L3 pie display)
     let statsContainerForChildren;
     if (categoryKey === 'researchPlatform') {
-        const statsContainerForChildren = currentYearStats.value.byCategory?.['研究平台']?.[displayConf.displayType]?.subCategory?.[activeNodeInfo.name]?.tags;
+        const statsContainerForChildren = currentYearStats.value.byCategory?.['研究平台']?.[displayConf.displayType]?.subCategory?.[activeNodeInfo.displayName]?.tags;
+        console.log('            [PieData] statsContainerForChildren:', statsContainerForChildren, 'activeNodeInfo.displayName:', activeNodeInfo.displayName);
 
-    if (!statsContainerForChildren) {
-      console.warn(`[VS - ${categoryKey}] PieData: Stats container not found for platform children`);
-      return [];
-    }
-    const colors_platform = ['#F4ED88', '#ADFD99', '#64DEFF', '#9BCBFD'];
-    itemsToShowDetails = (activeNodeInfo.children || []).map(childId => {
-      const childNodeInfo = getNodeInfo(childId, categoryKey);
-      if (!childNodeInfo) return null;
-      
-      const count = statsContainerForChildren[childNodeInfo.displayName]?.total || 0;
-      return {
-        id: childNodeInfo.id,
-        name: childNodeInfo.displayName,
-        value: count || 1,
-        // 使用平台特定的颜色
-        color: childNodeInfo.color || colors_platform[itemsToShowDetails.length % colors_platform.length]
-      };
-    }).filter(item => item !== null);
-  }
+        if (!statsContainerForChildren) {
+        console.warn(`[VS - ${categoryKey}] PieData: Stats container not found for platform children`);
+        return [];
+        }
+        const colors_platform = ['#F4ED88', '#ADFD99', '#64DEFF', '#9BCBFD'];
+        itemsToShowDetails = (activeNodeInfo.children || []).map((childId, idx) => {
+        const childNodeInfo = getNodeInfo(childId, categoryKey);
+        if (!childNodeInfo) return null;
+        const count = statsContainerForChildren?.[childNodeInfo.displayName]?.total || 0;
+        return {
+            id: childNodeInfo.id,
+            name: childNodeInfo.displayName,
+            value: count || 1,
+            // 用 idx 做颜色分配
+            // color: colors_platform[idx % colors_platform.length]
+        };
+    }).filter(item => item !== null)
+    //   .sort((a, b) => b.value - a.value)
+    //   .slice(0, 4);
+    ;
+    itemsToShowDetails = itemsToShowDetails
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 4);
+    // 再分配颜色
+itemsToShowDetails = itemsToShowDetails.map((item, idx) => ({
+  ...item,
+  color: colors_platform[idx % colors_platform.length]
+}));
+  }else{
     // activeNodeInfo 是我们已下钻进入的父节点。
     // 例如：研究内容 -> activeNodeId="用户群体与个体特征" (L2), activeNodeInfo 是其元数据
     // 例如：研究平台 -> activeNodeId="图文为主" (L1平台类型), activeNodeInfo 是其元数据
@@ -597,7 +608,7 @@ function getPieDataForCategory(categoryKey) {
         value: count
       };
     }).filter(item => item !== null);
-
+    
     // 排序并分配颜色
     itemsToShowDetails.sort((a, b) => b.value - a.value);
     const colors_content = ['#4A8AB2', '#D0BDBD', '#B84A60', '#E7A6A6'];
@@ -615,17 +626,13 @@ function getPieDataForCategory(categoryKey) {
             color: colors_method[index % colors_method.length] // 循环使用颜色
         }));
     }
-    else{
-        itemsToShowDetails = itemsToShowDetails.map((item, index) => ({
-        ...item,
-        color: colors_platform[index % colors_platform.length]
-    }));
     }
   }
 
   // E. 过滤、排序、应用TopN、添加颜色
   let processedItems = itemsToShowDetails.filter(item => item && item.value > 0);
 
+  // 只在研究平台且下钻到L3时（parentTrail长度为1）显示前4
   if (categoryKey === 'researchPlatform' && displayConf.parentTrail.length === 1) {
     processedItems.sort((a, b) => b.value - a.value);
     processedItems = processedItems.slice(0, 4);

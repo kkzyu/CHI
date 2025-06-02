@@ -20,33 +20,22 @@
         />
         <div v-else class="loading-placeholder" :style="{ height: '120px' }">论文数量加载中...</div>
       </div>
-
-      <div class="chart-wrapper" v-if="shouldShowPieSection('researchContent')">
-    <div class="pie-breadcrumb-header" v-if="vizStore.currentDisplayState.researchContent.parentTrail.length > 0 || (vizStore.currentDisplayState.researchContent.activeNodeId !== '研究内容' && vizStore.currentDisplayState.researchContent.parentTrail.length === 0 && vizStore.currentDisplayState.researchContent.activeNodeId !== vizStore.currentDisplayState.researchContent.pieTitle)">
-        <span class="breadcrumb-trail">
-            <a href="#" @click.prevent="handleBreadcrumbRootClick('researchContent')">研究内容</a>
-            <template v-for="(item, index) in vizStore.currentDisplayState.researchContent.parentTrail" :key="`trail-${item.id}`">
-                <span> &gt; </span>
-                <a href="#" @click.prevent="handleBreadcrumbItemClick('researchContent', index)">{{ item.name }}</a>
-            </template>
-            <span v-if="vizStore.currentDisplayState.researchContent.activeNodeId !== '研究内容' && vizStore.currentDisplayState.researchContent.activeNodeId !== (vizStore.currentDisplayState.researchContent.parentTrail.length > 0 ? vizStore.currentDisplayState.researchContent.parentTrail[vizStore.currentDisplayState.researchContent.parentTrail.length - 1].id : '研究内容')">
-               <span> &gt; </span> {{ vizStore.getNodeInfo(vizStore.currentDisplayState.researchContent.activeNodeId, 'researchContent')?.displayName || vizStore.currentDisplayState.researchContent.activeNodeId }}
-            </span>
-        </span>
-        <button @click="handlePieDrillUp('researchContent')" class="breadcrumb-back-button" title="返回上一级">
-            <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"><path d="M9.828 3.222a.75.75 0 0 1 0 1.06L5.61 8.5l4.218 4.218a.75.75 0 1 1-1.06 1.06l-4.75-4.75a.75.75 0 0 1 0-1.06l4.75-4.75a.75.75 0 0 1 1.06 0z"/></svg>
-        </button>
-    </div>
+      <div 
+        class="chart-wrapper"
+        v-if="shouldShowPieSection('researchContent')"
+      >
 
     <PieChart
       title="研究内容" categoryKey="researchContent"
       chart-height="190px" 
       :chart-data="researchContentPieData"
       :show-selector="false" 
+      :showBackButton="vizStore.currentDisplayState.researchContent.parentTrail.length > 0"
+      :parentLabel="getParentLabel('researchContent')"
       @drillUp="handlePieDrillUp('researchContent')" v-if="dataStoresInitialized"
     />
     <div v-else class="loading-placeholder" :style="{ height: '180px' }">研究内容数据加载中...</div>
-</div>
+    </div>
 
       <div 
         class="chart-wrapper"
@@ -146,25 +135,96 @@ const handlePlatformClassificationChange = (newClassification) => {
   // researchPlatformPieData will update automatically
 };
 
+// OverviewPanel.vue - <script setup>
+// ... (确保已导入 useVisualizationStore, useRelationsStore, useDataStore)
+
 const handlePieDrillUp = (categoryKey) => {
-  // console.log(`OverviewPanel: Pie drill up for category: ${categoryKey}`);
-  vizStore.drillUp(categoryKey);
-  // If Sankey needs to react to pie drill up (e.g., collapse corresponding column)
-  // This would require more complex logic to map pie categoryKey & parentTrail to Sankey nodes
-  // For now, assume pie drill up primarily affects pies.
+  const vizStore = useVisualizationStore();
+  const relationsStore = useRelationsStore();
+  // const dataStore = useDataStore(); // 如果需要通过 displayName 反查 originalId，则可能需要
+
+  // 1. 获取扇形图上钻前的状态
+  const pieStateBeforeDrillUp = vizStore.currentDisplayState[categoryKey];
+  // conceptualParentNodeIdFromPie 是在扇形图上钻前，作为父级显示其子项的节点ID。
+  // 如果扇形图显示L3项（L2_A的子项），则此ID为 L2_A 的ID (很可能是 displayName)。
+  // 如果扇形图显示L2项（L1_X的子项），则此ID为 L1_X 的ID (很可能是 displayName)。
+  const conceptualParentNodeIdFromPie = pieStateBeforeDrillUp.activeNodeId;
+
+  // 2. 执行扇形图的上钻操作
+  vizStore.drillUp(categoryKey); // 此时 vizStore.currentDisplayState 已更新
+
+  // 3. 同步桑基图状态
+  let columnIndex = -1;
+  // let relationsCategoryName = ''; // 用于可能的元数据查询
+  if (categoryKey === 'researchContent') { columnIndex = 2; /* relationsCategoryName = '研究内容'; */ }
+  else if (categoryKey === 'researchMethod') { columnIndex = 1; /* relationsCategoryName = '研究方法'; */ }
+  else if (categoryKey === 'researchPlatform') { columnIndex = 0; /* relationsCategoryName = '研究平台';*/ } // 平台通常只到L2
+  else return;
+
+  // 定义扇形图的根节点ID，这些节点本身不能被“折叠”其子项（因为它们是顶级）
+  const rootIds = ['研究内容', '研究方法', '研究平台'];
+  if (rootIds.includes(conceptualParentNodeIdFromPie)) {
+    // 如果 conceptualParentNodeIdFromPie 是根ID，意味着之前扇形图在显示L1层级项目。
+    // 从L1层级“上钻”通常是通过面包屑或其他方式重置视图到根。
+    // 对应桑基图也应重置该列到L1。
+    relationsStore.resetColumn(columnIndex);
+    return;
+  }
+
+  // 如果执行到这里，conceptualParentNodeIdFromPie 是一个实际的 L1 或 L2 数据节点的ID (来自vizStore, 通常是displayName)。
+  // 我们需要确定传递给 relationsStore.collapseNode 的正确ID。
+  let idToUseForSankeyCollapse = conceptualParentNodeIdFromPie; // 默认使用扇形图提供的ID
+
+  const currentSankeyColumnLevel = relationsStore.state.columnLevels[columnIndex];
+  const currentSankeyExpandedNodes = relationsStore.state.expandedNodes[columnIndex];
+
+  // 关键逻辑：处理L3->L2回退时ID不匹配的问题
+  if (currentSankeyColumnLevel === 'L3') {
+    // 此时桑基图正显示L3项，意味着一个L2节点被展开了。
+    // conceptualParentNodeIdFromPie 是这个L2节点的displayName (来自vizStore)。
+    // currentSankeyExpandedNodes 数组中应该包含这个L2节点在Sankey中存储的ID（通常是originalId或完整键）。
+    // 由于L2->L3展开时，expandedNodes通常只包含一个被展开的L2节点的ID：
+    if (currentSankeyExpandedNodes && currentSankeyExpandedNodes.length === 1) {
+      idToUseForSankeyCollapse = currentSankeyExpandedNodes[0];
+      // 我们假设 currentSankeyExpandedNodes[0] 就是 conceptualParentNodeIdFromPie 对应的、
+      // 在 relationsStore 中存储的那个ID。这个ID才是 collapseNode 需要的。
+    } else {
+      // 如果 expandedNodes 为空或多于一个（不符合L2->L3展开的预期状态），
+      // 那么直接使用 conceptualParentNodeIdFromPie 尝试折叠可能无效或行为不定。
+      // 这种情况理论上不应发生，或者说明之前的展开逻辑/状态有问题。
+      // 为安全起见，可以打印警告，并尝试使用 conceptualParentNodeIdFromPie。
+      console.warn(`[OverviewPanel] Sankey L3->L2 collapse: expandedNodes state unexpected for column ${columnIndex}. Using pie's activeId.`);
+    }
+  } else if (currentSankeyColumnLevel === 'L2') {
+    // 桑基图正显示L2项，意味着一个L1节点被展开了。
+    // conceptualParentNodeIdFromPie 是这个L1节点的displayName。
+    // currentSankeyExpandedNodes 中存储的通常也是displayName。
+    // 检查一下，如果 conceptualParentNodeIdFromPie 不在其中（理论上应该在，并且是唯一的一个），
+    // 则使用 currentSankeyExpandedNodes[0]。
+    if (currentSankeyExpandedNodes && currentSankeyExpandedNodes.length === 1 &&
+        !currentSankeyExpandedNodes.includes(conceptualParentNodeIdFromPie)) {
+      idToUseForSankeyCollapse = currentSankeyExpandedNodes[0];
+    }
+    // 如果 currentSankeyExpandedNodes.includes(conceptualParentNodeIdFromPie) 为 true，
+    // 则 idToUseForSankeyCollapse (即 conceptualParentNodeIdFromPie) 是正确的。
+  }
+  // 对于其他情况，或如果 currentSankeyColumnLevel 是 L1，则 conceptualParentNodeIdFromPie 不会导致调用 collapseNode(col, id)。
+
+  // 调用 relationsStore 中已有的 collapseNode 方法
+  relationsStore.collapseNode(columnIndex, idToUseForSankeyCollapse);
 };
 
 // --- HELPER FOR PIE CHART UI ---
 const getParentLabel = (categoryKey) => {
-  const trail = vizStore.currentDisplayState[categoryKey]?.parentTrail;
-  if (trail && trail.length > 0) {
-    const parentNodeId = trail[trail.length - 1].id;
-    // Assuming getNodeInfo can correctly find the display name.
-    // It might need the categoryKey if IDs are not globally unique across categories.
-    const parentNodeInfo = vizStore.getNodeInfo(parentNodeId, categoryKey); 
-    return parentNodeInfo?.displayName || parentNodeId;
+  const currentState = vizStore.currentDisplayState[categoryKey];
+  // showBackButton 对应的条件通常是 parentTrail.length > 0
+  if (currentState && currentState.parentTrail.length > 0) {
+    // activeNodeId 是当前“文件夹”的ID，我们显示的是它的子项
+    // 所以，标签应该是 activeNodeId 的名称
+    const activeNodeInfo = vizStore.getNodeInfo(currentState.activeNodeId, categoryKey);
+    return activeNodeInfo?.displayName || currentState.activeNodeId;
   }
-  return '';
+  return ''; // 如果没有下钻，不显示回退，parentLabel内容不重要
 };
 
 // --- CONDITIONAL RENDERING LOGIC ---
