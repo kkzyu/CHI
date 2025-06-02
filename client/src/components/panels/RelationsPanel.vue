@@ -10,7 +10,6 @@
         <span class="title-text">关系视图</span>
       </div>
     </div>
-    <PlatformSwitch />
     <div class="chart-container-full">
       <SankeyDiagram
        :nodes="filteredNodes"
