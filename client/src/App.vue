@@ -33,7 +33,7 @@ const downloadPDF = async (filename) => {
     isDownloadingPdf.value = true;
     const baseUrl = import.meta.env.VITE_API_BASE_URL || '/CHI';
     const fileUrl =`${baseUrl}/${filename}`;
-    // 创建下载链接
+
     const link = document.createElement('a');
     link.href = fileUrl;
     link.download = filename;
