@@ -141,9 +141,6 @@ const handlePlatformClassificationChange = (newClassification) => {
   // researchPlatformPieData will update automatically
 };
 
-// OverviewPanel.vue - <script setup>
-// ... (确保已导入 useVisualizationStore, useRelationsStore, useDataStore)
-
 const handlePieDrillUp = (categoryKey) => {
   const vizStore = useVisualizationStore();
   const relationsStore = useRelationsStore();

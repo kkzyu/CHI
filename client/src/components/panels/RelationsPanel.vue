@@ -31,7 +31,6 @@
 // import PlaceholderChart from '@/components/charts/PlaceholderChart.vue';
 import SankeyDiagram from '@/components/charts/SankeyDiagram.vue';
 import { useRelationsStore } from '@/stores/relationsStore';
-import PlatformSwitch from '@/components/PlatformSwitch.vue';
 import { watch, inject, onMounted, ref, computed } from 'vue';
 const relations = useRelationsStore();
 import { useVisualizationStore } from '@/stores/visualizationStore';
