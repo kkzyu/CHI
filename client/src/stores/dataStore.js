@@ -88,14 +88,31 @@ export const useDataStore = defineStore('data', {
                 this.sankeyLayoutConfig = await sankeyLayoutConfigRes.json();
                 const rawPapersData = await rawPapersForYearMappingRes.json();
                 const tempPaperIdToYear = {};
+                
+                // 改进年份映射逻辑
+                console.log("[DataStore] 开始构建paperIdToYear映射...");
+                let missingYearCount = 0;
+                
                 for (const paper of rawPapersData) {
-                    if (paper.id && paper.Year) {
-                        tempPaperIdToYear[paper.id] = String(paper.Year);
+                    if (paper.id) {
+                        // 尝试从多个可能的字段获取年份
+                        const year = paper.Year || paper.year || paper.publicationYear || paper.publication_year;
+                        
+                        if (year) {
+                            tempPaperIdToYear[paper.id] = String(year);
+                        } else {
+                            // 记录缺失年份的论文数量
+                            missingYearCount++;
+                        }
                     }
                 }
+                
                 this.paperIdToYear = tempPaperIdToYear;
-                console.log("[DataStore] paperIdToYear 映射已填充。条目数:", Object.keys(this.paperIdToYear).length);
-                console.log("[DataStore] paperIdToYear 示例内容 (前5条):", JSON.stringify(Object.entries(this.paperIdToYear).slice(0, 5)));
+                console.log(`[DataStore] paperIdToYear映射已填充。总条目数: ${Object.keys(this.paperIdToYear).length}, 缺失年份的论文数: ${missingYearCount}`);
+                
+                // 输出一些示例数据以便调试
+                const sampleEntries = Object.entries(this.paperIdToYear).slice(0, 5);
+                console.log("[DataStore] paperIdToYear示例内容:", JSON.stringify(sampleEntries));
                 if (this.paperIdToYear['paper_117']) {
                     console.log("[DataStore] paper_117 的年份是:", this.paperIdToYear['paper_117']);
                 } else {

@@ -10,6 +10,7 @@
         <span class="title-text">关系视图</span>
       </div>
     </div>
+    <div class="year-indicator">年份: {{ yearDisplay }}</div>
     <div class="chart-container-full">
       <SankeyDiagram
        :nodes="filteredNodes"
@@ -231,6 +232,33 @@ watch(() => relations.state.selected, (newSelection) => {
     }
   }
 }, { deep: true });
+
+// 监听年份变化，更新选中的论文ID
+watch(() => vizStore.selectedYear, (newYear) => {
+  console.log(`RelationsPanel: 年份变化为 ${newYear}`);
+  
+  // 如果当前有选中的节点或连接，需要刷新选中的论文ID
+  if (relations.state.selected.type) {
+    const paperIds = relations.getSelectedPaperIds();
+    console.log(`年份变化后，选中的论文数量: ${paperIds.length}`);
+    
+    // 发射选择变化事件
+    emit('selection-change', paperIds);
+    
+    // 如果提供了刷新细节面板的方法，调用它
+    if (refreshDetailsPanel) {
+      refreshDetailsPanel(paperIds);
+    }
+  }
+}, { immediate: false }); // 不立即执行，等待年份真正变化时才触发
+
+const yearDisplay = computed(() => {
+  if (vizStore.selectedYear) {
+    return vizStore.selectedYear;
+  } else {
+    return '2020-2025';
+  }
+});
 </script>
 
 <style scoped>
@@ -246,7 +274,7 @@ watch(() => relations.state.selected, (newSelection) => {
   margin-bottom: var(--space-md);
   flex-shrink: 0;
   background-color: white;
-  padding: 5px 8px 12px 1px;
+  padding: 5px 8px 12px 3px;
   width: 100%;
   box-sizing: border-box;
   border-bottom: none;
@@ -264,6 +292,16 @@ watch(() => relations.state.selected, (newSelection) => {
 }
 .title-text {
   font-weight: 600;
+}
+.year-indicator {
+  font-size: 1.15em;
+  color: #212121;
+  font-weight: 600;
+  padding: 0px 1px 4px 1px;
+  margin-bottom: 0px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 0;
 }
 .chart-container-full {
   flex-grow: 1; /* Chart takes all available vertical space */

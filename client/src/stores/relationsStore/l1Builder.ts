@@ -14,10 +14,34 @@ export function buildL1Snapshot(dataStore: any, state: any) {
     // 辅助函数：判断 paperIds 是否属于当前年份
     function filterPaperIdsByYear(paperIds: string[]) {
         if (!selectedYear) return paperIds;
-        const filtered = paperIds.filter(pid => String(dataStore.paperIdToYear?.[pid]) === String(selectedYear));
-        if (filtered.length === 0 && paperIds.length > 0) {
-            console.warn('Year filter mismatch:', {paperIds, selectedYear, mapped: paperIds.map(pid => dataStore.paperIdToYear?.[pid])});
+        
+        // 检查paperIdToYear映射是否存在且非空
+        if (!dataStore.paperIdToYear || Object.keys(dataStore.paperIdToYear).length === 0) {
+            console.warn('paperIdToYear映射不存在或为空，无法进行年份筛选，返回所有论文');
+            return paperIds;
         }
+        
+        // 使用更健壮的筛选逻辑
+        const filtered = paperIds.filter(pid => {
+            const paperYear = dataStore.paperIdToYear?.[pid];
+            // 如果找不到年份，保留该论文（宁可多显示也不要漏显示）
+            if (paperYear === undefined) {
+                return true;
+            }
+            return String(paperYear) === String(selectedYear);
+        });
+        
+        // 只在开发环境下输出详细的筛选信息
+        if (filtered.length === 0 && paperIds.length > 0) {
+            console.warn('Year filter mismatch:', {
+                paperIds: paperIds.length > 10 ? `${paperIds.length}篇论文` : paperIds,
+                selectedYear,
+                mapped: paperIds.length > 10 ? 
+                    `${paperIds.filter(pid => dataStore.paperIdToYear?.[pid]).length}篇有年份映射` : 
+                    paperIds.map(pid => dataStore.paperIdToYear?.[pid])
+            });
+        }
+        
         return filtered;
     }
 
